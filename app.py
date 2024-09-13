@@ -7,6 +7,7 @@ from models import Cliente, Vehiculo, Recambio, Ingreso, Registro
 import db
 import os
 
+
 class VentanaInicio(ft.View):
     '''Clase VentanaInicio: Interfaz para ventana de inicio.
 
@@ -70,8 +71,8 @@ class VentanaInicio(ft.View):
                 text="Clientes",
                 color="white",
                 bgcolor="#12597b",
-                #icon=icons.LOGIN,
-                #icon_color="333333",
+                # icon=icons.LOGIN,
+                # icon_color="333333",
                 width=150,
                 height=30,
                 on_click=lambda _: page.go("/clientes")
@@ -79,15 +80,14 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-
         # Boton para moverte a vehiculos
         self.boton_vehiculos = ft.Container(
             ft.ElevatedButton(
                 text="Vehiculos",
                 color="white",
                 bgcolor="#12597b",
-                #icon=icons.LOGIN,
-                #icon_color="333333",
+                # icon=icons.LOGIN,
+                # icon_color="333333",
                 width=150,
                 height=30,
                 on_click=lambda _: page.go("/vehiculos")
@@ -96,15 +96,14 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-
         # Boton para moverte a recambios
         self.boton_recambios = ft.Container(
             ft.ElevatedButton(
                 text="Recambios",
                 color="white",
                 bgcolor="#12597b",
-                #icon=icons.LOGIN,
-                #icon_color="333333",
+                # icon=icons.LOGIN,
+                # icon_color="333333",
                 width=150,
                 height=30,
                 on_click=lambda _: page.go("/recambios")
@@ -112,22 +111,20 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-
         # Boton para moverte a ingresos
         self.boton_ingresos = ft.Container(
             ft.ElevatedButton(
                 text="Ingresos",
                 color="white",
                 bgcolor="#12597b",
-                #icon=icons.LOGIN,
-                #icon_color="333333",
+                # icon=icons.LOGIN,
+                # icon_color="333333",
                 width=150,
                 height=30,
                 on_click=lambda _: page.go("/ingresos")
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
-
 
         # imagen clientes
         self.ImagenClientes = ft.Container(
@@ -144,8 +141,6 @@ class VentanaInicio(ft.View):
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
-
-
 
         # imagen recambios
         self.ImagenRecambios = ft.Container(
@@ -298,7 +293,6 @@ class VentanaInicio(ft.View):
             )
         )
 
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -306,8 +300,8 @@ class VentanaInicio(ft.View):
                     ft.Divider(height=10, color="transparent"),
                     self.logo,
                     ft.Divider(height=10, color="transparent"),
-                    self.ImagenVehiculo,ft.Divider(height=10, color="transparent"),
-                    #ft.Divider(height=10, color="#E0E0E0"),
+                    self.ImagenVehiculo, ft.Divider(height=10, color="transparent"),
+                    # ft.Divider(height=10, color="#E0E0E0"),
                     self.boton_clientes,
                     self.boton_vehiculos,
                     self.boton_recambios,
@@ -327,6 +321,7 @@ class VentanaInicio(ft.View):
             )
         ]
 
+
 class VentanaCliente(ft.View):
     '''Clase VentanaInicio: Interfaz para ventana de clientes.
 
@@ -341,7 +336,6 @@ class VentanaCliente(ft.View):
         - Boton ElevatedButton: para modificar cliente.
         - Boton ElevatedButton: para eliminar cliente.
         '''
-
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Clientes'''
@@ -403,7 +397,83 @@ class VentanaCliente(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Barra de navegacion
+        self.barraNavegacion = ft.NavigationBar(
+            selected_index=0,
+            # on_change=lambda e: self.on_navigation_change(e),
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.HOME_OUTLINED,
+                        color=ft.colors.GREY_900,
+                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.HOME_ROUNDED,
+                        color="#12597b",
+                        size=24  # Ajusta el tamaño del ícono seleccionado
+                    ),
+                    label="Inicio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.PERSON_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.PERSON,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Cliente",
 
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Vehículo",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Recambio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Ingreso",
+                )
+            ],
+            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
+        )
 
         # Contenedor que contiene el boton de busqueda y las opciones
         self.boton_Y_opciones = ft.Container(
@@ -455,19 +525,16 @@ class VentanaCliente(ft.View):
             )
         )
 
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
                 ft.Column([
-                    #self.tituloClientes,
+                    # self.tituloClientes,
                     self.imagenClientes,
                     self.input_buscar,
                     self.BotonBuscarCliente,
-                    #self.boton_Y_opciones,
                     self.vistaResultadosBusqueda,
-                    ft.Divider(height=10, color="transparent"),
-                    ft.Divider(height=10, color="#E0E0E0"),
+                    self.barraNavegacion,
 
                 ]
                 ),
@@ -484,7 +551,6 @@ class VentanaCliente(ft.View):
             )
         ]
 
-    # metodo para manejar la opcion seleccionada en el menu desplegable
     def pestaniaOpcion(self, e):
         try:
             # Crear un objeto Text para mostrar la opcion elegida
@@ -566,12 +632,12 @@ class VentanaCliente(ft.View):
             # Buscamos el producto por nombre y ubicacion (ignorando mayúsculas y minusculas)
             nombre_consultaDeLaBusqueda = db.session.query(Cliente, Vehiculo, Recambio, Ingreso).filter(
                 or_(
-        Cliente.nombre.ilike(f'%{nombreDeLaBusqueda}%'),
-        Vehiculo.marca.ilike(f'%{nombreDeLaBusqueda}%'),
-        Recambio.descripcion.ilike(f'%{nombreDeLaBusqueda}%'),
-        Ingreso.concepto.ilike(f'%{nombreDeLaBusqueda}%')
-    )
-).all()
+                    Cliente.nombre.ilike(f'%{nombreDeLaBusqueda}%'),
+                    Vehiculo.marca.ilike(f'%{nombreDeLaBusqueda}%'),
+                    Recambio.descripcion.ilike(f'%{nombreDeLaBusqueda}%'),
+                    Ingreso.concepto.ilike(f'%{nombreDeLaBusqueda}%')
+                )
+            ).all()
 
             self.input_buscar.value = ""
             self.input_buscar.update()
@@ -712,6 +778,7 @@ class VentanaCliente(ft.View):
         finally:
             db.session.close()
 
+
 class VentanaVehiculo(ft.View):
     '''Clase VentanaVehiculo: Interfaz para ventana de vehiculos.
 
@@ -787,6 +854,97 @@ class VentanaVehiculo(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Barra de navegacion
+        self.barraNavegacion = ft.NavigationBar(
+            selected_index=0,
+            # on_change=lambda e: self.on_navigation_change(e),
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.HOME_OUTLINED,
+                        color=ft.colors.GREY_900,
+                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.HOME_ROUNDED,
+                        color="#12597b",
+                        size=24  # Ajusta el tamaño del ícono seleccionado
+                    ),
+                    label="Inicio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.PERSON_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.PERSON,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Cliente",
+
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Vehículo",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Recambio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Ingreso",
+                )
+            ],
+            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
+        )
+
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -794,10 +952,8 @@ class VentanaVehiculo(ft.View):
                     self.imagenVehiculos,
                     self.input_buscar,
                     self.BotonBuscarVehiculo,
-                    ft.Divider(height=10, color="transparent"),
-
-                    ft.Divider(height=10, color="transparent"),
-
+                    self.vistaResultadosBusqueda,
+                    self.barraNavegacion,
                 ]
                 ),
 
@@ -813,6 +969,9 @@ class VentanaVehiculo(ft.View):
             )
         ]
 
+        # metodo de navegacion para la barra de navegacion
+
+
 class VentanaRecambios(ft.View):
     '''Clase VentanaVehiculo: Interfaz para ventana de recambios.
 
@@ -827,7 +986,6 @@ class VentanaRecambios(ft.View):
         - Boton ElevatedButton: para modificar recambio.
         - Boton ElevatedButton: para eliminar recambio.
         '''
-
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana recambios'''
@@ -889,6 +1047,97 @@ class VentanaRecambios(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Barra de navegacion
+        self.barraNavegacion = ft.NavigationBar(
+            selected_index=0,
+            # on_change=lambda e: self.on_navigation_change(e),
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.HOME_OUTLINED,
+                        color=ft.colors.GREY_900,
+                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.HOME_ROUNDED,
+                        color="#12597b",
+                        size=24  # Ajusta el tamaño del ícono seleccionado
+                    ),
+                    label="Inicio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.PERSON_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.PERSON,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Cliente",
+
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Vehículo",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Recambio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Ingreso",
+                )
+            ],
+            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
+        )
+
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -896,9 +1145,8 @@ class VentanaRecambios(ft.View):
                     self.imagenRecambios,
                     self.input_buscarRecambio,
                     self.BotonBuscarRecambio,
-                    ft.Divider(height=10, color="transparent"),
-
-                    ft.Divider(height=10, color="transparent"),
+                    self.vistaResultadosBusqueda,
+                    self.barraNavegacion,
 
                 ]
                 ),
@@ -915,6 +1163,7 @@ class VentanaRecambios(ft.View):
             )
         ]
 
+
 class VentanaIngreso(ft.View):
     '''Clase VentanaIngreso: Interfaz para ventana de ingresos.
 
@@ -929,7 +1178,6 @@ class VentanaIngreso(ft.View):
         - Boton ElevatedButton: para modificar ingreso.
         - Boton ElevatedButton: para eliminar ingreso.
         '''
-
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Ingresos'''
@@ -991,6 +1239,97 @@ class VentanaIngreso(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Barra de navegacion
+        self.barraNavegacion = ft.NavigationBar(
+            selected_index=0,
+            # on_change=lambda e: self.on_navigation_change(e),
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.HOME_OUTLINED,
+                        color=ft.colors.GREY_900,
+                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.HOME_ROUNDED,
+                        color="#12597b",
+                        size=24  # Ajusta el tamaño del ícono seleccionado
+                    ),
+                    label="Inicio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.PERSON_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.PERSON,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Cliente",
+
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Vehículo",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Recambio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Ingreso",
+                )
+            ],
+            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
+        )
+
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -998,10 +1337,8 @@ class VentanaIngreso(ft.View):
                     self.imagenVehiculos,
                     self.input_buscar,
                     self.BotonBuscarVehiculo,
-                    ft.Divider(height=10, color="transparent"),
-
-                    ft.Divider(height=10, color="transparent"),
-
+                    self.vistaResultadosBusqueda,
+                    self.barraNavegacion,
                 ]
                 ),
 
@@ -1045,16 +1382,16 @@ def main(page: ft.page):
             ingresos = VentanaIngreso(page)
             page.views.append(ingresos)
 
-
         page.update()
 
     page.on_route_change = router
     page.go("/inicio")
-    #page.go("/clientes")
-    #page.go("/vehiculos")
+    # page.go("/clientes")
+    # page.go("/vehiculos")
     # page.go("/recambios")
     # page.go("/ingresos")
 
 
+# instanciar y ejecutar la aplicación
 ft.app(target=main, assets_dir="assets")
 
