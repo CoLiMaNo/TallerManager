@@ -1,5 +1,5 @@
 # TallerManager
-Taller Manager
+
 Taller Manager is an mobile application designed to manage the information of clients, vehicles, spare parts, and the repair history of a mechanical workshop. This tool enables workshops to keep accurate records of the vehicles admitted, the repairs performed, and the spare parts used, facilitating cost management and customer service.
 
 Features
