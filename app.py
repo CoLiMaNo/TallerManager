@@ -9,17 +9,27 @@ import os
 
 
 class VentanaInicio(ft.View):
-    '''Clase VentanaInicio: Interfaz para ventana de inicio.
+    '''Clase VentanaInicio: Interfaz gráfica de la ventana de inicio del sistema de gestión del taller.
+
+    Esta clase representa la ventana principal de la aplicación, donde se muestran diversas opciones
+    relacionadas con el análisis y reporte de datos del taller mecánico. En esta interfaz, el usuario
+    puede acceder a diferentes funcionalidades clave para gestionar y analizar los datos de los clientes
+    y el desempeño del taller.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Boton ElevatedButton: para moverte a Clientes.
-        - Boton ElevatedButton: para moverte a Vehiculos.
-        - Boton ElevatedButton: para moverte a Recambios.
-        - Boton ElevatedButton: para moverte a Ingresos.
-        '''
+        - Botón ElevatedButton "Análisis de Costos por Cliente": Accede a una vista detallada que muestra el
+          desglose de costos por cada cliente registrado en el sistema.
+        - Botón ElevatedButton "Reporte de Beneficios": Permite al usuario consultar los beneficios generados
+          por el taller, calculando la diferencia entre ingresos y costos.
+        - Botón ElevatedButton "Estadísticas del Taller": Muestra un resumen del desempeño del taller,
+          incluyendo la cantidad de vehículos atendidos y los tipos de reparaciones más comunes.
+        - Botón ElevatedButton "Proyecciones Futuras": Accede a una vista de proyecciones basadas en datos
+          históricos, como ingresos estimados o número de servicios futuros.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Inicio'''
@@ -51,6 +61,7 @@ class VentanaInicio(ft.View):
 
         # Imagen vehiculo
         self.ImagenVehiculo = ft.Container(
+
             ft.Container(
                 bgcolor="#f6f6f6",
                 width=200,
@@ -62,33 +73,34 @@ class VentanaInicio(ft.View):
                 image_src="/ImagenVehiculo.png",
                 image_fit=ft.ImageFit.COVER,
             ),
+            expand=True,
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-        # Boton para moverte a clientes
+        # Boton para acceder al análisis de costos por cliente.
         self.boton_clientes = ft.Container(
             ft.ElevatedButton(
-                text="Clientes",
+                text="Costos por Cliente",
                 color="white",
                 bgcolor="#12597b",
                 # icon=icons.LOGIN,
                 # icon_color="333333",
-                width=150,
+                width=200,
                 height=30,
                 on_click=lambda _: page.go("/clientes")
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-        # Boton para moverte a vehiculos
+        # Boton para acceder a consultar los beneficios del taller.
         self.boton_vehiculos = ft.Container(
             ft.ElevatedButton(
-                text="Vehiculos",
+                text="Reporte de Beneficios",
                 color="white",
                 bgcolor="#12597b",
                 # icon=icons.LOGIN,
                 # icon_color="333333",
-                width=150,
+                width=200,
                 height=30,
                 on_click=lambda _: page.go("/vehiculos")
 
@@ -96,201 +108,112 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-        # Boton para moverte a recambios
+        # Boton para acceder al analisis del uso y desempeño general del taller
         self.boton_recambios = ft.Container(
             ft.ElevatedButton(
-                text="Recambios",
+                text="Estadísticas del Taller",
                 color="white",
                 bgcolor="#12597b",
                 # icon=icons.LOGIN,
                 # icon_color="333333",
-                width=150,
+                width=200,
                 height=30,
                 on_click=lambda _: page.go("/recambios")
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-        # Boton para moverte a ingresos
+        # Boton para acceder a proyecciones y análisis futuros
         self.boton_ingresos = ft.Container(
             ft.ElevatedButton(
-                text="Ingresos",
+                text="Proyecciones",
                 color="white",
                 bgcolor="#12597b",
                 # icon=icons.LOGIN,
                 # icon_color="333333",
-                width=150,
+                width=200,
                 height=30,
                 on_click=lambda _: page.go("/ingresos")
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
-        # imagen clientes
-        self.ImagenClientes = ft.Container(
-            ft.Container(
-                bgcolor="#f6f6f6",
-                width=200,
-                height=90,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/ImagenClientes.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
-
-        # imagen recambios
-        self.ImagenRecambios = ft.Container(
-            ft.Container(
-                bgcolor="#f6f6f6",
-                width=200,
-                height=90,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/ImagenRecambios.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
-
-        # imagen ingresos
-        self.Imagen_de_Ingresos = ft.Container(
-            ft.Container(
-                bgcolor="#f6f6f6",
-                width=200,
-                height=90,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/Imagen_de_Ingresos.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
-
-        # Marcas vehiculos
-        self.marcas = ft.Container(
-            ft.Row([
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define imagen
-                    image_src="/Toyota-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
+        # Barra de navegacion
+        self.barraNavegacion = ft.NavigationBar(
+            selected_index=0,
+            # on_change=lambda e: self.on_navigation_change(e),
+            destinations=[
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.HOME_OUTLINED,
+                        color=ft.colors.GREY_900,
+                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.HOME_ROUNDED,
+                        color="#12597b",
+                        size=24  # Ajusta el tamaño del ícono seleccionado
+                    ),
+                    label="Inicio",
                 ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=70,
-                    height=70,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Mercedes-Benz-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.PERSON_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.PERSON,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Cliente",
+
                 ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Audi-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.DIRECTIONS_CAR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Vehículo",
                 ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.SETTINGS,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Recambio",
+                ),
+                ft.NavigationBarDestination(
+                    icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR_OUTLINED,
+                        color=ft.colors.BLUE_GREY_900,
+                        size=20
+                    ),
+                    selected_icon_content=ft.Icon(
+                        name=ft.icons.CAR_REPAIR,
+                        color="#12597b",
+                        size=24
+                    ),
+                    label="Ingreso",
+                )
             ],
-                alignment=ft.MainAxisAlignment.SPACE_AROUND,
-
-            )
-        )
-
-        # Marcas vehiculos
-        self.marcas2 = ft.Container(
-            ft.Row([
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=70,
-                    height=70,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Nissan-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=70,
-                    height=70,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Logo-Honda.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define imagen
-                    image_src="/Hyundai-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-
-            ],
-                alignment=ft.MainAxisAlignment.SPACE_AROUND,
-
-            )
-        )
-
-        # Marcas vehiculos
-        self.marcas3 = ft.Container(
-            ft.Row([
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Volkswagen-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define la imagen
-                    image_src="/Ford-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-                ft.Container(
-                    bgcolor="#FAFAF3",
-                    width=65,
-                    height=65,
-                    image_repeat=ImageRepeat.NO_REPEAT,
-                    shape=ft.BoxShape("rectangle"),
-                    # Define imagen
-                    image_src="/Kia-Logo.png",
-                    image_fit=ft.ImageFit.SCALE_DOWN
-                ),
-
-            ],
-                alignment=ft.MainAxisAlignment.SPACE_AROUND,
-
-            )
+            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
         # Contenedor principal que contiene todos los elementos de la interfaz
@@ -306,6 +229,7 @@ class VentanaInicio(ft.View):
                     self.boton_vehiculos,
                     self.boton_recambios,
                     self.boton_ingresos,
+                    self.barraNavegacion,
                 ]
                 ),
 
@@ -323,19 +247,27 @@ class VentanaInicio(ft.View):
 
 
 class VentanaCliente(ft.View):
-    '''Clase VentanaInicio: Interfaz para ventana de clientes.
+    '''Clase VentanaClientes: Interfaz gráfica para la gestión de clientes.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de clientes, donde el
+    usuario puede realizar varias operaciones como búsqueda, adición, modificación y eliminación
+    de clientes registrados en el sistema del taller.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Imagen de Clientes como titulo.
-        - Input para ingresar busqueda.
-        - Boton ElevatedButton: para activar la busqueda.
-        - Boton ElevatedButton: para añadir cliente nuevo.
-        - Boton ElevatedButton: para modificar cliente.
-        - Boton ElevatedButton: para eliminar cliente.
-        '''
+        - Imagen de título: Muestra una imagen de "Clientes" para identificar visualmente la sección.
+        - Input: Campo de texto para ingresar el nombre o los datos del cliente a buscar.
+        - Botón ElevatedButton "Buscar Cliente": Activa la búsqueda de clientes según los datos ingresados
+          en el campo de búsqueda.
+        - Botón ElevatedButton "Añadir Cliente": Permite al usuario añadir un nuevo cliente al sistema
+          ingresando los datos requeridos (nombre, teléfono, dirección, etc.).
+        - Botón ElevatedButton "Modificar Cliente": Accede a una interfaz para modificar los datos de un
+          cliente existente en el sistema.
+        - Botón ElevatedButton "Eliminar Cliente": Elimina del sistema los registros del cliente seleccionado.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Clientes'''
@@ -780,19 +712,26 @@ class VentanaCliente(ft.View):
 
 
 class VentanaVehiculo(ft.View):
-    '''Clase VentanaVehiculo: Interfaz para ventana de vehiculos.
+    '''Clase VentanaVehiculo: Interfaz gráfica para la gestión de vehículos.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de vehículos, donde el
+    usuario puede realizar operaciones como búsqueda, adición, modificación y eliminación de los vehículos
+    registrados en el sistema del taller.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Imagen de Vehiculos como titulo.
-        - Input para ingresar busqueda.
-        - Boton ElevatedButton: para activar la busqueda.
-        - Boton ElevatedButton: para añadir vehiculo nuevo.
-        - Boton ElevatedButton: para modificar vehiculo.
-        - Boton ElevatedButton: para eliminar vehiculo.
-        '''
+        - Imagen de título: Muestra una imagen de "Vehículos" para identificar visualmente la sección.
+        - Input: Campo de texto para ingresar la matrícula o los datos del vehículo a buscar.
+        - Botón ElevatedButton "Buscar Vehículo": Activa la búsqueda de vehículos en base a los datos ingresados.
+        - Botón ElevatedButton "Añadir Vehículo": Permite al usuario añadir un nuevo vehículo al sistema
+          ingresando los datos requeridos (marca, modelo, matrícula, kilometraje, etc.).
+        - Botón ElevatedButton "Modificar Vehículo": Accede a una interfaz para modificar los datos de un
+          vehículo existente en el sistema.
+        - Botón ElevatedButton "Eliminar Vehículo": Elimina del sistema los registros del vehículo seleccionado.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Vehiculos'''
@@ -973,19 +912,26 @@ class VentanaVehiculo(ft.View):
 
 
 class VentanaRecambios(ft.View):
-    '''Clase VentanaVehiculo: Interfaz para ventana de recambios.
+    '''Clase VentanaRecambios: Interfaz gráfica para la gestión de recambios.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de recambios, donde el
+    usuario puede realizar operaciones como búsqueda, adición, modificación y eliminación de recambios
+    utilizados en las reparaciones.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Imagen de Recambios como titulo.
-        - Input para ingresar busqueda.
-        - Boton ElevatedButton: para activar la busqueda.
-        - Boton ElevatedButton: para añadir recambio nuevo.
-        - Boton ElevatedButton: para modificar recambio.
-        - Boton ElevatedButton: para eliminar recambio.
-        '''
+        - Imagen de título: Muestra una imagen de "Recambios" para identificar visualmente la sección.
+        - Input: Campo de texto para ingresar el nombre o los detalles del recambio a buscar.
+        - Botón ElevatedButton "Buscar Recambio": Activa la búsqueda de recambios en base a los datos ingresados.
+        - Botón ElevatedButton "Añadir Recambio": Permite al usuario añadir un nuevo recambio al sistema ingresando
+          los datos requeridos (nombre, descripción, costo, etc.).
+        - Botón ElevatedButton "Modificar Recambio": Accede a una interfaz para modificar los datos de un
+          recambio existente en el sistema.
+        - Botón ElevatedButton "Eliminar Recambio": Elimina del sistema los registros del recambio seleccionado.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana recambios'''
@@ -1165,19 +1111,25 @@ class VentanaRecambios(ft.View):
 
 
 class VentanaIngreso(ft.View):
-    '''Clase VentanaIngreso: Interfaz para ventana de ingresos.
+    '''Clase VentanaIngreso: Interfaz gráfica para la gestión de ingresos de vehículos al taller.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de ingresos, permitiendo
+    al usuario registrar, buscar, modificar y eliminar los ingresos de vehículos en el taller.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que gestiona el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Imagen de diagnostico de ingresos como titulo.
-        - Input para ingresar busqueda.
-        - Boton ElevatedButton: para activar la busqueda.
-        - Boton ElevatedButton: para añadir ingreso nuevo.
-        - Boton ElevatedButton: para modificar ingreso.
-        - Boton ElevatedButton: para eliminar ingreso.
-        '''
+        - Imagen de diagnóstico de ingresos como título: Identifica la sección de ingresos con una imagen adecuada.
+        - Input: Campo de texto para buscar ingresos por criterios como fecha, matrícula del vehículo o diagnóstico.
+        - Botón ElevatedButton "Buscar Ingreso": Activa la búsqueda de ingresos basados en los datos ingresados.
+        - Botón ElevatedButton "Añadir Ingreso": Permite añadir un nuevo registro de ingreso de un vehículo al taller,
+          incluyendo detalles como fecha, avería reportada y diagnóstico.
+        - Botón ElevatedButton "Modificar Ingreso": Accede a una interfaz para modificar los detalles de un ingreso
+          ya registrado.
+        - Botón ElevatedButton "Eliminar Ingreso": Elimina del sistema el ingreso seleccionado.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Ingresos'''
