@@ -73,12 +73,12 @@ class VentanaInicio(ft.View):
                 image_src="/ImagenVehiculo.png",
                 image_fit=ft.ImageFit.COVER,
             ),
-            expand=True,
+            expand=False,
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
         # Boton para acceder al análisis de costos por cliente.
-        self.boton_clientes = ft.Container(
+        self.boton_CostoPorCliente = ft.Container(
             ft.ElevatedButton(
                 text="Costos por Cliente",
                 color="white",
@@ -93,7 +93,7 @@ class VentanaInicio(ft.View):
         )
 
         # Boton para acceder a consultar los beneficios del taller.
-        self.boton_vehiculos = ft.Container(
+        self.boton_ReporteBeneficios = ft.Container(
             ft.ElevatedButton(
                 text="Reporte de Beneficios",
                 color="white",
@@ -109,7 +109,7 @@ class VentanaInicio(ft.View):
         )
 
         # Boton para acceder al analisis del uso y desempeño general del taller
-        self.boton_recambios = ft.Container(
+        self.boton_EstadisticasTaller = ft.Container(
             ft.ElevatedButton(
                 text="Estadísticas del Taller",
                 color="white",
@@ -124,7 +124,7 @@ class VentanaInicio(ft.View):
         )
 
         # Boton para acceder a proyecciones y análisis futuros
-        self.boton_ingresos = ft.Container(
+        self.boton_Proyecciones = ft.Container(
             ft.ElevatedButton(
                 text="Proyecciones",
                 color="white",
@@ -138,6 +138,10 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
+        self.contenedor_vacio = ft.Container(
+            expand= True
+        )
+
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
             selected_index=0,
@@ -146,7 +150,7 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color=ft.colors.GREY_900,
+                        color="#12597b",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
@@ -159,7 +163,7 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -173,7 +177,7 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -186,7 +190,7 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -199,7 +203,7 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -210,9 +214,9 @@ class VentanaInicio(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -222,13 +226,14 @@ class VentanaInicio(ft.View):
                 ft.Column([
                     ft.Divider(height=10, color="transparent"),
                     self.logo,
-                    ft.Divider(height=10, color="transparent"),
+                    #ft.Divider(height=10, color="transparent"),
                     self.ImagenVehiculo, ft.Divider(height=10, color="transparent"),
                     # ft.Divider(height=10, color="#E0E0E0"),
-                    self.boton_clientes,
-                    self.boton_vehiculos,
-                    self.boton_recambios,
-                    self.boton_ingresos,
+                    self.boton_CostoPorCliente,
+                    self.boton_ReporteBeneficios,
+                    self.boton_EstadisticasTaller,
+                    self.boton_Proyecciones,
+                    self.contenedor_vacio,
                     self.barraNavegacion,
                 ]
                 ),
@@ -337,7 +342,7 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color=ft.colors.GREY_900,
+                        color="#12597b",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
@@ -350,7 +355,7 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -364,7 +369,7 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -377,7 +382,7 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -390,7 +395,7 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -401,9 +406,9 @@ class VentanaCliente(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -801,7 +806,7 @@ class VentanaVehiculo(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color=ft.colors.GREY_900,
+                        color="#12597b",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
@@ -814,7 +819,7 @@ class VentanaVehiculo(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -828,7 +833,7 @@ class VentanaVehiculo(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -841,7 +846,7 @@ class VentanaVehiculo(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -854,7 +859,7 @@ class VentanaVehiculo(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -865,9 +870,9 @@ class VentanaVehiculo(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -1001,7 +1006,7 @@ class VentanaRecambios(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color=ft.colors.GREY_900,
+                        color="#12597b",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
@@ -1014,7 +1019,7 @@ class VentanaRecambios(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1028,7 +1033,7 @@ class VentanaRecambios(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1041,7 +1046,7 @@ class VentanaRecambios(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1054,7 +1059,7 @@ class VentanaRecambios(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1065,9 +1070,9 @@ class VentanaRecambios(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -1111,19 +1116,25 @@ class VentanaRecambios(ft.View):
 
 
 class VentanaIngreso(ft.View):
-    '''Clase VentanaIngreso: Interfaz para ventana de ingresos.
+    '''Clase VentanaIngreso: Interfaz gráfica para la gestión de ingresos de vehículos al taller.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de ingresos, permitiendo
+    al usuario registrar, buscar, modificar y eliminar los ingresos de vehículos en el taller.
 
     Args:
-        - page: Instancia de la pagina actual.
+        - page: Instancia de la página actual, que gestiona el contenido y las interacciones de la ventana.
 
     Contiene:
-        - Imagen de diagnostico de ingresos como titulo.
-        - Input para ingresar busqueda.
-        - Boton ElevatedButton: para activar la busqueda.
-        - Boton ElevatedButton: para añadir ingreso nuevo.
-        - Boton ElevatedButton: para modificar ingreso.
-        - Boton ElevatedButton: para eliminar ingreso.
-        '''
+        - Imagen de diagnóstico de ingresos como título: Identifica la sección de ingresos con una imagen adecuada.
+        - Input: Campo de texto para buscar ingresos por criterios como fecha, matrícula del vehículo o diagnóstico.
+        - Botón ElevatedButton "Buscar Ingreso": Activa la búsqueda de ingresos basados en los datos ingresados.
+        - Botón ElevatedButton "Añadir Ingreso": Permite añadir un nuevo registro de ingreso de un vehículo al taller,
+          incluyendo detalles como fecha, avería reportada y diagnóstico.
+        - Botón ElevatedButton "Modificar Ingreso": Accede a una interfaz para modificar los detalles de un ingreso
+          ya registrado.
+        - Botón ElevatedButton "Eliminar Ingreso": Elimina del sistema el ingreso seleccionado.
+    '''
+
 
     def __init__(self, page: ft.Page):
         '''Constructor de la interfaz grafica para la ventana Ingresos'''
@@ -1193,7 +1204,7 @@ class VentanaIngreso(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color=ft.colors.GREY_900,
+                        color="#12597b",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
@@ -1206,7 +1217,7 @@ class VentanaIngreso(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1220,7 +1231,7 @@ class VentanaIngreso(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1233,7 +1244,7 @@ class VentanaIngreso(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1246,7 +1257,7 @@ class VentanaIngreso(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color=ft.colors.BLUE_GREY_900,
+                        color="#12597b",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
@@ -1257,9 +1268,9 @@ class VentanaIngreso(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor=ft.colors.GREY_400,  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color=ft.colors.BLUE_GREY_900,  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
