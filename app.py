@@ -138,6 +138,7 @@ class VentanaInicio(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=0)
         )
 
+        # contenedor vacio para relleno
         self.contenedor_vacio = ft.Container(
             expand= True
         )
@@ -1181,10 +1182,10 @@ class VentanaIngreso(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton de buscar cliente
+        # Boton de buscar ingreso
         self.BotonBuscarVehiculo = ft.Container(
             ft.ElevatedButton(
-                text="Buscar",
+                text="Buscar Ingreso",
                 color="white",
                 bgcolor="#12597b",
                 # icon=icons.LOGIN,
