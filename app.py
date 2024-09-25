@@ -143,10 +143,10 @@ class VentanaInicio(ft.View):
             expand= True
         )
 
-        # Barra de navegacion
+        # Barra de navegacion VentanaInicio
         self.barraNavegacion = ft.NavigationBar(
             selected_index=0,
-            # on_change=lambda e: self.on_navigation_change(e),
+            on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
@@ -251,6 +251,22 @@ class VentanaInicio(ft.View):
             )
         ]
 
+    # funcion para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        self.page.controls.clear()
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
+        self.page.update()
+
 
 class VentanaCliente(ft.View):
     '''Clase VentanaClientes: Interfaz gráfica para la gestión de clientes.
@@ -335,10 +351,23 @@ class VentanaCliente(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
-            selected_index=0,
-            # on_change=lambda e: self.on_navigation_change(e),
+            selected_index=1,
+            on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
@@ -409,58 +438,8 @@ class VentanaCliente(ft.View):
             ],
             bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#FAFAF3",  # Color de superficie para el material (#FAFAF3)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
-        )
-
-        # Contenedor que contiene el boton de busqueda y las opciones
-        self.boton_Y_opciones = ft.Container(
-            alignment=ft.alignment.Alignment(x=0, y=0),
-            content=Row(
-                alignment=ft.MainAxisAlignment.CENTER,
-                controls=[
-                    # Menu desplegable para elegir ubicacion
-                    ft.Dropdown(
-                        label='Elige una Opcion',
-                        label_style=TextStyle(color='#6a6965', size=12, weight=ft.FontWeight.W_600),
-                        height=40,
-                        width=200,
-                        content_padding=15,
-                        color='#333333',
-                        border_color="#12597b",
-                        text_size=12,
-                        on_change=lambda e: self.pestaniaOpcion(e),
-                        options=[
-                            ft.dropdown.Option("Clientes"),
-                            ft.dropdown.Option("Vehiculos"),
-                            ft.dropdown.Option("Recambios"),
-                            ft.dropdown.Option("Ingresos"),
-                        ],
-                        bgcolor="#E1F5FE"
-                    ),
-                    # Boton de busqueda
-                    ft.IconButton(
-                        content=ft.Image(src="imagenes/buscadorLupa.png", height=40, width=40),
-                        icon_color="#AABE89",
-                        tooltip='Buscar',
-
-                        on_click=lambda e: self.botonBuscar(e),
-                    )
-                ]
-            )
-        )
-
-        # Contenedor para mostrar los resultados de busqueda
-        self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
-            expand=True,
-            content=ft.GridView(
-                expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
-            )
         )
 
         # Contenedor principal que contiene todos los elementos de la interfaz
@@ -489,232 +468,20 @@ class VentanaCliente(ft.View):
             )
         ]
 
-    def pestaniaOpcion(self, e):
-        try:
-            # Crear un objeto Text para mostrar la opcion elegida
-            t = ft.Text()
+    # funcion para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
 
-            # Obtener la opcion elegida del menu desplegable
-            elegirOpcion = self.boton_Y_opciones.content.controls[0].value
-
-            # Actualizar el valor del objeto Text con la opcion elegida
-            t.value = f"Opción elegida: {elegirOpcion}"
-
-            # Diccionario que mapea las opciones a las acciones correspondientes
-            acciones = {
-                'Clientes': 'Buscar en Clientes',
-                'Vehiculos': 'Buscar en Vehiculos',
-                'Recambios': 'Buscar en Recambios',
-                'Ingresos': 'Buscar en Ingresos',
-            }
-
-            # Imprimir un mensaje según la opcion elegida
-            if elegirOpcion in acciones:
-                print(acciones[elegirOpcion])
-            else:
-                print('Opción no válida')
-
-            # Actualizar la pagina con el objeto Text
-            self.page.update(self)
-            # Agregar el objeto Text a la pagina
-            self.page.add(t)
-
-        except Exception as e:
-            print(f'Error: {e}')
-            # Registrar el error en el archivo de texto
-            with open("errores.txt", "a") as file:
-                momentoEspecificoError = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                nombre_metodo = "pestaniaOpcion, VentanaBuscar"
-                mensaje_error = f"{momentoEspecificoError} - Método: {nombre_metodo} - Error general: {e}\n"
-                file.write(mensaje_error)
-        finally:
-            db.session.close()
-
-    # metodo para manejar el evento de clic del boton de busqueda
-    def botonBuscar(self, e):
-        try:
-            tipo_busqueda = self.boton_Y_opciones.content.controls[0].value
-
-            # Realizar la búsqueda segun la ubicacion seleccionada
-            if tipo_busqueda in ('Clientes, Vehiculos, Recambios, Ingresos'):
-                self.buscarPorOpcion(e)
-            else:
-                print('Opción no válida, elige una opcion en el desplegable')
-
-        # control de excepciones
-        except Exception as e:
-            print(f'Error: {e}')
-            # Registrar el error en el archivo de texto
-            with open("errores.txt", "a") as file:
-                momentoEspecificoError = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                nombre_metodo = "botonBuscar, VentanaCliente"
-                mensaje_error = f"{momentoEspecificoError} - Método: {nombre_metodo} - Error general: {e}\n"
-                file.write(mensaje_error)
-        finally:
-            db.session.close()
-
-    # metodo para buscar por opcion
-    # metodo para buscar el producto por ubicacion y precio asociado
-    def buscarPorOpcion(self, e):
-        try:
-            print("\n > Buscar por Opcion")
-            # Limpia los controles actuales del GridView
-            self.vistaResultadosBusqueda.content.controls = []
-
-            # input donde el usuario ingresa lo que quiere buscar
-            nombreDeLaBusqueda = self.input_buscar.value  # este es el Input
-
-            # ubicacion seleccionada por el usuario
-            opcion_seleccionada = self.boton_Y_opciones.content.controls[0].value
-
-            # Buscamos el producto por nombre y ubicacion (ignorando mayúsculas y minusculas)
-            nombre_consultaDeLaBusqueda = db.session.query(Cliente, Vehiculo, Recambio, Ingreso).filter(
-                or_(
-                    Cliente.nombre.ilike(f'%{nombreDeLaBusqueda}%'),
-                    Vehiculo.marca.ilike(f'%{nombreDeLaBusqueda}%'),
-                    Recambio.descripcion.ilike(f'%{nombreDeLaBusqueda}%'),
-                    Ingreso.concepto.ilike(f'%{nombreDeLaBusqueda}%')
-                )
-            ).all()
-
-            self.input_buscar.value = ""
-            self.input_buscar.update()
-
-            if nombre_consultaDeLaBusqueda:
-                for producto in nombre_consultaDeLaBusqueda:
-                    # Mostramos detalles del producto encontrado
-                    print(f"->Nombre: {producto.nombre_producto}."
-                          f"\n->Marca: {producto.marca_producto}."
-                          f"\n->Descripción: {producto.descripcion_producto}.")
-
-                    # Verificamos si el producto tiene precios asociados
-                    if producto.precios:
-                        # Filtramos los precios por ubicación
-                        precios_ubicacion = [precio for precio in producto.precios if
-                                             precio.supermercados.ubicacion == opcion_seleccionada]
-
-                        if precios_ubicacion:
-                            # Mostramos los precios asociados al producto con su nombre, marca y descripcion en la ubicación seleccionada
-                            print("\nPrecios asociados en la ubicación seleccionada:")
-                            for precio in precios_ubicacion:
-                                print(f" {producto.nombre_producto}, "
-                                      f" {producto.marca_producto}, "
-                                      f" {producto.descripcion_producto}, "
-                                      f" {precio.precio} €, {precio.supermercados.nombre}, "
-                                      f"Ubicación: {opcion_seleccionada}")
-
-                            # Crear una lista de Cards para los resultados de busqueda
-                            cards = []
-                            for precio in precios_ubicacion:  # Iterar sobre los precios asociados
-                                # Crear una Card para cada precio asociado al producto
-                                card = ft.Card(
-                                    content=ft.Container(
-                                        bgcolor="transparent",
-                                        image_repeat=ImageRepeat.NO_REPEAT,
-                                        image_src="/compras_supermercado4.png",
-                                        image_fit=ft.ImageFit.COVER,
-                                        image_opacity=0.1,
-                                        content=ft.Column(
-                                            [
-                                                ft.Row([
-                                                    ft.Text(f"{producto.nombre_producto}",
-                                                            weight=ft.FontWeight.W_700,
-                                                            size=10,
-                                                            color="#835D84",
-                                                            text_align=ft.TextAlign.START),
-                                                ]
-                                                ),
-                                                ft.Text(f"{producto.marca_producto}",
-                                                        weight=ft.FontWeight.W_700,
-                                                        size=10,
-                                                        color="#835D84",
-                                                        text_align=ft.TextAlign.START),
-                                                ft.Text(f" {producto.descripcion_producto}",
-                                                        weight=ft.FontWeight.W_700,
-                                                        size=10,
-                                                        color="#835D84",
-                                                        text_align=ft.TextAlign.START),
-                                                ft.Text(f" {precio.precio} €, {precio.supermercados.nombre}",
-                                                        weight=ft.FontWeight.W_700,
-                                                        size=10,
-                                                        color="#835D84",
-                                                        text_align=ft.TextAlign.START),
-                                                ft.Row(
-                                                    [
-                                                        ft.PopupMenuButton(
-                                                            ft.Icon(name=ft.icons.PLAYLIST_ADD,
-                                                                    tooltip='Crear una lista',
-                                                                    color="#FF7F50",
-                                                                    size=25,
-                                                                    ),
-                                                            items=[
-                                                                ft.PopupMenuItem(
-                                                                    # checked=False,
-                                                                    on_click=lambda _: self.page.go("/crearlista"),
-                                                                    content=Row([
-                                                                        ft.Icon(name=ft.icons.PLAYLIST_ADD_CHECK,
-                                                                                color=ft.colors.GREEN,
-                                                                                size=25,
-                                                                                ),
-                                                                        ft.Text("Crear una lista",
-                                                                                size=12,
-                                                                                text_align=ft.TextAlign.START,
-                                                                                color=ft.colors.GREY_900),
-
-                                                                    ]))
-                                                            ]
-                                                        )
-                                                    ],
-                                                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                                                    vertical_alignment=ft.CrossAxisAlignment.START,
-                                                ),
-                                            ],
-                                        ),
-                                        padding=10,  # Relleno interior del contenedor
-                                        alignment=ft.alignment.center,
-                                        border=ft.border.all(1, ft.colors.GREEN_200),
-                                        border_radius=ft.border_radius.all(10),
-                                    )
-                                )
-
-                                cards.append(card)
-
-                            # Agregar las Cards al GridView
-                            for card in cards:
-                                self.vistaResultadosBusqueda.content.controls.append(card)
-                            # Actualizar la interfaz de usuario
-                            self.vistaResultadosBusqueda.update()
-                        else:
-                            print(f"No hay precios asociados en la ubicación '{opcion_seleccionada}'.")
-                    else:
-                        print("El producto no tiene precios asociados.")
-            else:
-                print(f"No se encontró ningún producto con el nombre '{nombreDeLaBusqueda}'.")
-
-                # Cerramos la sesion de la base de datos
-                db.session.close()
-
-        # control de excepciones
-        except SQLAlchemyError as e:
-            print(type(e).__name__)
-            print("Error de base de datos:", e)
-            db.session.rollback()  # Deshacer cualquier cambio pendiente en la base de datos en caso de error
-            # Registrar el error en un archivo de texto
-            with open("errores.txt", "a") as file:  # Abrir el archivo en modo de escritura, 'a' para añadir al final
-                momentoEspecificoError = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                nombre_metodo = "buscarPrecioUbicacion, VentanaBuscar"
-                mensaje_error = f"{momentoEspecificoError} - Método: {nombre_metodo} - Error general: {e}\n"
-                file.write(mensaje_error)
-        except Exception as e:
-            print(type(e).__name__)
-            print(e)
-            with open("errores.txt", "a") as file:  # Abrir el archivo en modo de escritura, 'a' para añadir al final
-                momentoEspecificoError = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                nombre_metodo = "buscarPrecioUbicacion, VentanaBuscar"
-                mensaje_error = f"{momentoEspecificoError} - Método: {nombre_metodo} - Error general: {e}\n"
-                file.write(mensaje_error)
-        finally:
-            db.session.close()
 
 
 class VentanaVehiculo(ft.View):
@@ -799,10 +566,23 @@ class VentanaVehiculo(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
-            selected_index=0,
-            # on_change=lambda e: self.on_navigation_change(e),
+            selected_index=2,
+            on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
@@ -877,19 +657,6 @@ class VentanaVehiculo(ft.View):
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
-        # Contenedor para mostrar los resultados de busqueda
-        self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
-            expand=True,
-            content=ft.GridView(
-                expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
-            )
-        )
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -915,6 +682,20 @@ class VentanaVehiculo(ft.View):
         ]
 
         # metodo de navegacion para la barra de navegacion
+
+    # funcion para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
 
 
 class VentanaRecambios(ft.View):
@@ -999,10 +780,24 @@ class VentanaRecambios(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
+
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
-            selected_index=0,
-            # on_change=lambda e: self.on_navigation_change(e),
+            selected_index=3,
+            on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
@@ -1077,19 +872,6 @@ class VentanaRecambios(ft.View):
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
-        # Contenedor para mostrar los resultados de busqueda
-        self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
-            expand=True,
-            content=ft.GridView(
-                expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
-            )
-        )
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -1114,6 +896,21 @@ class VentanaRecambios(ft.View):
 
             )
         ]
+
+    # funcion para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
+
 
 
 class VentanaIngreso(ft.View):
@@ -1197,10 +994,23 @@ class VentanaIngreso(ft.View):
             alignment=ft.alignment.Alignment(x=0, y=1)
         )
 
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#FAFAF3',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.0,
+                runs_count=2,
+                spacing=1,
+                run_spacing=1,
+            )
+        )
+
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
-            selected_index=0,
-            # on_change=lambda e: self.on_navigation_change(e),
+            selected_index=4,
+            on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
@@ -1275,19 +1085,6 @@ class VentanaIngreso(ft.View):
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
-        # Contenedor para mostrar los resultados de busqueda
-        self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
-            expand=True,
-            content=ft.GridView(
-                expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
-            )
-        )
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
@@ -1311,6 +1108,20 @@ class VentanaIngreso(ft.View):
 
             )
         ]
+
+    # funcion para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
 
 
 def main(page: ft.page):
@@ -1344,7 +1155,7 @@ def main(page: ft.page):
 
     page.on_route_change = router
     page.go("/inicio")
-    # page.go("/clientes")
+    #page.go("/clientes")
     # page.go("/vehiculos")
     # page.go("/recambios")
     # page.go("/ingresos")
