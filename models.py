@@ -17,7 +17,7 @@ class Cliente(db.Base_mobile):
     -id_cliente: es un numero integer que compone el codigo del cliente
     -fecha_alta: es un registro unico por cliente que hace referencia a la fecha del registro de alta
     -nombre: es un string que compone el nombre del cliente
-    -telefono: es un integer que compone el numero de telefono del cliente
+    -telefono: es un String que compone el numero de telefono del cliente
     -direccion: es un string que compone la direccion del cliente
     -correo: es un string que compone la direccion email del cliente
     '''
@@ -132,13 +132,12 @@ class Ingreso(db.Base_mobile):
 
     args
     -id_ingreso: es un numero integer que compone el codigo del ingreso del vehiculo
-    -id_vehiculo: es un numero integer que compone el id del vehiculo ingresado a taller
-    -kilometros_ingreso: es un numero integer que compone los km del vehiculo al momento del ingreso a taller
     -fecha_ingreso: es un string que indica la fecha del ingreso del vehiculo a taller
-    -id_cliente: es un numero integer que compone el id del cliente del vehiculo ingresado
+    -kilometros_ingreso: es un numero integer que compone los km del vehiculo al momento del ingreso a taller
     -averia: en un string que compone el motivo del ingreso segun el cliente
     -diagnostico: es un string que indica el diagnostico de la averia por el taller
-    -id_recambio: es un numero integer que compone el codigo id del recambio
+    -id_cliente: es un numero integer que compone el id del cliente del vehiculo ingresado
+    -id_vehiculo: es un numero integer que compone el id del vehiculo ingresado a taller
     '''
 
     __tablename__ = 'ingresos'
@@ -146,8 +145,8 @@ class Ingreso(db.Base_mobile):
 
     # Estructura de la tabla ingresos
     id_ingreso = Column(Integer, primary_key=True, autoincrement=True)
-    kilometros_ingreso = Column(Integer, nullable=False)
     fecha_ingreso = Column(DateTime, default=datetime.utcnow)
+    kilometros_ingreso = Column(Integer, nullable=False)
     averia = Column(String(255), nullable=False)
     diagnostico = Column(String(255), nullable=False)
 
@@ -181,6 +180,9 @@ class Registro(db.Base_mobile):
 
     args
     -id_registro: es un numero integer que compone el código del registro
+    -precio: es un numero flotante que compone el precio de un determinado recambio
+    -descuento: es un numero flotante que compone el porcentaje del descuento
+    -cantidad: es un numero flotante que compone la cantidad de unidades de un determinado item
     -id_cliente: es un numero integer que compone el codigo del cliente
     -id_vehiculo: es un numero integer que compone el codigo del vehiculo
     -id_ingreso: es un numero integer que compone el codigo del ingreso del vehiculo
@@ -191,7 +193,10 @@ class Registro(db.Base_mobile):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id_registro = Column(Integer, primary_key=True, autoincrement=True)
-    costo_recambio_a_taller = Column(Float, nullable=False)
+    precio = Column(Float, nullable=False)
+    descuento = Column(Float, nullable=False)
+    cantidad = Column(Float, nullable=False)
+
 
     # Relacion clave foranea
     id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
