@@ -146,6 +146,7 @@ class VentanaInicio(ft.View):
         # Barra de navegacion VentanaInicio
         self.barraNavegacion = ft.NavigationBar(
             selected_index=0,
+            height=50,
             on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
@@ -308,7 +309,7 @@ class VentanaCliente(ft.View):
             ft.Container(
                 bgcolor="#f6f6f6",
                 width=320,
-                height=90,
+                height=70,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
@@ -328,7 +329,7 @@ class VentanaCliente(ft.View):
             hint_text="Introduce el nombre del cliente",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
-            height=40,
+            height=35,
             cursor_color="#12597b",
             text_size=13,
             border_color="#12597b",
@@ -336,19 +337,33 @@ class VentanaCliente(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton para activar la busqueda del cliente
+        # Boton para activar la busqueda cliente y boton agregar nuevo cliente
         self.BotonBuscarCliente = ft.Container(
-            ft.ElevatedButton(
-                text="Buscar Cliente",
-                color="white",
-                bgcolor="#12597b",
-                # icon=icons.LOGIN,
-                # icon_color="333333",
-                width=180,
-                height=50,
-                on_click=lambda _: page.go("/inicio")
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=1)
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Buscar Cliente",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Buscar Cliente',
+                        icon=icons.SEARCH,
+                        icon_color="#FAFAF3",
+                        width=180,
+                        height=30,
+                        #on_click=lambda _: page.go("/inicio"),
+                    ),
+                    ft.IconButton(
+                        icon=ft.icons.PERSON_ADD,
+                        icon_color="#12597b",
+                        icon_size=30,
+                        tooltip="Añadir Nuevo",
+                        # on_click=lambda _: page.go("/inicio"),
+                        )
+                ]
+            )
         )
 
         # Contenedor para mostrar los resultados de busqueda
@@ -367,6 +382,7 @@ class VentanaCliente(ft.View):
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
             selected_index=1,
+            height=50,
             on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
@@ -523,7 +539,7 @@ class VentanaVehiculo(ft.View):
             ft.Container(
                 bgcolor="#f6f6f6",
                 width=320,
-                height=90,
+                height=70,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
@@ -543,7 +559,7 @@ class VentanaVehiculo(ft.View):
             hint_text="Introduce la matricula del vehiculo",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
-            height=40,
+            height=35,
             cursor_color="#12597b",
             text_size=13,
             border_color="#12597b",
@@ -551,21 +567,35 @@ class VentanaVehiculo(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton para activar la busqueda del vehiculo
+        # Boton para activar la busqueda del vehiculo y boton agregar nuevo vehiculo
         self.BotonBuscarVehiculo = ft.Container(
-            ft.ElevatedButton(
-                text="Buscar Vehiculo",
-                color="white",
-                bgcolor="#12597b",
-                # icon=icons.LOGIN,
-                # icon_color="333333",
-                width=180,
-                height=50,
-                on_click=lambda _: page.go("/inicio")
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=1)
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Buscar Vehiculo",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Buscar Vehiculo',
+                        icon=icons.SEARCH,
+                        icon_color="#FAFAF3",
+                        width=180,
+                        height=30,
+                        # on_click=lambda _: page.go("/inicio"),
+                    ),
+                    ft.IconButton(
+                        content=ft.Image(src="car-add.png",
+                                         color= "#12597b",
+                                         height=30,
+                                         width=30),
+                        tooltip="Añadir Nuevo",
+                        # on_click=lambda _: page.go("/inicio"),
+                    )
+                ]
+            )
         )
-
         # Contenedor para mostrar los resultados de busqueda
         self.vistaResultadosBusqueda = ft.Container(
             bgcolor='#FAFAF3',
@@ -582,6 +612,7 @@ class VentanaVehiculo(ft.View):
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
             selected_index=2,
+            height=50,
             on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
@@ -737,7 +768,7 @@ class VentanaRecambios(ft.View):
             ft.Container(
                 bgcolor="#f6f6f6",
                 width=320,
-                height=90,
+                height=70,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
@@ -757,7 +788,7 @@ class VentanaRecambios(ft.View):
             hint_text="Introduce el recambio",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
-            height=40,
+            height=35,
             cursor_color="#12597b",
             text_size=13,
             border_color="#12597b",
@@ -765,19 +796,34 @@ class VentanaRecambios(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton de buscar recambio
+        # Boton para activar la busqueda del recambio y boton agregar nuevo recambio
         self.BotonBuscarRecambio = ft.Container(
-            ft.ElevatedButton(
-                text="Buscar Recambio",
-                color="white",
-                bgcolor="#12597b",
-                # icon=icons.LOGIN,
-                # icon_color="333333",
-                width=180,
-                height=50,
-                on_click=lambda _: page.go("/inicio")
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=1)
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Buscar Recambio",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Buscar Recambio',
+                        icon=icons.SEARCH,
+                        icon_color="#FAFAF3",
+                        width=185,
+                        height=30,
+                        #on_click=lambda _: page.go("/inicio"),
+                    ),
+                    ft.IconButton(
+                        content=ft.Image(src="add-spare part.png",
+                                         color= "#12597b",
+                                         height=30,
+                                         width=30),
+                        tooltip="Añadir Nuevo",
+                        # on_click=lambda _: page.go("/inicio"),
+                        )
+                ]
+            )
         )
 
         # Contenedor para mostrar los resultados de busqueda
@@ -793,10 +839,10 @@ class VentanaRecambios(ft.View):
             )
         )
 
-
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
             selected_index=3,
+            height=50,
             on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
@@ -951,7 +997,7 @@ class VentanaIngreso(ft.View):
             ft.Container(
                 bgcolor="#f6f6f6",
                 width=320,
-                height=90,
+                height=70,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
@@ -971,7 +1017,7 @@ class VentanaIngreso(ft.View):
             hint_text="Introduce la matricula del vehiculo",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
-            height=40,
+            height=35,
             cursor_color="#12597b",
             text_size=13,
             border_color="#12597b",
@@ -979,19 +1025,34 @@ class VentanaIngreso(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton de buscar ingreso
+        # Boton para activar la busqueda del ingreso y agregar nuevo nuevo ingreso
         self.BotonBuscarVehiculo = ft.Container(
-            ft.ElevatedButton(
-                text="Buscar Ingreso",
-                color="white",
-                bgcolor="#12597b",
-                # icon=icons.LOGIN,
-                # icon_color="333333",
-                width=180,
-                height=50,
-                on_click=lambda _: page.go("/inicio")
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=1)
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Buscar Ingreso",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Buscar Ingreso',
+                        icon=icons.SEARCH,
+                        icon_color="#FAFAF3",
+                        width=180,
+                        height=30,
+                        #on_click=lambda _: page.go("/inicio"),
+                    ),
+                    ft.IconButton(
+                        content=ft.Image(src="add-new entry.png",
+                                         color= "#12597b",
+                                         height=30,
+                                         width=30),
+                        tooltip="Añadir Nuevo",
+                        # on_click=lambda _: page.go("/inicio"),
+                        )
+                ]
+            )
         )
 
         # Contenedor para mostrar los resultados de busqueda
@@ -1010,6 +1071,7 @@ class VentanaIngreso(ft.View):
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
             selected_index=4,
+            height=50,
             on_change=lambda e: self.barra_de_navegacion(e),
             destinations=[
                 ft.NavigationBarDestination(
@@ -1156,9 +1218,9 @@ def main(page: ft.page):
     page.on_route_change = router
     page.go("/inicio")
     #page.go("/clientes")
-    # page.go("/vehiculos")
-    # page.go("/recambios")
-    # page.go("/ingresos")
+    #page.go("/vehiculos")
+    #page.go("/recambios")
+    #page.go("/ingresos")
 
 
 # instanciar y ejecutar la aplicación
