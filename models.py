@@ -1,8 +1,8 @@
 # Gracias a estas líneas de código, enfrento el mundo cada día 💪
 #  Todas las clases van aqui:
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy import *
+from sqlalchemy.orm import *
 from datetime import datetime
 import db # conecta el fichero db.py con models.py
 
@@ -34,12 +34,14 @@ class Cliente(db.Base_mobile):
     correo = Column(String(255), nullable=False)
 
     # Relacion uno a muchos
-    vehiculos = relationship('Vehiculo', back_populates='clientes')
+    vehiculos = relationship('Vehiculo', back_populates ='clientes')
+    ingresos = relationship('Ingreso', back_populates = 'clientes')
+    #registros = relationship('Registro', back_populates ='clientes')
 
     # Costructor de la clase Cliente
     def __init__(self, fecha_alta, nombre, telefono, direccion, correo):
         '''costructor de la clase Cliente'''
-        self.fecha_alta = fecha_alta # Fecha de registro por cliente
+        self.fecha_alta = fecha_alta # Fecha de registro del cliente
         self.nombre = nombre  # Nombre del cliente
         self.telefono = telefono # Telefono de contacto del cliente
         self.direccion = direccion  # direccion del cliente
@@ -49,7 +51,7 @@ class Cliente(db.Base_mobile):
 
     # metodo STR nos muestra la informacion
     def __str__(self):
-        return "{} id {}, Direccion {} ".format(self.nombre, self.id_cliente, self.direccion, self.correo)
+        return "ID: {}, {}, Direccion: {} ".format(self.id_cliente, self.nombre, self.direccion, self.correo)
 
 
 class Vehiculo(db.Base_mobile):
@@ -69,19 +71,25 @@ class Vehiculo(db.Base_mobile):
 
     # Estructura de la tabla vehiculos
     id_vehiculo = Column(Integer, primary_key=True, autoincrement=True)
+    fecha_alta = Column(DateTime, default=datetime.utcnow)
     marca = Column(String(255), nullable=False)
     modelo = Column(String(255), nullable=False)
     matricula = Column(String(255), nullable=False)
     kilometros = Column(String(255), nullable=False)
 
+    # Clave foránea que hace referencia a la tabla Cliente
+    id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
+
     # Relacion uno a muchos
     clientes = relationship('Cliente', back_populates='vehiculos')
     ingresos = relationship('Ingreso', back_populates='vehiculos')
-    recambios = relationship('Recambio', back_populates='vehiculos')
+    #registros = relationship('Registro', back_populates='vehiculos')
+
 
     # Costructor de la clase Vehiculo
-    def __init__(self, marca, modelo, matricula, kilometros):
+    def __init__(self, fecha_alta, marca, modelo, matricula, kilometros):
         '''costructor de la clase Vehiculo'''
+        self.fecha_alta = fecha_alta  # Fecha de registro del vehiculo
         self.marca = marca  # marca del vehiculo
         self.modelo = modelo # modelo del vehiculo
         self.matricula = matricula  # matricula del vehiculo
@@ -107,16 +115,17 @@ class Recambio(db.Base_mobile):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id_recambio = Column(Integer, primary_key=True, autoincrement=True)
+    fecha_alta = Column(DateTime, default=datetime.utcnow)
     nombre_recambio = Column(String(255), nullable=False)
     descripcion = Column(String(255), nullable=False)
 
     # Relacion uno a muchos
-    vehiculos = relationship('Vehiculo', back_populates='recambios')
-    ingresos = relationship('Ingreso', back_populates='recambios')
+    registros = relationship('Registro', back_populates='recambios')
 
     # Costructor de la clase Recambio
-    def __init__(self, nombre_recambio, descripcion):
+    def __init__(self,fecha_alta, nombre_recambio, descripcion):
         '''costructor de la clase Recambio'''
+        self.fecha_alta = fecha_alta  # Fecha de registro del cliente
         self.nombre_recambio = nombre_recambio
         self.descripcion = descripcion
         print('recambio creado con exito')
@@ -153,17 +162,17 @@ class Ingreso(db.Base_mobile):
     # Relacion clave foranea
     id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
     id_vehiculo = Column(Integer, ForeignKey('vehiculos.id_vehiculo'))
-    #id_recambio = Column(Integer, ForeignKey('recambios.id_recambio'))
 
     # Relacion uno a muchos
     clientes = relationship('Cliente', back_populates='ingresos')
     vehiculos = relationship('Vehiculo', back_populates='ingresos')
+    registros = relationship('Registro', back_populates='ingresos')
 
     # Costructor de la clase Ingreso
     def __init__(self, kilometros_ingreso, fecha_ingreso, averia, diagnostico):
         '''costructor de la clase Precio'''
-        self.kilometros_ingreso = kilometros_ingreso
         self.fecha_ingreso = fecha_ingreso  # fecha de ingreso del vehiculo al taller
+        self.kilometros_ingreso = kilometros_ingreso
         self.averia = averia # motivo del ingreso segun el cliente
         self.diagnostico = diagnostico # diagnostico de la averia por el taller
 
@@ -196,24 +205,29 @@ class Registro(db.Base_mobile):
     precio = Column(Float, nullable=False)
     descuento = Column(Float, nullable=False)
     cantidad = Column(Float, nullable=False)
+    costo_real = Column(Float, nullable=False)
+
 
 
     # Relacion clave foranea
-    id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
-    id_vehiculo = Column(Integer, ForeignKey('vehiculos.id_vehiculo'))
-    id_ingreso = Column(Integer, ForeignKey('ingresos.id_ingreso'))
+    #id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
+    #id_vehiculo = Column(Integer, ForeignKey('vehiculos.id_vehiculo'))
     id_recambio = Column(Integer, ForeignKey('recambios.id_recambio'))
+    id_ingreso = Column(Integer, ForeignKey('ingresos.id_ingreso'))
 
     # Relacion uno a muchos
-    clientes = relationship('Cliente', back_populates='registros')
-    vehiculos = relationship('Vehiculo', back_populates='registros')
-    ingresos = relationship('Ingreso', back_populates='registros')
+    #clientes = relationship('Cliente', back_populates='registros')
+    #vehiculos = relationship('Vehiculo', back_populates='registros')
     recambios = relationship('Recambio', back_populates='registros')
+    ingresos = relationship('Ingreso', back_populates='registros')
 
     # Costructor de la clase Registro
-    def __init__(self, costo_recambio_a_taller):
+    def __init__(self, precio, descuento, cantidad, costo_real):
         '''costructor de la clase Registro'''
-        self.costo_recambio_a_taller = costo_recambio_a_taller
+        self.precio = precio
+        self.descuento = descuento
+        self.cantidad = cantidad
+        self.costo_real = costo_real
         print('registro creado con exito')
 
     # metodo STR nos muestra la informacion

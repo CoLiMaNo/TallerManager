@@ -366,18 +366,19 @@ class VentanaCliente(ft.View):
             )
         )
 
-        # Contenedor para mostrar los resultados de busqueda
+        # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
             bgcolor='#FAFAF3',
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
+                child_aspect_ratio=2.9, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=5,  # Espacio entre las imágenes
+                run_spacing=5,  # Espacio entre las filas
             )
         )
+        #self.buscar_cliente()
 
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
@@ -484,7 +485,47 @@ class VentanaCliente(ft.View):
             )
         ]
 
-    # funcion para navegar entre ventanas
+    # metodo para añadir nuevo cliente
+    def crear_cliente(self):
+        pass
+
+    # metodo para cargar imágenes en GridView
+    def buscar_cliente(self):
+        # Limpia los controles actuales del GridView
+        self.vistaResultadosBusqueda.content.controls = []
+        # input donde el usuario ingresa el nombre del cliente que quiere buscar
+        nombre_cliente = self.input_buscar.value  # este es el Input
+        # Buscamos el cliente por nombre (ignorando mayúsculas y minusculas)
+        cliente_localizado = db.session.query(Cliente).filter(
+            Cliente.nombre.ilike(f'%{nombre_cliente}%')).all()
+
+        self.input_buscar.value = ""
+        self.input_buscar.update()
+
+        if cliente_localizado:
+            for cliente in cliente_localizado:
+                self.vistaResultadosBusqueda.controls.append(
+                    ft.Card(
+                        content=ft.Container(
+                            padding=10,
+                            content=ft.Column([
+                                ft.Text(f"Cliente desde: {cliente.fecha_alta}"),
+                                ft.Text(f"Nombre: {cliente.nombre}, Desde: {cliente.fecha_alta}"), #weight="bold"),
+                                ft.Text(f"Teléfono: {cliente.telefono}"),
+                                ft.Text(f"Dirección: {cliente.direccion}"),
+                                ft.Text(f"Correo: {cliente.correo}"),
+                                #ft.Text(f"Vehiculos: {cliente.vehiculos}"),
+                                ft.ElevatedButton("Editar"), #on_click=lambda: editar_cliente(cliente)),
+                            ])
+                        )
+                    )
+                )
+        self.page.update()
+
+    def modificar_cliente(self):
+        pass
+
+    # metodo para navegar entre ventanas
     def barra_de_navegacion(self, e):
         selected_index = e.control.selected_index
         if selected_index == 0:
@@ -1216,8 +1257,8 @@ def main(page: ft.page):
         page.update()
 
     page.on_route_change = router
-    page.go("/inicio")
-    #page.go("/clientes")
+    #page.go("/inicio")
+    page.go("/clientes")
     #page.go("/vehiculos")
     #page.go("/recambios")
     #page.go("/ingresos")
