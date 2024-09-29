@@ -1,5 +1,5 @@
 '''Peace is not found in the absence of storms, but in the ability to dance amidst them'''
-
+import sys
 from datetime import datetime
 from flet import *
 from sqlalchemy import and_, desc, asc
@@ -24,16 +24,46 @@ def cliente_nuevo():
 
 # metodo para registrar nuevo vehiculo
 def vehiculo_nuevo():
+    global cliente_seleccionado
     print("\n > Crear vehiculo")
+
+    #seleccionamos al cliente
+    clientes = db.session.query(Cliente).all()
+
+
+    if clientes:
+        for id, cliente in enumerate(clientes, start=1):
+            print(f" ID: {cliente.id_cliente}, Nombre: {cliente.nombre}")
+
+        # pide al usuario que ingrese el ID deol cliente
+        id_cliente_seleccionado = int(input("Ingresa el ID del cliente: "))
+
+        #verifica si el ID esta dentro del rango valido
+        if 1 <= id_cliente_seleccionado <= len(clientes):
+            cliente_seleccionado = clientes[id_cliente_seleccionado - 1]
+            print(f"Cliente seleccionado: {cliente_seleccionado.nombre}")
+        else:
+            print("El ID ingresado esta fuera de rango.")
+
+    else:
+        print("No hay clientes en la base de datos")
+
+
     marca = input("Introduce la marca del vehiculo: ")
     modelo = input("Introduce el modelo del vehiculo: ")
     matricula = input("Introduce la matricula del vehiculo: ")
     kilometros = input("Introduce los kilometros del vehiculo: ")
     fecha_alta = datetime.now()
 
-    # Creación y adición del nuevo vehiculo
+
+    # nueva instancia de vehiculos
     nuevo_vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula, kilometros=kilometros, fecha_alta=fecha_alta)
     db.session.add(nuevo_vehiculo)
+    db.session.commit()
+
+
+    # relacion bidireccional automatica
+    cliente_seleccionado.vehiculos.append(nuevo_vehiculo)
     db.session.commit()
     db.session.close()
 
@@ -52,9 +82,83 @@ def recambio_nuevo():
 
 # metodo para registrar nuevo ingreso
 def ingreso_nuevo():
-    pass
+    print("\n > Crear ingreso")
 
-# metodo para registrar nuevo ingreso
+    # Selección del cliente
+    clientes = db.session.query(Cliente).all()
+
+    if clientes:
+        for cliente in clientes:
+            print(f" ID: {cliente.id_cliente}, Nombre: {cliente.nombre}")
+
+        # Pide al usuario que ingrese el ID del cliente
+        id_cliente_seleccionado = int(input("Ingresa el ID del cliente: "))
+
+        # Verifica si el ID está dentro del rango válido
+        cliente_seleccionado = None
+        for cliente in clientes:
+            if cliente.id_cliente == id_cliente_seleccionado:
+                cliente_seleccionado = cliente
+                break
+
+        if cliente_seleccionado:
+            print(f"Cliente seleccionado: {cliente_seleccionado.nombre}")
+        else:
+            print("El ID ingresado es inválido.")
+            return
+    else:
+        print("No hay clientes en la base de datos.")
+        return
+
+    # Realiza búsqueda de los vehículos del cliente seleccionado
+    vehiculos = db.session.query(Vehiculo).filter(Vehiculo.id_cliente == cliente_seleccionado.id_cliente).all()
+
+    if vehiculos:
+        for vehiculo in vehiculos:
+            print(f" ID: {vehiculo.id_vehiculo}, Modelo: {vehiculo.modelo}, Matrícula: {vehiculo.matricula}")
+
+        # Pide al usuario que ingrese el ID del vehículo
+        id_vehiculo_seleccionado = int(input("Ingresa el ID del vehículo: "))
+
+        # Verifica si el ID está dentro del rango válido
+        vehiculo_seleccionado = None
+        for vehiculo in vehiculos:
+            if vehiculo.id_cliente == id_cliente_seleccionado:
+                vehiculo_seleccionado = vehiculo
+                break
+
+        if vehiculo_seleccionado:
+            print(
+                f"Vehículo seleccionado: {vehiculo_seleccionado.modelo}, Matrícula: {vehiculo_seleccionado.matricula}")
+        else:
+            print("El ID ingresado es inválido.")
+            return
+    else:
+        print("No hay vehículos en la base de datos para este cliente.")
+        return
+
+    # Datos del ingreso
+    kilometros_ingreso = input("Introduce los kilómetros del vehículo: ")
+    averia = input("Introduce la avería reportada por el cliente: ")
+    diagnostico = input("Introduce el diagnóstico del vehículo por el mecánico: ")
+    fecha_ingreso = datetime.now()
+
+    # Nueva instancia de Ingreso
+    nuevo_ingreso = Ingreso(kilometros_ingreso=kilometros_ingreso, averia=averia, diagnostico=diagnostico,
+                            fecha_ingreso=fecha_ingreso)
+    db.session.add(nuevo_ingreso)
+
+    # Relación bidireccional automática
+    cliente_seleccionado.ingresos.append(nuevo_ingreso)
+    vehiculo_seleccionado.ingresos.append(nuevo_ingreso)
+
+    # Guardar cambios
+    db.session.commit()
+    db.session.close()
+    print("Ingreso creado exitosamente.")
+
+
+# metodo para registros nuevos
 def registro_nuevo():
     pass
 
@@ -84,14 +188,17 @@ if __name__ == '__main__':
             print('Estas en Añadir Cliente')
             cliente_nuevo()
         elif opcionMenu == '2':
-            print('Estas en Añadir Cliente')
+            print('Estas en Añadir Vehiculo')
             vehiculo_nuevo()
         elif opcionMenu == '3':
             print('Estas en Añadir Recambio')
             recambio_nuevo()
-        elif opcionMenu == '3':
+        elif opcionMenu == '4':
             print('Estas en Añadir Ingreso')
             ingreso_nuevo()
-        elif opcionMenu == '3':
+        elif opcionMenu == '5':
             print('Estas en Añadir Registro')
             registro_nuevo()
+        elif opcionMenu == '6':
+            print('Saliendo del Programa...')
+            sys.exit(1)
