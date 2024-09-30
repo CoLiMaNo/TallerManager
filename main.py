@@ -24,7 +24,7 @@ def cliente_nuevo():
 
 # metodo para registrar nuevo vehiculo
 def vehiculo_nuevo():
-    global cliente_seleccionado
+    #global cliente_seleccionado
     print("\n > Crear vehiculo")
 
     #seleccionamos al cliente
@@ -35,7 +35,7 @@ def vehiculo_nuevo():
         for id, cliente in enumerate(clientes, start=1):
             print(f" ID: {cliente.id_cliente}, Nombre: {cliente.nombre}")
 
-        # pide al usuario que ingrese el ID deol cliente
+        # pide al usuario que ingrese el ID del cliente
         id_cliente_seleccionado = int(input("Ingresa el ID del cliente: "))
 
         #verifica si el ID esta dentro del rango valido
@@ -59,7 +59,7 @@ def vehiculo_nuevo():
     # nueva instancia de vehiculos
     nuevo_vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula, kilometros=kilometros, fecha_alta=fecha_alta)
     db.session.add(nuevo_vehiculo)
-    db.session.commit()
+    #db.session.commit()
 
 
     # relacion bidireccional automatica
@@ -82,6 +82,7 @@ def recambio_nuevo():
 
 # metodo para registrar nuevo ingreso
 def ingreso_nuevo():
+    #global cliente_seleccionado, vehiculo_seleccionado
     print("\n > Crear ingreso")
 
     # Selección del cliente
@@ -156,7 +157,6 @@ def ingreso_nuevo():
     db.session.commit()
     db.session.close()
     print("Ingreso creado exitosamente.")
-
 
 # metodo para registros nuevos
 def registro_nuevo():

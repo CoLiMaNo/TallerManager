@@ -343,7 +343,7 @@ class VentanaCliente(ft.View):
             content=Row(
                 alignment=ft.MainAxisAlignment.CENTER,
                 controls=[
-                    # Boton buscar cliente y añadir nuevo
+                    # Boton buscar cliente
                     ft.ElevatedButton(
                         text="Buscar Cliente",
                         color="#FAFAF3",
@@ -353,14 +353,15 @@ class VentanaCliente(ft.View):
                         icon_color="#FAFAF3",
                         width=180,
                         height=30,
-                        #on_click=lambda _: page.go("/inicio"),
+                        on_click=lambda e: self.buscar_cliente(e),
                     ),
+                    # Boton añadir nuevo
                     ft.IconButton(
                         icon=ft.icons.PERSON_ADD,
                         icon_color="#12597b",
                         icon_size=30,
                         tooltip="Añadir Nuevo",
-                        # on_click=lambda _: page.go("/inicio"),
+                        #on_click=lambda e: self.crear_cliente(e),
                         )
                 ]
             )
@@ -372,13 +373,12 @@ class VentanaCliente(ft.View):
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=2.9, # ajusta la relacion alto por ancho
+                child_aspect_ratio=1.9, # ajusta la relacion alto por ancho
                 runs_count=1,  # ajusta el número de columnas según el diseño
-                spacing=5,  # Espacio entre las imágenes
-                run_spacing=5,  # Espacio entre las filas
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
             )
         )
-        #self.buscar_cliente()
 
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
@@ -489,12 +489,14 @@ class VentanaCliente(ft.View):
     def crear_cliente(self):
         pass
 
-    # metodo para cargar imágenes en GridView
-    def buscar_cliente(self):
+    # metodo para cargar los clientes existentes en el GridView
+    def buscar_cliente(self,e):
         # Limpia los controles actuales del GridView
         self.vistaResultadosBusqueda.content.controls = []
+
         # input donde el usuario ingresa el nombre del cliente que quiere buscar
         nombre_cliente = self.input_buscar.value  # este es el Input
+
         # Buscamos el cliente por nombre (ignorando mayúsculas y minusculas)
         cliente_localizado = db.session.query(Cliente).filter(
             Cliente.nombre.ilike(f'%{nombre_cliente}%')).all()
@@ -503,24 +505,104 @@ class VentanaCliente(ft.View):
         self.input_buscar.update()
 
         if cliente_localizado:
+            cards = []
             for cliente in cliente_localizado:
-                self.vistaResultadosBusqueda.controls.append(
-                    ft.Card(
-                        content=ft.Container(
-                            padding=10,
-                            content=ft.Column([
-                                ft.Text(f"Cliente desde: {cliente.fecha_alta}"),
-                                ft.Text(f"Nombre: {cliente.nombre}, Desde: {cliente.fecha_alta}"), #weight="bold"),
-                                ft.Text(f"Teléfono: {cliente.telefono}"),
-                                ft.Text(f"Dirección: {cliente.direccion}"),
-                                ft.Text(f"Correo: {cliente.correo}"),
-                                #ft.Text(f"Vehiculos: {cliente.vehiculos}"),
-                                ft.ElevatedButton("Editar"), #on_click=lambda: editar_cliente(cliente)),
-                            ])
-                        )
+                # mostramos detalles del cliente encontrado
+                print(f"Nombre: {cliente.nombre}, Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}")
+                card = ft.Card(
+                    content=ft.Container(
+                        alignment=ft.alignment.Alignment(x=0, y=0),
+                        bgcolor="#4b8ca8",
+                        padding=5,
+                        border=ft.border.all(1, ft.colors.BLUE_800),
+                        border_radius=ft.border_radius.all(10),
+                        content=ft.Column([
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"{cliente.nombre}, ", size=12, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.CENTER),
+                                        ft.Text(f"Cliente Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}", size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                alignment=ft.alignment.center
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Telefono:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.telefono}",size=10, text_align=ft.TextAlign.LEFT),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Dirección:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.direccion}",size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Correo:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.correo}", size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            #ft.Text(f"Vehiculos: {cliente.vehiculos}"),
+                            ft.Row(
+                                [
+                                    ft.ElevatedButton(
+                                        bgcolor="#12597b",
+                                        width=95,
+                                        height=20,
+                                        content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
+                                    ft.ElevatedButton(
+                                        bgcolor="#12597b",
+                                        width=100,
+                                        height=20,
+                                        content=ft.Text("Vehiculos", color="white", size=11,bgcolor="#12597b")),
+                                    ft.ElevatedButton(
+                                        bgcolor="#12597b",
+                                        width=80 ,
+                                        height=20,
+                                        content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                                ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            vertical_alignment=ft.CrossAxisAlignment.END,
+                            )
+                        ])
                     )
                 )
-        self.page.update()
+
+                cards.append(card)
+
+            # agregar cards al GridView
+            for card in cards:
+                self.vistaResultadosBusqueda.content.controls.append(card)
+            #actualizar la interfaz
+            self.vistaResultadosBusqueda.update()
 
     def modificar_cliente(self):
         pass
@@ -538,7 +620,6 @@ class VentanaCliente(ft.View):
             self.page.go("/recambios")
         elif selected_index == 4:
             self.page.go("/ingresos")
-
 
 
 class VentanaVehiculo(ft.View):
@@ -624,7 +705,7 @@ class VentanaVehiculo(ft.View):
                         icon_color="#FAFAF3",
                         width=180,
                         height=30,
-                        # on_click=lambda _: page.go("/inicio"),
+                        on_click=lambda e: self.buscar_vehiculo(e),
                     ),
                     ft.IconButton(
                         content=ft.Image(src="car-add.png",
@@ -632,21 +713,21 @@ class VentanaVehiculo(ft.View):
                                          height=30,
                                          width=30),
                         tooltip="Añadir Nuevo",
-                        # on_click=lambda _: page.go("/inicio"),
+                        #on_click=lambda e: self.crear_vehiculo(e),
                     )
                 ]
             )
         )
-        # Contenedor para mostrar los resultados de busqueda
+        # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
             bgcolor='#FAFAF3',
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
+                child_aspect_ratio=1.9, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
             )
         )
 
@@ -769,6 +850,69 @@ class VentanaVehiculo(ft.View):
         elif selected_index == 4:
             self.page.go("/ingresos")
 
+    # metodo para cargar los vehiculos existentes en el GridView
+    def buscar_vehiculo(self,e):
+        # Limpia los controles actuales del GridView
+        self.vistaResultadosBusqueda.content.controls = []
+
+        # input donde el usuario ingresa el nombre del cliente que quiere buscar
+        matricula_vehiculo = self.input_buscar.value  # este es el Input
+
+        # Buscamos el cliente por nombre (ignorando mayúsculas y minusculas)
+        vehiculo_localizado = db.session.query(Vehiculo).filter(
+            Vehiculo.matricula.ilike(f'%{matricula_vehiculo}%')).all()
+
+        self.input_buscar.value = ""
+        self.input_buscar.update()
+
+        if vehiculo_localizado:
+            cards = []
+            for vehiculo in vehiculo_localizado:
+                # mostramos detalles del cliente encontrado
+                print(f"Nombre: {vehiculo.matricula}, Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}")
+                card = ft.Card(
+                    content=ft.Container(
+                        alignment=ft.alignment.Alignment(x=0, y=0),
+                        bgcolor="#4b8ca8",
+                        padding=5,
+                        border=ft.border.all(1, ft.colors.BLUE_800),
+                        border_radius=ft.border_radius.all(10),
+                        content=ft.Column([
+                            ft.Container(
+                            ft.Text(f"Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            bgcolor="transparent",
+                            alignment=ft.alignment.center_left),
+                            ft.Text(f"Marca: {vehiculo.marca}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            ft.Text(f"Modelo: {vehiculo.modelo}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            ft.Text(f"matricula: {vehiculo.matricula}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
+                            ft.Text(f"kilometros: {vehiculo.kilometros}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
+                            ft.Row([
+                            ft.ElevatedButton(
+                                bgcolor="#12597b",
+                                width=95,
+                                height=20,
+                                content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
+                            ft.ElevatedButton(
+                                bgcolor="#12597b",
+                                width=80 ,
+                                height=20,
+                                content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            vertical_alignment=ft.CrossAxisAlignment.END,
+                            )
+                        ])
+                    )
+                )
+
+                cards.append(card)
+
+            # agregar cards al GridView
+            for card in cards:
+                self.vistaResultadosBusqueda.content.controls.append(card)
+            #actualizar la interfaz
+            self.vistaResultadosBusqueda.update()
+
 
 class VentanaRecambios(ft.View):
     '''Clase VentanaRecambios: Interfaz gráfica para la gestión de recambios.
@@ -821,7 +965,7 @@ class VentanaRecambios(ft.View):
         )
 
         # Campo de entrada para la busqueda
-        self.input_buscarRecambio = ft.TextField(
+        self.input_buscar = ft.TextField(
             label="Buscar Recambio...",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
@@ -853,7 +997,7 @@ class VentanaRecambios(ft.View):
                         icon_color="#FAFAF3",
                         width=185,
                         height=30,
-                        #on_click=lambda _: page.go("/inicio"),
+                        on_click=lambda e: self.buscar_recambio(e),
                     ),
                     ft.IconButton(
                         content=ft.Image(src="add-spare part.png",
@@ -867,18 +1011,19 @@ class VentanaRecambios(ft.View):
             )
         )
 
-        # Contenedor para mostrar los resultados de busqueda
+        # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
             bgcolor='#FAFAF3',
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
+                child_aspect_ratio=1.9, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
             )
         )
+
 
         # Barra de navegacion
         self.barraNavegacion = ft.NavigationBar(
@@ -964,7 +1109,7 @@ class VentanaRecambios(ft.View):
             ft.Container(
                 ft.Column([
                     self.imagenRecambios,
-                    self.input_buscarRecambio,
+                    self.input_buscar,
                     self.BotonBuscarRecambio,
                     self.vistaResultadosBusqueda,
                     self.barraNavegacion,
@@ -998,6 +1143,67 @@ class VentanaRecambios(ft.View):
         elif selected_index == 4:
             self.page.go("/ingresos")
 
+    # metodo para cargar los recambios existentes en el GridView
+    def buscar_recambio(self,e):
+        # Limpia los controles actuales del GridView
+        self.vistaResultadosBusqueda.content.controls = []
+
+        # input donde el usuario ingresa el nombre del recambio que quiere buscar
+        recambio = self.input_buscar.value  # este es el Input
+
+        # Buscamos el cliente por nombre (ignorando mayúsculas y minusculas)
+        recambio_localizado = db.session.query(Recambio).filter(
+            Recambio.nombre_recambio.ilike(f'%{recambio}%')).all()
+
+        self.input_buscar.value = ""
+        self.input_buscar.update()
+
+        if recambio_localizado:
+            cards = []
+            for recambios in recambio_localizado:
+                # mostramos detalles del cliente encontrado
+                print(f"Nombre: {recambios.nombre_recambio}, Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}")
+                card = ft.Card(
+                    content=ft.Container(
+                        alignment=ft.alignment.Alignment(x=0, y=0),
+                        bgcolor="#4b8ca8",
+                        padding=5,
+                        border=ft.border.all(1, ft.colors.BLUE_800),
+                        border_radius=ft.border_radius.all(10),
+                        content=ft.Column([
+                            ft.Container(
+                            ft.Text(f"Fecha de Alta: {recambios.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            bgcolor="transparent",
+                            alignment=ft.alignment.center_left),
+                            ft.Text(f"ID: {recambios.id_recambio}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            ft.Text(f"Nombre: {recambios.nombre_recambio}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                            ft.Text(f"Descripcion: {recambios.descripcion}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
+                            ft.Row([
+                            ft.ElevatedButton(
+                                bgcolor="#12597b",
+                                width=95,
+                                height=20,
+                                content= ft.Text("Asignar", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
+                            ft.ElevatedButton(
+                                bgcolor="#12597b",
+                                width=80 ,
+                                height=20,
+                                content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            vertical_alignment=ft.CrossAxisAlignment.END,
+                            )
+                        ])
+                    )
+                )
+
+                cards.append(card)
+
+            # agregar cards al GridView
+            for card in cards:
+                self.vistaResultadosBusqueda.content.controls.append(card)
+            #actualizar la interfaz
+            self.vistaResultadosBusqueda.update()
 
 
 class VentanaIngreso(ft.View):
