@@ -41,19 +41,19 @@ class VentanaInicio(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#FAFAF3"
+        self.bgcolor = "#ede0cc"
 
         # Logo de la App
         self.logo = ft.Container(
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=250,
-                height=90,
+                height=180,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
                 # Define imagen
-                image_src="/logo-taller4.png",
+                image_src="/logo-taller.png",
                 image_fit=ft.ImageFit.COVER,
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
@@ -63,14 +63,14 @@ class VentanaInicio(ft.View):
         self.ImagenVehiculo = ft.Container(
 
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=200,
                 height=90,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
                 # Define imagen
-                image_src="/ImagenVehiculo.png",
+                image_src="/ImagenVehiculo2.png",
                 image_fit=ft.ImageFit.COVER,
             ),
             expand=False,
@@ -216,9 +216,9 @@ class VentanaInicio(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -228,12 +228,15 @@ class VentanaInicio(ft.View):
                 ft.Column([
                     ft.Divider(height=10, color="transparent"),
                     self.logo,
-                    #ft.Divider(height=10, color="transparent"),
-                    self.ImagenVehiculo, ft.Divider(height=10, color="transparent"),
-                    # ft.Divider(height=10, color="#E0E0E0"),
+                    ft.Divider(height=25, color="transparent"),
+                    self.ImagenVehiculo,
+                    ft.Divider(height=5, color="transparent"),
                     self.boton_CostoPorCliente,
+                    ft.Divider(height=5, color="transparent"),
                     self.boton_ReporteBeneficios,
+                    ft.Divider(height=5, color="transparent"),
                     self.boton_EstadisticasTaller,
+                    ft.Divider(height=5, color="transparent"),
                     self.boton_Proyecciones,
                     self.contenedor_vacio,
                     self.barraNavegacion,
@@ -245,8 +248,8 @@ class VentanaInicio(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#FAFAF3",
-                    "#FAFAF3",
+                    "#ede0cc",
+                    "#ede0cc",
                 ])
 
             )
@@ -302,12 +305,12 @@ class VentanaCliente(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#FAFAF3"
+        self.bgcolor = "#ede0cc"
 
         # Imagen clientes
         self.imagenClientes = ft.Container(
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=320,
                 height=70,
                 padding=0,
@@ -369,7 +372,7 @@ class VentanaCliente(ft.View):
 
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
+            bgcolor='#ede0cc',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -453,9 +456,9 @@ class VentanaCliente(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (#FAFAF3)
+            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -478,8 +481,8 @@ class VentanaCliente(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#FAFAF3",
-                    "#FAFAF3",
+                    "#ede0cc",
+                    "#ede0cc",
                 ])
 
             )
@@ -521,7 +524,7 @@ class VentanaCliente(ft.View):
                                 ft.Row(
                                     [
                                         ft.Text(f"{cliente.nombre}, ", size=12, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.CENTER),
-                                        ft.Text(f"Cliente Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ft.Text(f"Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}", size=10, text_align=ft.TextAlign.LEFT)
                                     ],
                                     alignment=ft.MainAxisAlignment.CENTER,
                                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -654,12 +657,12 @@ class VentanaVehiculo(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#FAFAF3"
+        self.bgcolor = "#ede0cc"
 
         # Titulo con imagen vehiculo
         self.imagenVehiculos = ft.Container(
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=320,
                 height=70,
                 padding=0,
@@ -720,7 +723,7 @@ class VentanaVehiculo(ft.View):
         )
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
+            bgcolor='#ede0cc',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -804,9 +807,9 @@ class VentanaVehiculo(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -827,8 +830,8 @@ class VentanaVehiculo(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#FAFAF3",
-                    "#FAFAF3",
+                    "#ede0cc",
+                    "#ede0cc",
                 ])
 
             )
@@ -879,25 +882,84 @@ class VentanaVehiculo(ft.View):
                         border_radius=ft.border_radius.all(10),
                         content=ft.Column([
                             ft.Container(
-                            ft.Text(f"Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            bgcolor="transparent",
-                            alignment=ft.alignment.center_left),
-                            ft.Text(f"Marca: {vehiculo.marca}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            ft.Text(f"Modelo: {vehiculo.modelo}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            ft.Text(f"matricula: {vehiculo.matricula}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
-                            ft.Text(f"kilometros: {vehiculo.kilometros}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
-                            ft.Row([
-                            ft.ElevatedButton(
-                                bgcolor="#12597b",
-                                width=95,
-                                height=20,
-                                content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
-                            ft.ElevatedButton(
-                                bgcolor="#12597b",
-                                width=80 ,
-                                height=20,
-                                content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
-                            ],
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                alignment=ft.alignment.center
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Desde:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{vehiculo.marca}",size=10, text_align=ft.TextAlign.LEFT),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Modelo:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{vehiculo.modelo}",size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Matricula:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{vehiculo.matricula}", size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Kilometros:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{vehiculo.kilometros}", size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Row(
+                                [
+                                    ft.ElevatedButton(
+                                        bgcolor="#12597b",
+                                        width=95,
+                                        height=20,
+                                        content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
+                                    ft.ElevatedButton(
+                                        bgcolor="#12597b",
+                                        width=80 ,
+                                        height=20,
+                                        content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                                ],
                             alignment=ft.MainAxisAlignment.SPACE_AROUND,
                             vertical_alignment=ft.CrossAxisAlignment.END,
                             )
@@ -946,12 +1008,12 @@ class VentanaRecambios(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#FAFAF3"
+        self.bgcolor = "#ede0cc"
 
         # Titulo imagen recambios
         self.imagenRecambios = ft.Container(
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=320,
                 height=70,
                 padding=0,
@@ -1013,7 +1075,7 @@ class VentanaRecambios(ft.View):
 
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
+            bgcolor='#ede0cc',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -1098,9 +1160,9 @@ class VentanaRecambios(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -1122,8 +1184,8 @@ class VentanaRecambios(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#FAFAF3",
-                    "#FAFAF3",
+                    "#ede0cc",
+                    "#ede0cc",
                 ])
 
             )
@@ -1172,26 +1234,72 @@ class VentanaRecambios(ft.View):
                         border_radius=ft.border_radius.all(10),
                         content=ft.Column([
                             ft.Container(
-                            ft.Text(f"Fecha de Alta: {recambios.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            bgcolor="transparent",
-                            alignment=ft.alignment.center_left),
-                            ft.Text(f"ID: {recambios.id_recambio}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            ft.Text(f"Nombre: {recambios.nombre_recambio}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
-                            ft.Text(f"Descripcion: {recambios.descripcion}",size=11, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.START),
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                alignment=ft.alignment.center
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"ID:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.id_recambio}",size=10, text_align=ft.TextAlign.LEFT),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Nombre:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.nombre_recambio}",size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Descripcion:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.descripcion}", size=10, text_align=ft.TextAlign.LEFT)
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+
                             ft.Row([
-                            ft.ElevatedButton(
-                                bgcolor="#12597b",
-                                width=95,
-                                height=20,
-                                content= ft.Text("Asignar", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
-                            ft.ElevatedButton(
-                                bgcolor="#12597b",
-                                width=80 ,
-                                height=20,
-                                content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                                ft.ElevatedButton(
+                                    bgcolor="#12597b",
+                                    width=95,
+                                    height=20,
+                                    content=ft.Text("Asignar", color="white", size=11, bgcolor="#12597b")),# on_click=lambda: editar_cliente(cliente)),
+                                ft.ElevatedButton(
+                                    bgcolor="#12597b",
+                                    width=80,
+                                    height=20,
+                                    content=ft.Text("Editar", color="white", size=11, bgcolor="#12597b"))
                             ],
-                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                            vertical_alignment=ft.CrossAxisAlignment.END,
+                                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                vertical_alignment=ft.CrossAxisAlignment.END,
                             )
                         ])
                     )
@@ -1237,12 +1345,12 @@ class VentanaIngreso(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#FAFAF3"
+        self.bgcolor = "#ede0cc"
 
         # Titulo imagen ingresos
         self.imagenVehiculos = ft.Container(
             ft.Container(
-                bgcolor="#f6f6f6",
+                bgcolor="#ede0cc",
                 width=320,
                 height=70,
                 padding=0,
@@ -1304,7 +1412,7 @@ class VentanaIngreso(ft.View):
 
         # Contenedor para mostrar los resultados de busqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#FAFAF3',
+            bgcolor='#ede0cc',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -1388,9 +1496,9 @@ class VentanaIngreso(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#FAFAF3",  # Color de fondo de la barra de navegación (azul oscuro)
+            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
             indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#FAFAF3",  # Color de superficie para el material (cyan claro)
+            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -1411,8 +1519,8 @@ class VentanaIngreso(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#FAFAF3",
-                    "#FAFAF3",
+                    "#ede0cc",
+                    "#ede0cc",
                 ])
 
             )
@@ -1463,8 +1571,8 @@ def main(page: ft.page):
         page.update()
 
     page.on_route_change = router
-    #page.go("/inicio")
-    page.go("/clientes")
+    page.go("/inicio")
+    #page.go("/clientes")
     #page.go("/vehiculos")
     #page.go("/recambios")
     #page.go("/ingresos")
