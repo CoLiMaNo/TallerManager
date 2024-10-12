@@ -118,21 +118,25 @@ class Recambio(db.Base_mobile):
     fecha_alta = Column(DateTime, default=datetime.utcnow)
     nombre_recambio = Column(String(255), nullable=False)
     descripcion = Column(String(255), nullable=False)
+    categoria = Column(String(255), nullable=False)
+    subcategoria = Column(String(255), nullable=False)
 
     # Relacion uno a muchos
     registros = relationship('Registro', back_populates='recambios')
 
     # Costructor de la clase Recambio
-    def __init__(self,fecha_alta, nombre_recambio, descripcion):
+    def __init__(self,fecha_alta, nombre_recambio, descripcion, categoria, subcategoria):
         '''costructor de la clase Recambio'''
         self.fecha_alta = fecha_alta  # Fecha de registro del cliente
         self.nombre_recambio = nombre_recambio
         self.descripcion = descripcion
+        self.categoria = categoria
+        self.subcategoria = subcategoria
         print('recambio creado con exito')
 
     # metodo STR nos muestra la informacion
     def __str__(self):
-        return "Recambio {} con id {} del vehiculo matricula {} registrado con exito".format(self.nombre_recambio, self.id_recambio, self.vehiculos.matricula)
+        return "Recambio {} con id {} creado con exito".format(self.nombre_recambio, self.id_recambio)
 
 
 class Ingreso(db.Base_mobile):

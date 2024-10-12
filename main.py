@@ -72,16 +72,18 @@ def recambio_nuevo():
     print("\n > Crear recambio")
     nombre_recambio = input("Introduce el nombre del recambio: ")
     descripcion = input("Introduce la descripcion del recambio: ")
+    categoria = input("Introduce la categoria del recambio: ")
+    subcategoria = input("Introduce la subcategoria del recambio: ")
     fecha_alta = datetime.now()
 
     # Creación y adición del nuevo cliente
-    nuevo_recambio = Recambio(nombre_recambio=nombre_recambio, descripcion=descripcion, fecha_alta=fecha_alta)
+    nuevo_recambio = Recambio(nombre_recambio=nombre_recambio, descripcion=descripcion, categoria = categoria, subcategoria= subcategoria, fecha_alta=fecha_alta)
     db.session.add(nuevo_recambio)
     db.session.commit()
     db.session.close()
 
 # metodo para registrar nuevo ingreso
-def ingreso_nuevo():
+def ingreso_nuevo(self):
     #global cliente_seleccionado, vehiculo_seleccionado
     print("\n > Crear ingreso")
 
@@ -149,6 +151,12 @@ def ingreso_nuevo():
                             fecha_ingreso=fecha_ingreso)
     db.session.add(nuevo_ingreso)
 
+    # Guardar el ID del nuevo ingreso en la sesión de la página
+    self.page.session.set('nuevo_ingreso', {
+        'id_ingreso': nuevo_ingreso.id_ingreso,
+        'id_cliente': nuevo_ingreso.id_cliente,
+        'id_vehiculo': nuevo_ingreso.id_vehiculo,
+    })
     # Relación bidireccional automática
     cliente_seleccionado.ingresos.append(nuevo_ingreso)
     vehiculo_seleccionado.ingresos.append(nuevo_ingreso)
@@ -159,8 +167,25 @@ def ingreso_nuevo():
     print("Ingreso creado exitosamente.")
 
 # metodo para registros nuevos
-def registro_nuevo():
-    pass
+def registro_nuevo(self):
+    print("\n > Crear registro")
+
+    # asignamos variable al nuevo ingreso
+    ingreso_actual = self.page.session.get('nuevo_ingreso')
+
+    if ingreso_actual:
+        print(f" ID : {ingreso_actual.id_ingreso}, ID Recambio: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
+
+    else:
+        print(f"Error: No se ha establecido el ingreso {ingreso_actual.id_ingreso} ")
+
+    id_ingreso_actual = ingreso_actual
+
+    recambio = db.Base_mobile.query(Recambio).all
+
+    # Seleccionar el recambio para agregarlo al ingreso
+
+
 
 
 if __name__ == '__main__':
