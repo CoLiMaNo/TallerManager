@@ -1043,7 +1043,7 @@ class VentanaRecambios(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Menu desplegable principal para elegir una opcion y iconBoton para añadir un recambio a la db
+        # Menu desplegable principal para elegir una opcion
         self.menu_principal = ft.Container(
             alignment=ft.alignment.Alignment(x=0, y=0),
             content=Row(
@@ -1109,7 +1109,7 @@ class VentanaRecambios(ft.View):
             )
         )
 
-        # Menu desplegable principal para elegir una opcion y iconBoton para añadir un recambio a la db
+        # Menu desplegable secundario para elegir una opcion
         self.submenu_opciones = ft.Dropdown(
                         label='Submenú',
                         alignment = Alignment(0.0, 0.0),
@@ -1282,7 +1282,7 @@ class VentanaRecambios(ft.View):
         ]
 
 
-    # metodo para manejar la opcion seleccionada en el menu desplegable
+    # metodo para manejar la opcion seleccionada en el menu desplegable principal
     def pestaniaOpcion(self, e):
         try:
             # Crear un objeto Text para mostrar la opcion elegida
