@@ -35,8 +35,7 @@ class Cliente(db.Base_mobile):
 
     # Relacion uno a muchos
     vehiculos = relationship('Vehiculo', back_populates ='clientes')
-    ingresos = relationship('Ingreso', back_populates = 'clientes')
-    #registros = relationship('Registro', back_populates ='clientes')
+    ingresos = relationship('Ingreso', back_populates='clientes')
 
     # Costructor de la clase Cliente
     def __init__(self, fecha_alta, nombre, telefono, direccion, correo):
@@ -83,8 +82,6 @@ class Vehiculo(db.Base_mobile):
     # Relacion uno a muchos
     clientes = relationship('Cliente', back_populates='vehiculos')
     ingresos = relationship('Ingreso', back_populates='vehiculos')
-    #registros = relationship('Registro', back_populates='vehiculos')
-
 
     # Costructor de la clase Vehiculo
     def __init__(self, fecha_alta, marca, modelo, matricula, kilometros):
@@ -98,7 +95,7 @@ class Vehiculo(db.Base_mobile):
 
     # metodo STR nos muestra la informacion
     def __str__(self):
-        return "Vehiculo: id {}, Marca {}, Modelo {}, Matricula {} ".format(self.id_vehiculo, self.marca, self.modelo, self.matricula)
+        return "Vehiculo id: {}, Marca: {}, Modelo: {}, Matricula: {} ".format(self.id_vehiculo, self.marca, self.modelo, self.matricula)
 
 
 class Recambio(db.Base_mobile):
@@ -184,7 +181,7 @@ class Ingreso(db.Base_mobile):
 
     # metodo STR nos muestra la informacion
     def __str__(self):
-        return "el Vehiculo id {}, del cliente {}, con fecha de ingreso a taller {} ha sido registrado con exito".format(self.id_vehiculo, self.id_cliente, self.fecha_ingreso)
+        return "el Vehiculo id {}, del cliente id {}, con fecha de ingreso a taller {}".format(self.id_vehiculo, self.id_cliente, self.fecha_ingreso)
 
 
 class Registro(db.Base_mobile):
@@ -211,17 +208,11 @@ class Registro(db.Base_mobile):
     cantidad = Column(Float, nullable=False)
     costo_real = Column(Float, nullable=False)
 
-
-
     # Relacion clave foranea
-    #id_cliente = Column(Integer, ForeignKey('clientes.id_cliente'))
-    #id_vehiculo = Column(Integer, ForeignKey('vehiculos.id_vehiculo'))
     id_recambio = Column(Integer, ForeignKey('recambios.id_recambio'))
     id_ingreso = Column(Integer, ForeignKey('ingresos.id_ingreso'))
 
     # Relacion uno a muchos
-    #clientes = relationship('Cliente', back_populates='registros')
-    #vehiculos = relationship('Vehiculo', back_populates='registros')
     recambios = relationship('Recambio', back_populates='registros')
     ingresos = relationship('Ingreso', back_populates='registros')
 

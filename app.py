@@ -256,7 +256,7 @@ class VentanaInicio(ft.View):
             )
         ]
 
-    # funcion para navegar entre ventanas
+    # metodo para navegar entre ventanas
     def barra_de_navegacion(self, e):
         selected_index = e.control.selected_index
         self.page.controls.clear()
@@ -489,9 +489,21 @@ class VentanaCliente(ft.View):
             )
         ]
 
-    # metodo para añadir nuevo cliente
-    def crear_cliente(self):
-        pass
+    # metodo para registrar cliente nuevo
+    def cliente_nuevo(self, e):
+        print("\n > Crear cliente")
+        nombre = input("Introduce el nombre del cliente: ")
+        telefono = input("Introduce el telefono: ")
+        direccion = input("Introduce la direccion: ")
+        correo = input("Introduce el correo: ")
+        fecha_alta = datetime.now()
+
+        # Creación y adición del nuevo cliente
+        nuevo_cliente = Cliente(nombre=nombre, telefono=telefono, direccion=direccion, correo=correo,
+                                fecha_alta=fecha_alta)
+        db.session.add(nuevo_cliente)
+        db.session.commit()
+        db.session.close()
 
     # metodo para cargar los clientes existentes en el GridView
     def buscar_cliente(self,e):
@@ -844,20 +856,6 @@ class VentanaVehiculo(ft.View):
 
         # metodo de navegacion para la barra de navegacion
 
-    # funcion para navegar entre ventanas
-    def barra_de_navegacion(self, e):
-        selected_index = e.control.selected_index
-        if selected_index == 0:
-            self.page.go("/inicio")
-        elif selected_index == 1:
-            self.page.go("/clientes")
-        elif selected_index == 2:
-            self.page.go("/vehiculos")
-        elif selected_index == 3:
-            self.page.go("/recambios")
-        elif selected_index == 4:
-            self.page.go("/ingresos")
-
     # metodo para cargar los vehiculos existentes en el GridView
     def buscar_vehiculo(self,e):
         # Limpia los controles actuales del GridView
@@ -866,7 +864,7 @@ class VentanaVehiculo(ft.View):
         # input donde el usuario ingresa el nombre del cliente que quiere buscar
         matricula_vehiculo = self.input_buscar.value  # este es el Input
 
-        # Buscamos el cliente por nombre (ignorando mayúsculas y minusculas)
+        # Buscamos el vehiculo por matricula (ignorando mayúsculas y minusculas)
         vehiculo_localizado = db.session.query(Vehiculo).filter(
             Vehiculo.matricula.ilike(f'%{matricula_vehiculo}%')).all()
 
@@ -979,6 +977,20 @@ class VentanaVehiculo(ft.View):
                 self.vistaResultadosBusqueda.content.controls.append(card)
             #actualizar la interfaz
             self.vistaResultadosBusqueda.update()
+
+    # metodo para navegar entre ventanas
+    def barra_de_navegacion(self, e):
+        selected_index = e.control.selected_index
+        if selected_index == 0:
+            self.page.go("/inicio")
+        elif selected_index == 1:
+            self.page.go("/clientes")
+        elif selected_index == 2:
+            self.page.go("/vehiculos")
+        elif selected_index == 3:
+            self.page.go("/recambios")
+        elif selected_index == 4:
+            self.page.go("/ingresos")
 
 
 class VentanaCrearRecambio(ft.View):
@@ -1185,16 +1197,26 @@ class VentanaCrearRecambio(ft.View):
                 controls=[
                     # Boton buscar cliente y añadir nuevo
                     ft.ElevatedButton(
-                        text="Añadir Recambio",
+                        text="Aceptar",
                         color="#FAFAF3",
                         bgcolor="#12597b",
                         tooltip='Añadir Recambio',
                         icon=icons.ADD,
                         icon_color="#FAFAF3",
-                        width=185,
+                        width=140,
                         height=30,
                         on_click=lambda e: (self.crear_recambio(e), page.go("/recambios")),
-                    )
+                    ), ft.ElevatedButton(
+                        text="Cancelar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Cancelar Ingreso',
+                        icon=icons.CANCEL,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda _: page.go("/recambios"),
+                    ),
                 ]
             )
         )
@@ -1318,7 +1340,7 @@ class VentanaCrearRecambio(ft.View):
         subcategoria = self.subcategoria.value.strip()
         fecha_alta = datetime.now()
 
-        # Creación y adición del nuevo cliente
+        # Creación y adición del nuevo recambio
         nuevo_recambio = Recambio(nombre_recambio=nombre_recambio, descripcion=descripcion, categoria=categoria,
                                   subcategoria=subcategoria, fecha_alta=fecha_alta)
         try:
@@ -1878,7 +1900,7 @@ class VentanaRecambios(ft.View):
             #actualizar la interfaz
             self.vistaResultadosBusqueda.update()
 
-    # funcion para navegar entre ventanas
+    # metodo para navegar entre ventanas
     def barra_de_navegacion(self, e):
         selected_index = e.control.selected_index
         if selected_index == 0:
@@ -1959,7 +1981,7 @@ class VentanaIngreso(ft.View):
             bgcolor="#E1F5FE"
         )
 
-        # Boton para activar la busqueda del ingreso y agregar nuevo nuevo ingreso
+        # Boton para activar la busqueda del ingreso y agregar nuevo ingreso
         self.BotonBuscarVehiculo = ft.Container(
             alignment=ft.alignment.Alignment(x=0, y=0),
             content=Row(
@@ -1975,7 +1997,7 @@ class VentanaIngreso(ft.View):
                         icon_color="#FAFAF3",
                         width=180,
                         height=30,
-                        #on_click=lambda _: page.go("/inicio"),
+                        on_click=lambda e: self.buscar_ingreso_porMatricula(e),
                     ),
                     ft.IconButton(
                         content=ft.Image(src="add-new entry.png",
@@ -1983,7 +2005,7 @@ class VentanaIngreso(ft.View):
                                          height=30,
                                          width=30),
                         tooltip="Añadir Nuevo",
-                        # on_click=lambda _: page.go("/inicio"),
+                        on_click=lambda _: page.go("/nuevo_ingreso"),
                         )
                 ]
             )
@@ -1995,10 +2017,10 @@ class VentanaIngreso(ft.View):
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=1.0,
-                runs_count=2,
-                spacing=1,
-                run_spacing=1,
+                child_aspect_ratio=1.7, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
             )
         )
 
@@ -2012,12 +2034,12 @@ class VentanaIngreso(ft.View):
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
                         color="#12597b",
-                        size=20  # Ajusta el tamaño del ícono no seleccionado
+                        size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.HOME_ROUNDED,
                         color="#12597b",
-                        size=24  # Ajusta el tamaño del ícono seleccionado
+                        size=24
                     ),
                     label="Inicio",
                 ),
@@ -2093,7 +2115,7 @@ class VentanaIngreso(ft.View):
                 ]
                 ),
 
-                # propiedades contenedor principal
+                # propiedades del contenedor principal
                 border_radius=25,
                 width=350,  # ancho
                 height=655,  # Alto
@@ -2105,7 +2127,190 @@ class VentanaIngreso(ft.View):
             )
         ]
 
-    # funcion para navegar entre ventanas
+    # metodo para cargar los ingresos existentes por cliente en el GridView
+    def buscar_ingreso_porCliente(self):
+        print("\n > Buscar ingreso por cliente")
+
+        # Selección del cliente
+        clientes = db.session.query(Cliente).all()
+
+        if clientes:
+            for cliente in clientes:
+                print(f" ID: {cliente.id_cliente}, Nombre: {cliente.nombre}")
+
+            # Pide al usuario que ingrese el ID del cliente
+            id_cliente_seleccionado = int(input("Ingresa el ID del cliente: "))
+
+            # Verifica si el ID está dentro del rango válido
+            cliente_seleccionado = None
+            for cliente in clientes:
+                if cliente.id_cliente == id_cliente_seleccionado:
+                    cliente_seleccionado = cliente
+                    break
+
+            if cliente_seleccionado:
+                print(f"Cliente seleccionado: {cliente_seleccionado.nombre}")
+            else:
+                print("El ID ingresado es inválido.")
+                return
+        else:
+            print("No hay clientes en la base de datos.")
+            return
+
+    # metodo para cargar los ingresos existentes por matricula en el GridView
+    def buscar_ingreso_porMatricula(self, e):
+        print("\n > Buscar ingreso por matricula")
+
+        # Limpia los controles actuales del GridView
+        self.vistaResultadosBusqueda.content.controls = []
+
+        # input del vehiculo que quiere buscar
+        matricula_vehiculo = self.input_buscar.value.strip()  # este es el Input
+
+        if not matricula_vehiculo:
+            print("Ingrese una matrícula válida")
+        else:
+            # Buscamos el vehiculo por matricula (ignorando mayúsculas y minusculas)
+            vehiculo_ingresado = db.session.query(Ingreso).join(Vehiculo).join(Cliente).filter(
+            Vehiculo.matricula.ilike(f'%{matricula_vehiculo}%')
+            ).all()
+
+            self.input_buscar.value = ""
+            self.input_buscar.update()
+
+            if vehiculo_ingresado:
+                print("\nResultados de la búsqueda:")
+
+
+                # Crear una lista de Cards para los resultados de busqueda
+                cards = []
+                for ingreso in vehiculo_ingresado:
+                    # accede a las relaciones asociadas del objeto
+                    cliente = ingreso.clientes
+                    vehiculo = ingreso.vehiculos
+                    print(
+                        f"Ingreso ID: {ingreso.id_ingreso}, "
+                        f"\nFecha Ingreso: {ingreso.fecha_ingreso.strftime('%d/%m/%Y')}"
+                        f"\ncliente: {cliente.nombre}"
+                        f"\nVehiculo: {vehiculo.marca}, {vehiculo.modelo}"
+                        f"\nMatricula: {vehiculo.matricula}"
+                        f"\nDiagnostico: {ingreso.diagnostico}"
+                        f"\nKilometros Ingreso: {ingreso.kilometros_ingreso}")
+
+                    card = ft.Card(
+                        content=ft.Container(
+                            alignment=ft.alignment.Alignment(x=0, y=0),
+                            bgcolor="#4b8ca8",
+                            padding=5,
+                            border=ft.border.all(1, ft.colors.BLUE_800),
+                            border_radius=ft.border_radius.all(10),
+                            content=ft.Column([
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Cliente: {cliente.nombre}",
+                                                    size=11,
+                                                    weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START
+                                                    ),
+                                            ft.Text(f"Fecha Ingreso: {ingreso.fecha_ingreso.strftime('%d/%m/%Y')}", size=11,
+                                                    weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START
+                                                    ),
+                                        ],
+                                        alignment=ft.MainAxisAlignment.CENTER,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    alignment=ft.alignment.center
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Marca y modelo:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.marca}, {vehiculo.modelo}", size=10,
+                                                    text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Matricula:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.matricula}", size=10,
+                                                    text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Diagnostico:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{ingreso.diagnostico}", size=10, text_align=ft.TextAlign.LEFT),
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Kilometros:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{ingreso.kilometros_ingreso}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
+                                ft.Row(
+                                    [
+                                        ft.ElevatedButton(
+                                            bgcolor="#12597b",
+                                            width=95,
+                                            height=20,
+                                            content=ft.Text("Ver", color="white", size=11, bgcolor="#12597b")),
+                                        # on_click=lambda: editar_cliente(cliente)),
+                                        ft.ElevatedButton(
+                                            bgcolor="#12597b",
+                                            width=80,
+                                            height=20,
+                                            content=ft.Text("Editar", color="white", size=11, bgcolor="#12597b"))
+                                    ],
+                                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                    vertical_alignment=ft.CrossAxisAlignment.END,
+                                )
+                            ])
+                        )
+                    )
+
+                    cards.append(card)
+
+                # agregar cards al GridView
+                for card in cards:
+                    self.vistaResultadosBusqueda.content.controls.append(card)
+                # actualizar la interfaz
+                self.vistaResultadosBusqueda.update()
+
+    # metodo para navegar entre ventanas
     def barra_de_navegacion(self, e):
         selected_index = e.control.selected_index
         if selected_index == 0:
@@ -2118,6 +2323,332 @@ class VentanaIngreso(ft.View):
             self.page.go("/recambios")
         elif selected_index == 4:
             self.page.go("/ingresos")
+
+
+class VentanaNuevoIngreso(ft.View):
+    '''Clase VentanaNuevoIngreso: Interfaz gráfica para la gestión de ingresos nuevos de vehículos al taller.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de nuevos ingresos, permitiendo
+    al usuario registrar los vehículos en el taller y asociarlos con clientes específicos.
+
+    Args:
+        - page: Instancia de la página actual, que gestiona el contenido y las interacciones de la ventana.
+
+    Contiene:
+        - Imagen de diagnóstico de ingresos como título: Identifica la sección de ingreso nuevo con una imagen representativa.
+        - Dropdown Cliente: Desplegable para seleccionar el cliente que ingresa el vehículo al taller.
+        - Dropdown Vehículo: Desplegable para seleccionar el vehículo del cliente que será ingresado al taller.
+        - Input Kilometraje: Campo de texto para introducir el kilometraje actual del vehículo al momento del ingreso.
+        - Input Motivo de Ingreso: Campo de texto para introducir el motivo por el cual el vehículo acude al taller.
+        - Input Diagnóstico Previo: Campo de texto para introducir el diagnóstico inicial del taller antes del ingreso.
+        - Botón Aceptar: Botón para confirmar y registrar el ingreso.
+    '''
+
+
+    def __init__(self, page: ft.Page):
+        '''Constructor de la interfaz grafica para la ventana Ingresos'''
+        super(VentanaNuevoIngreso, self).__init__(
+            route="/nuevo_ingreso", horizontal_alignment=CrossAxisAlignment.CENTER,
+            vertical_alignment=MainAxisAlignment.CENTER
+        )
+
+        self.page = page
+
+        # Color de fondo contenedor principal
+        self.bgcolor = "#ede0cc"
+
+        # Titulo imagen ingresos
+        self.imagenVehiculos = ft.Container(
+            ft.Container(
+                bgcolor="#ede0cc",
+                width=320,
+                height=70,
+                padding=0,
+                image_repeat=ImageRepeat.NO_REPEAT,
+                shape=ft.BoxShape("rectangle"),
+                # Define imagen
+                image_src="/Imagen_de_nuevo_ingreso.png",
+                image_fit=ft.ImageFit.COVER,
+            ),
+            alignment=ft.alignment.Alignment(x=0, y=0)
+        )
+
+        # Objeto Text para mostrar la opción elegida
+        self.texto_opcion_elegida = ft.Text()
+
+        # menu desplegable principal para elegir un cliente
+        self.menu_clientes= ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.START,
+                controls=[
+                    ft.Dropdown(
+                        label='Selecciona un Cliente',
+                        alignment=Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#ede0cc', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally=True,
+                        dense=True,
+                        max_menu_height=True,
+                        height=50,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        on_change=lambda e: (self.pestaniaOpcion(e), self.cargar_menu_vehiculos(e)),
+                        options=[ft.dropdown.Option(str(cliente.nombre))
+                            for cliente in db.session.query(Cliente).all()],
+                        bgcolor="#ede0cc",
+                        padding=0,
+                    )
+                ]
+            )
+        )
+
+
+        # menu desplegable para seleccionar el vehiculo
+        self.menu_vehiculosCliente= ft.Dropdown(
+                        label='Selecciona un Vehiculo',
+                        alignment = Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally =True,
+                        dense = True,
+                        max_menu_height=True,
+                        height=50,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        #on_change=lambda e: (self.actualizar_submenu(e)),
+                        options=[],
+                        bgcolor="#ede0cc",
+                        padding=0,
+                    )
+
+        # Campo de entrada para la busqueda
+        self.input_kilometros = ft.TextField(
+            label="Kilometros...",
+            label_style=TextStyle(color='#6a6965', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce los kilometros del vehiculo",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="#12597b",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada del motivo de la averia reportada por el cliente
+        self.input_motivo = ft.Container(
+            bgcolor='#FAFAF3',
+            # border=ft.border.all(ft.colors.ORANGE_100),
+            #expand=True,
+            height=180,
+            content=
+                ft.TextField(
+                    filled=False,
+                    label="Motivo...",
+                    label_style=TextStyle(color='#12597b', size=12, ),
+                    expand=True,
+                    value="",
+                    border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                    hint_text="Introduce el motivo de la averia reportada por el cliente",
+                    hint_style=TextStyle(color='#6a6965', size=10),
+                    max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
+                    # max_lines =  10, # maximo de líneas que se mostraran a la vez
+                    multiline=True,  # puede contener varias lineas de texto
+                    color='black',
+                    height=180,
+                    cursor_color="#12597b",
+                    text_size=13,
+                    border_color="transparent",
+                    autofocus=False,
+                    bgcolor="transparent",
+                    text_vertical_align=ft.VerticalAlignment.START,
+                )
+            )
+
+        # Campo de entrada del diagnostico del vehiculo por taller
+        self.input_diagnotico = ft.Container(
+            bgcolor='#FAFAF3',
+            # border=ft.border.all(ft.colors.ORANGE_100),
+            # expand=True,
+            height=180,
+            content=
+            ft.TextField(
+                filled=False,
+                label="Diagnostico...",
+                label_style=TextStyle(color='#12597b', size=12, ),
+                expand=True,
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                hint_text="Introduce el diagnostico del vehiculo por taller",
+                hint_style=TextStyle(color='#6a6965', size=10),
+                max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
+                # max_lines =  10, # maximo de líneas que se mostraran a la vez
+                multiline=True,  # puede contener varias lineas de texto
+                color='black',
+                height=180,
+                cursor_color="#12597b",
+                text_size=13,
+                border_color="transparent",
+                autofocus=False,
+                bgcolor="transparent",
+                text_vertical_align=ft.VerticalAlignment.START,
+            )
+        )
+
+        # Boton para activar la busqueda del ingreso y agregar nuevo nuevo ingreso
+        self.BotonAgregarVehiculo = ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Aceptar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Aceptar Ingreso',
+                        icon=icons.ADD,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda e: (self.ingreso_nuevo(e), page.go("/ingresos")),
+                    ),
+                    ft.ElevatedButton(
+                        text="Cancelar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Cancelar Ingreso',
+                        icon=icons.CANCEL,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda _: page.go("/ingresos"),
+                    ),
+                ]
+            )
+        )
+
+        # Contenedor para mostrar los resultados de busqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#ede0cc',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.7, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
+            )
+        )
+
+
+
+        # Contenedor principal que contiene todos los elementos de la interfaz
+        self.controls = [
+            ft.Container(
+                ft.Column([
+                    self.imagenVehiculos,
+                    self.menu_clientes,
+                    self.menu_vehiculosCliente,
+                    self.input_kilometros,
+                    self.input_motivo,
+                    self.input_diagnotico,
+                    self.BotonAgregarVehiculo,
+                    self.vistaResultadosBusqueda,
+                ]
+                ),
+
+                # propiedades contenedor principal
+                border_radius=25,
+                width=350,  # ancho
+                height=655,  # Alto
+                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
+                    "#ede0cc",
+                    "#ede0cc",
+                ])
+
+            )
+        ]
+
+    # metodo para manejar la opcion seleccionada en el menu desplegable principal
+    def pestaniaOpcion(self, e):
+        # Obtener la opción seleccionada
+        elegirOpcion = self.menu_clientes.content.controls[0].value
+
+        # Actualizar texto con la opción elegida
+        self.texto_opcion_elegida.value = (
+            f"Opción elegida: {elegirOpcion}" if elegirOpcion else "No se ha seleccionado ninguna opción."
+        )
+
+        # Imprime la opción seleccionada
+        print(f"Cliente seleccionado: {elegirOpcion}")
+
+        # Actualiza la interfaz
+        self.page.update(self)
+
+
+    # metodo para cargar los vehículos asociados al cliente seleccionado en el dropdown de vehículos
+    def cargar_menu_vehiculos(self, e):
+        # Obtiene el nombre del cliente seleccionado
+        cliente_nombre = e.control.value
+        cliente_seleccionado = db.session.query(Cliente).filter_by(nombre=cliente_nombre).first()
+
+        # Verifica si se encontró un cliente y luego obtiene sus vehículos
+        if cliente_seleccionado:
+            vehiculos = db.session.query(Vehiculo).filter_by(id_cliente=cliente_seleccionado.id_cliente).all()
+
+            # Asigna las opciones de vehículos al dropdown correspondiente
+            self.menu_vehiculosCliente.options = [ft.dropdown.Option(f"{vehiculo.marca}, {vehiculo.modelo}") for vehiculo in vehiculos]
+        else:
+            # Si no hay un cliente válido, limpia las opciones del dropdown de vehículos
+            self.menu_vehiculosCliente.options = []
+
+        # Actualiza el dropdown para reflejar los nuevos cambios
+        self.menu_vehiculosCliente.update()
+
+    # metodo para añadir nuevo ingreso
+    def ingreso_nuevo(self, e):
+        print("\n > Crear ingreso")
+        id_cliente = self.menu_clientes.content.controls[0].value.strip()
+        id_vehiculo = self.menu_vehiculosCliente.value.strip()
+        kilometros_ingreso = self.input_kilometros.value.strip()  # este es el Input
+        averia = self.input_motivo.content.value.strip()  # este es el Input
+        diagnostico = self.input_diagnotico.content.value.strip()
+        fecha_ingreso = datetime.now()
+
+        # Consulta para obtener el cliente y el vehículo seleccionados
+        cliente = db.session.query(Cliente).filter_by(nombre=id_cliente).first()
+        # Si el dropdown incluye la marca y modelo, filtra solo por modelo
+        vehiculo_modelo = id_vehiculo.split(", ")[1]  # Extrae solo el modelo
+        vehiculo = db.session.query(Vehiculo).filter_by(modelo=vehiculo_modelo).first()
+
+        # Validación
+        if not cliente or not vehiculo:
+            print("Error: Cliente o Vehículo no encontrado.")
+            return
+        if not kilometros_ingreso or not averia:
+            print("Error: Kilómetros o Motivo de avería no proporcionado.")
+            return
+
+        # Creación y adición del nuevo recambio
+        nuevo_ingreso = Ingreso(kilometros_ingreso=kilometros_ingreso, averia=averia, diagnostico=diagnostico,fecha_ingreso=fecha_ingreso)
+        db.session.add(nuevo_ingreso)
+
+        # Relación bidireccional automática
+        cliente.ingresos.append(nuevo_ingreso)
+        vehiculo.ingresos.append(nuevo_ingreso)
+        # Guardar cambios
+        db.session.commit()
+        db.session.close()
+        print("Ingreso creado exitosamente.")
 
 
 def main(page: ft.page):
@@ -2149,6 +2680,9 @@ def main(page: ft.page):
         elif page.route == "/ingresos":
             ingresos = VentanaIngreso(page)
             page.views.append(ingresos)
+        elif page.route == "/nuevo_ingreso":
+            nuevo_ingreso = VentanaNuevoIngreso(page)
+            page.views.append(nuevo_ingreso)
 
         page.update()
 
@@ -2159,6 +2693,7 @@ def main(page: ft.page):
     #page.go("/recambios")
     #page.go("/crearRecambio")
     #page.go("/ingresos")
+    #page.go("/nuevo_ingreso")
 
 
 # instanciar y ejecutar la aplicación

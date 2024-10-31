@@ -83,7 +83,7 @@ def recambio_nuevo():
     db.session.close()
 
 # metodo para registrar nuevo ingreso
-def ingreso_nuevo(self):
+def ingreso_nuevo():
     #global cliente_seleccionado, vehiculo_seleccionado
     print("\n > Crear ingreso")
 
@@ -126,7 +126,7 @@ def ingreso_nuevo(self):
         # Verifica si el ID está dentro del rango válido
         vehiculo_seleccionado = None
         for vehiculo in vehiculos:
-            if vehiculo.id_cliente == id_cliente_seleccionado:
+            if vehiculo.id_vehiculo == id_vehiculo_seleccionado:
                 vehiculo_seleccionado = vehiculo
                 break
 
@@ -151,12 +151,6 @@ def ingreso_nuevo(self):
                             fecha_ingreso=fecha_ingreso)
     db.session.add(nuevo_ingreso)
 
-    # Guardar el ID del nuevo ingreso en la sesión de la página
-    self.page.session.set('nuevo_ingreso', {
-        'id_ingreso': nuevo_ingreso.id_ingreso,
-        'id_cliente': nuevo_ingreso.id_cliente,
-        'id_vehiculo': nuevo_ingreso.id_vehiculo,
-    })
     # Relación bidireccional automática
     cliente_seleccionado.ingresos.append(nuevo_ingreso)
     vehiculo_seleccionado.ingresos.append(nuevo_ingreso)
