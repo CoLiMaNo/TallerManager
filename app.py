@@ -285,14 +285,14 @@ class VentanaCliente(ft.View):
 
     Contiene:
         - Imagen de título: Muestra una imagen de "Clientes" para identificar visualmente la sección.
-        - Input: Campo de texto para ingresar el nombre o los datos del cliente a buscar.
+        - Input: Campo de texto para ingresar el nombre del cliente a buscar.
         - Botón ElevatedButton "Buscar Cliente": Activa la búsqueda de clientes según los datos ingresados
           en el campo de búsqueda.
         - Botón ElevatedButton "Añadir Cliente": Permite al usuario añadir un nuevo cliente al sistema
           ingresando los datos requeridos (nombre, teléfono, dirección, etc.).
-        - Botón ElevatedButton "Modificar Cliente": Accede a una interfaz para modificar los datos de un
+        - Botón ElevatedButton "Editar": Accede a una interfaz para editar los datos de un
           cliente existente en el sistema.
-        - Botón ElevatedButton "Eliminar Cliente": Elimina del sistema los registros del cliente seleccionado.
+        - Botón ElevatedButton "Eliminar Cliente": Elimina del sistema los registros del cliente y el cliente seleccionado.
     '''
 
 
@@ -365,7 +365,7 @@ class VentanaCliente(ft.View):
                         icon_color="#12597b",
                         icon_size=30,
                         tooltip="Añadir Nuevo",
-                        #on_click=lambda e: self.crear_cliente(e),
+                        on_click=lambda e: page.go("/clienteNuevo"),
                         )
                 ]
             )
@@ -489,22 +489,6 @@ class VentanaCliente(ft.View):
             )
         ]
 
-    # metodo para registrar cliente nuevo
-    def cliente_nuevo(self, e):
-        print("\n > Crear cliente")
-        nombre = input("Introduce el nombre del cliente: ")
-        telefono = input("Introduce el telefono: ")
-        direccion = input("Introduce la direccion: ")
-        correo = input("Introduce el correo: ")
-        fecha_alta = datetime.now()
-
-        # Creación y adición del nuevo cliente
-        nuevo_cliente = Cliente(nombre=nombre, telefono=telefono, direccion=direccion, correo=correo,
-                                fecha_alta=fecha_alta)
-        db.session.add(nuevo_cliente)
-        db.session.commit()
-        db.session.close()
-
     # metodo para cargar los clientes existentes en el GridView
     def buscar_cliente(self,e):
         # Limpia los controles actuales del GridView
@@ -593,23 +577,32 @@ class VentanaCliente(ft.View):
                             #ft.Text(f"Vehiculos: {cliente.vehiculos}"),
                             ft.Row(
                                 [
-                                    ft.ElevatedButton(
-                                        bgcolor="#12597b",
-                                        width=95,
-                                        height=20,
-                                        content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
-                                    ft.ElevatedButton(
-                                        bgcolor="#12597b",
-                                        width=100,
-                                        height=20,
-                                        content=ft.Text("Vehiculos", color="white", size=11,bgcolor="#12597b")),
-                                    ft.ElevatedButton(
-                                        bgcolor="#12597b",
-                                        width=80 ,
-                                        height=20,
-                                        content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
+                                    ft.IconButton(
+                                        icon=ft.icons.CAR_RENTAL,
+                                        icon_color="#FAFAF3",
+                                        icon_size=25,
+                                        tooltip="Ingresos",
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.icons.DIRECTIONS_CAR,
+                                        icon_color="#FAFAF3",
+                                        icon_size=25,
+                                        tooltip="Vehiculos",
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.icons.EDIT_NOTE,
+                                        icon_color="#FAFAF3",
+                                        icon_size=25,
+                                        tooltip="Editar",
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.icons.DELETE_FOREVER_ROUNDED,
+                                        icon_color="red",
+                                        icon_size=25,
+                                        tooltip="Eliminar",
+                                    ),
                                 ],
-                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                            alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                             vertical_alignment=ft.CrossAxisAlignment.END,
                             )
                         ])
@@ -640,6 +633,216 @@ class VentanaCliente(ft.View):
             self.page.go("/recambios")
         elif selected_index == 4:
             self.page.go("/ingresos")
+
+class VentanaClienteNuevo(ft.View):
+    '''Clase VentanaNuevoCliente: Interfaz gráfica para la gestión de clientes.
+
+    Esta clase representa la ventana de la aplicación dedicada a la adición de clientes nuevos en el sistema
+    del taller.
+
+    Args:
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
+
+    Contiene:
+        - Imagen de título: Muestra una imagen de "Gestión de clientes" para identificar visualmente la sección.
+        - Input: Campo de texto para ingresar el nombre del cliente.
+        - Input: Campo de texto para ingresar el telefono del cliente.
+        - Input: Campo de texto para ingresar el correo electronico del cliente.
+        - Input: Campo de texto para ingresar el domicilio del cliente.
+        - Botón ElevatedButton: "Aceptar" activa la accion de añadir el cliente al sistema los registros del taller
+        - Botón ElevatedButton: "Cancelar" cancela la operacion de añadir el cliente.
+    '''
+
+    def __init__(self, page: ft.Page):
+        '''Constructor de la interfaz grafica para la ventana Cliente Nuevo'''
+        super(VentanaClienteNuevo, self).__init__(
+            route="/clienteNuevo", horizontal_alignment=CrossAxisAlignment.CENTER,
+            vertical_alignment=MainAxisAlignment.CENTER
+        )
+
+        self.page = page
+
+        # Color de fondo contenedor principal
+        self.bgcolor = "#ede0cc"
+
+        # Imagen gestion de cliente
+        self.imagen_gestionCliente = ft.Container(
+            ft.Container(
+                bgcolor="#ede0cc",
+                width=320,
+                height=120,
+                padding=0,
+                image_repeat=ImageRepeat.NO_REPEAT,
+                shape=ft.BoxShape("rectangle"),
+                # Define imagen
+                image_src="/ImagenClienteNuevo.png",
+                image_fit=ft.ImageFit.COVER,
+            ),
+            alignment=ft.alignment.Alignment(x=0, y=0)
+        )
+
+        # Campo de entrada para el nombre del cliente
+        self.input_nombreCliente = ft.TextField(
+            label="Nombre",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce el nombre del cliente",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para el telefono del cliente
+        self.input_telefonoCliente = ft.TextField(
+            label="Telefono",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce el telefono del cliente",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para el correo electronico del cliente
+        self.input_correoCliente = ft.TextField(
+            label="Correo Electronico",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce el correo del cliente",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para la direccion del cliente
+        self.input_direccionCliente = ft.Container(
+            bgcolor='#E1F5FE',
+            # border=ft.border.all(ft.colors.ORANGE_100),
+            # expand=True,
+            height=180,
+            content=
+            ft.TextField(
+                filled=False,
+                label="Direccion",
+                label_style=TextStyle(color='#12597b', size=12, ),
+                expand=True,
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                hint_text="Introduce la direccion del cliente",
+                hint_style=TextStyle(color='#6a6965', size=10),
+                max_length=200,  # maximo de caracteres que se pueden ingresar en TextField
+                # max_lines =  10, # maximo de líneas que se mostraran a la vez
+                multiline=True,  # puede contener varias lineas de texto
+                color='black',
+                height=180,
+                cursor_color="#12597b",
+                text_size=13,
+                border_color="transparent",
+                autofocus=False,
+                bgcolor="#E1F5FE",
+                text_vertical_align=ft.VerticalAlignment.START,
+            )
+        )
+
+        # Botones para agregar y cancelar operacion
+        self.BotonAgregarCliente = ft.Container(
+            expand=True,
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton agregar cliente nuevo
+                    ft.ElevatedButton(
+                        text="Aceptar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Aceptar Añadir',
+                        icon=icons.ADD,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda e: (self.cliente_nuevo(e), page.go("/clientes")),
+                    ),
+                    # cancelar operacion
+                    ft.ElevatedButton(
+                        text="Cancelar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Cancelar Añadir',
+                        icon=icons.CANCEL,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda _: page.go("/clientes"),
+                    ),
+                ]
+            )
+        )
+
+        # Contenedor principal que contiene todos los elementos de la interfaz
+        self.controls = [
+            ft.Container(
+                ft.Column([
+                    # self.tituloClientes,
+                    self.imagen_gestionCliente,
+                    self.input_nombreCliente,
+                    self.input_telefonoCliente,
+                    self.input_correoCliente,
+                    self.input_direccionCliente,
+                    self.BotonAgregarCliente,
+                ]
+                ),
+
+                # propiedades contenedor principal
+                border_radius=25,
+                width=350,  # ancho
+                height=655,  # Alto
+                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
+                    "#ede0cc",
+                    "#ede0cc",
+                ])
+
+            )
+        ]
+
+    # metodo para añadir un nuevo cliente al sistema del taller
+    def cliente_nuevo(self, e):
+        print("\n > Crear cliente")
+        # Captura y limpieza de los datos ingresados por el usuario
+        nombre = self.input_nombreCliente.value.strip()  # Nombre del cliente
+        telefono = self.input_telefonoCliente.value.strip() # Teléfono de contacto del cliente
+        correo = self.input_correoCliente.value.strip() # Correo electrónico del cliente
+        direccion = self.input_direccionCliente.content.value.strip() # Dirección del cliente
+        fecha_alta = datetime.now() # Fecha de registro del cliente en el sistema
+
+        # Creación de una nueva instancia de Cliente con los datos proporcionados
+        nuevo_cliente = Cliente(nombre=nombre, telefono=telefono, direccion=direccion, correo=correo,
+                                fecha_alta=fecha_alta)
+
+        # Agregar el nuevo cliente a la sesión de la base de datos
+        db.session.add(nuevo_cliente)
+
+        # Guardar los cambios en la base de datos y cerrar la sesión
+        db.session.commit()
+        db.session.close()
 
 
 class VentanaVehiculo(ft.View):
@@ -733,7 +936,7 @@ class VentanaVehiculo(ft.View):
                                          height=30,
                                          width=30),
                         tooltip="Añadir Nuevo",
-                        #on_click=lambda e: self.crear_vehiculo(e),
+                        on_click=lambda e: page.go("/vehiculoNuevo"),
                     )
                 ]
             )
@@ -874,101 +1077,107 @@ class VentanaVehiculo(ft.View):
         if vehiculo_localizado:
             cards = []
             for vehiculo in vehiculo_localizado:
-                # mostramos detalles del cliente encontrado
-                print(f"Nombre: {vehiculo.matricula}, Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}")
-                card = ft.Card(
-                    content=ft.Container(
-                        alignment=ft.alignment.Alignment(x=0, y=0),
-                        bgcolor="#4b8ca8",
-                        padding=5,
-                        border=ft.border.all(1, ft.colors.BLUE_800),
-                        border_radius=ft.border_radius.all(10),
-                        content=ft.Column([
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START)
-                                    ],
-                                    alignment=ft.MainAxisAlignment.CENTER,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                alignment=ft.alignment.center
-                            ),
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"Desde:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{vehiculo.marca}",size=10, text_align=ft.TextAlign.LEFT),
-                                    ],
-                                    alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                padding=0,
-                                alignment=ft.alignment.center_left,
+                # Obtenemos el cliente asociado al vehículo
+                cliente = db.session.query(Cliente).filter_by(id_cliente=vehiculo.id_cliente).first()
 
-                            ),
-                            ft.Container(
+                # Mostramos detalles del vehículo y del cliente encontrado
+                if cliente:  # Verificamos si se encontró un cliente
+                    print(f"Cliente: {cliente.nombre}, Vehículo: {vehiculo.matricula}, Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}")
+
+                card = ft.Card(
+                        content=ft.Container(
+                            alignment=ft.alignment.Alignment(x=0, y=0),
+                            bgcolor="#4b8ca8",
+                            padding=5,
+                            border=ft.border.all(1, ft.colors.BLUE_800),
+                            border_radius=ft.border_radius.all(10),
+                            content=ft.Column([
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"{cliente.nombre}, ", size=12, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.CENTER, no_wrap=False), # no_wrap Asegura que el texto se ajuste si es largo
+                                            ft.Text(f"Desde: {vehiculo.fecha_alta.strftime('%d/%m/%Y')}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.CENTER,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    alignment=ft.alignment.center
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Desde:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.marca}",size=10, text_align=ft.TextAlign.LEFT),
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Modelo:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.modelo}",size=10, text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Matricula:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.matricula}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
+                                ft.Container(
+                                    ft.Row(
+                                        [
+                                            ft.Text(f"Kilometros:", size=10, weight=ft.FontWeight.W_700,
+                                                    text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{vehiculo.kilometros}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ],
+                                        alignment=ft.MainAxisAlignment.START,
+                                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    ),
+                                    bgcolor="transparent",
+                                    padding=0,
+                                    alignment=ft.alignment.center_left,
+                                ),
                                 ft.Row(
                                     [
-                                        ft.Text(f"Modelo:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{vehiculo.modelo}",size=10, text_align=ft.TextAlign.LEFT)
+                                        ft.ElevatedButton(
+                                            bgcolor="#12597b",
+                                            width=95,
+                                            height=20,
+                                            content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
+                                        ft.ElevatedButton(
+                                            bgcolor="#12597b",
+                                            width=80 ,
+                                            height=20,
+                                            content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
                                     ],
-                                    alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                padding=0,
-                                alignment=ft.alignment.center_left,
-                            ),
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"Matricula:", size=10, weight=ft.FontWeight.W_700,
-                                                text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{vehiculo.matricula}", size=10, text_align=ft.TextAlign.LEFT)
-                                    ],
-                                    alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                padding=0,
-                                alignment=ft.alignment.center_left,
-                            ),
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"Kilometros:", size=10, weight=ft.FontWeight.W_700,
-                                                text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{vehiculo.kilometros}", size=10, text_align=ft.TextAlign.LEFT)
-                                    ],
-                                    alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                padding=0,
-                                alignment=ft.alignment.center_left,
-                            ),
-                            ft.Row(
-                                [
-                                    ft.ElevatedButton(
-                                        bgcolor="#12597b",
-                                        width=95,
-                                        height=20,
-                                        content= ft.Text("Ingresos", color="white", size=11,bgcolor="#12597b")), #on_click=lambda: editar_cliente(cliente)),
-                                    ft.ElevatedButton(
-                                        bgcolor="#12597b",
-                                        width=80 ,
-                                        height=20,
-                                        content=ft.Text("Editar", color="white", size=11,bgcolor="#12597b"))
-                                ],
-                            alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                            vertical_alignment=ft.CrossAxisAlignment.END,
-                            )
-                        ])
+                                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                vertical_alignment=ft.CrossAxisAlignment.END,
+                                )
+                            ])
+                        )
                     )
-                )
 
                 cards.append(card)
 
@@ -991,6 +1200,260 @@ class VentanaVehiculo(ft.View):
             self.page.go("/recambios")
         elif selected_index == 4:
             self.page.go("/ingresos")
+
+
+class VentanaVehiculoNuevo(ft.View):
+    '''Clase VentanaVehiculoNuevo: Interfaz gráfica para la gestión de vehiculos.
+
+    Esta clase representa la ventana de la aplicación dedicada a la adición de vehiculos nuevos en el sistema
+    del taller.
+
+    Args:
+        - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
+
+    Contiene:
+        - Imagen de título: Muestra una imagen de "Gestión de vehiculos" para identificar visualmente la sección.
+        - Input: Campo de texto para ingresar la marca del vehiculo.
+        - Input: Campo de texto para ingresar el el modelo del vehiculo
+        - Input: Campo de texto para ingresar la matricula del vehiculo.
+        - Input: Campo de texto para ingresar los kilometros del vehiculo.
+        - Botón ElevatedButton: "Aceptar" activa la accion de añadir el vehiculo al sistema los registros del taller
+        - Botón ElevatedButton: "Cancelar" cancela la operacion de añadir el vehiculo.
+    '''
+
+    def __init__(self, page: ft.Page):
+        '''Constructor de la interfaz grafica para la ventana Vehiculo Nuevo'''
+        super(VentanaVehiculoNuevo, self).__init__(
+            route="/vehiculoNuevo", horizontal_alignment=CrossAxisAlignment.CENTER,
+            vertical_alignment=MainAxisAlignment.CENTER
+        )
+
+        self.page = page
+
+        # Color de fondo contenedor principal
+        self.bgcolor = "#ede0cc"
+
+        # Imagen gestion de vehiculos
+        self.imagen_gestionVehiculo = ft.Container(
+            ft.Container(
+                bgcolor="#ede0cc",
+                width=320,
+                height=120,
+                padding=0,
+                image_repeat=ImageRepeat.NO_REPEAT,
+                shape=ft.BoxShape("rectangle"),
+                # Define imagen
+                image_src="/imagen_de_nuevo_vehiculo.png",
+                image_fit=ft.ImageFit.COVER,
+            ),
+            alignment=ft.alignment.Alignment(x=0, y=0)
+        )
+
+        # Objeto Text para mostrar la opción elegida
+        self.texto_opcion_elegida = ft.Text()
+
+        # menu desplegable para elegir el cliente del vehiculo
+        self.menu_clientes = ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    ft.Dropdown(
+                        label='Selecciona un Cliente',
+                        alignment=Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#ede0cc', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally=True,
+                        dense=True,
+                        max_menu_height=True,
+                        height=50,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        on_change=lambda e: (self.pestaniaOpcion(e)),
+                        options=[ft.dropdown.Option(str(cliente.nombre))
+                            for cliente in db.session.query(Cliente).all()],
+                        bgcolor="#ede0cc",
+                        padding=0,
+                    )
+                ]
+            )
+        )
+
+        # Campo de entrada para la marca del vehiculo
+        self.input_marcaVehiculo = ft.TextField(
+            label="Marca",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce la marca del vehiculo",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para el modelo del vehiculo
+        self.input_modeloVehiculo = ft.TextField(
+            label="Modelo",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce el modelo del vehiculo",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para la matricula del vehiculo
+        self.input_matriculaVehiculo = ft.TextField(
+            label="Matricula",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce la matricula del vehiculo",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Campo de entrada para los kilometros del vehiculo
+        self.input_kilometrosVehiculo = ft.TextField(
+            label="Kilometros",
+            label_style=TextStyle(color='#12597b', size=12),
+            value="",
+            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            hint_text="Introduce los kilometros del vehiculo",
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=13,
+            border_color="transparent",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Botones para agregar y cancelar operacion
+        self.BotonAgregarCliente = ft.Container(
+            expand=True,
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton agregar cliente nuevo
+                    ft.ElevatedButton(
+                        text="Aceptar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Aceptar Añadir',
+                        icon=icons.ADD,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda e: (self.vehiculo_nuevo(e), page.go("/vehiculos")),
+                    ),
+                    # cancelar operacion
+                    ft.ElevatedButton(
+                        text="Cancelar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Cancelar Añadir',
+                        icon=icons.CANCEL,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda _: page.go("/vehiculos"),
+                    ),
+                ]
+            )
+        )
+
+        # Contenedor principal que contiene todos los elementos de la interfaz
+        self.controls = [
+            ft.Container(
+                ft.Column([
+                    # self.tituloClientes,
+                    self.imagen_gestionVehiculo,
+                    self.menu_clientes,
+                    self.input_marcaVehiculo,
+                    self.input_modeloVehiculo,
+                    self.input_matriculaVehiculo,
+                    self.input_kilometrosVehiculo,
+                    self.BotonAgregarCliente,
+                ]
+                ),
+
+                # propiedades contenedor principal
+                border_radius=25,
+                width=350,  # ancho
+                height=655,  # Alto
+                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
+                    "#ede0cc",
+                    "#ede0cc",
+                ])
+
+            )
+        ]
+
+    # metodo para manejar la opcion seleccionada en el menu desplegable
+    def pestaniaOpcion(self, e):
+        # Obtener la opción seleccionada
+        elegirOpcion = self.menu_clientes.content.controls[0].value
+
+        # Actualizar texto con la opción elegida
+        self.texto_opcion_elegida.value = (
+            f"Opción elegida: {elegirOpcion}" if elegirOpcion else "No se ha seleccionado ninguna opción."
+        )
+
+        # Imprime la opción seleccionada
+        print(f"Cliente seleccionado: {elegirOpcion}")
+
+        # Actualiza la interfaz
+        self.page.update(self)
+
+    # metodo para añadir un nuevo vehículo al sistema del taller
+    def vehiculo_nuevo(self, e):
+        print("\n > Crear vehiculo")
+        # Obtención de datos de entrada para el nuevo vehículo y cliente
+        id_cliente = self.menu_clientes.content.controls[0].value.strip() # ID o nombre del cliente seleccionado
+        marca = self.input_marcaVehiculo.value.strip()  # Marca del vehículo
+        modelo = self.input_modeloVehiculo.value.strip() # Modelo del vehículo
+        matricula = self.input_matriculaVehiculo.value.strip() # Matrícula del vehículo
+        kilometros = self.input_kilometrosVehiculo.value.strip() # Kilómetros actuales del vehículo
+        fecha_alta = datetime.now() # Fecha de alta del vehículo en el sistema
+
+        # Consulta para encontrar el cliente en la base de datos por nombre (o ID según el valor seleccionado)
+        cliente = db.session.query(Cliente).filter_by(nombre=id_cliente).first()
+
+        # Creación de una nueva instancia de Vehiculo con los datos de entrada
+        nuevo_vehiculo = Vehiculo(marca=marca, modelo=modelo, matricula=matricula, kilometros=kilometros, fecha_alta=fecha_alta)
+
+        # Agregar el nuevo vehículo a la sesión de la base de datos
+        db.session.add(nuevo_vehiculo)
+
+        # Establecer la relación bidireccional entre el cliente y el vehículo
+        # Se añade el vehículo a la lista de vehículos del cliente, gestionando la relación automáticamente
+        cliente.vehiculos.append(nuevo_vehiculo)
+
+        # Confirmar y cerrar la sesión
+        db.session.commit()
+        db.session.close()
 
 
 class VentanaCrearRecambio(ft.View):
@@ -2578,7 +3041,7 @@ class VentanaNuevoIngreso(ft.View):
             )
         ]
 
-    # metodo para manejar la opcion seleccionada en el menu desplegable principal
+    # metodo para manejar la opcion seleccionada en el menu desplegable
     def pestaniaOpcion(self, e):
         # Obtener la opción seleccionada
         elegirOpcion = self.menu_clientes.content.controls[0].value
@@ -2619,14 +3082,14 @@ class VentanaNuevoIngreso(ft.View):
         print("\n > Crear ingreso")
         id_cliente = self.menu_clientes.content.controls[0].value.strip()
         id_vehiculo = self.menu_vehiculosCliente.value.strip()
-        kilometros_ingreso = self.input_kilometros.value.strip()  # este es el Input
-        averia = self.input_motivo.content.value.strip()  # este es el Input
+        kilometros_ingreso = self.input_kilometros.value.strip()
+        averia = self.input_motivo.content.value.strip()
         diagnostico = self.input_diagnotico.content.value.strip()
         fecha_ingreso = datetime.now()
 
         # Consulta para obtener el cliente y el vehículo seleccionados
         cliente = db.session.query(Cliente).filter_by(nombre=id_cliente).first()
-        # Si el dropdown incluye la marca y modelo, filtra solo por modelo
+        # el dropdown incluye la marca y modelo per filtra solo por modelo
         vehiculo_modelo = id_vehiculo.split(", ")[1]  # Extrae solo el modelo
         vehiculo = db.session.query(Vehiculo).filter_by(modelo=vehiculo_modelo).first()
 
@@ -2668,9 +3131,15 @@ def main(page: ft.page):
         elif page.route == "/clientes":
             clientes = VentanaCliente(page)
             page.views.append(clientes)
+        elif page.route == "/clienteNuevo":
+            clienteNuevo = VentanaClienteNuevo(page)
+            page.views.append(clienteNuevo)
         elif page.route == "/vehiculos":
             vehiculos = VentanaVehiculo(page)
             page.views.append(vehiculos)
+        elif page.route == "/vehiculoNuevo":
+            vehiculoNuevo = VentanaVehiculoNuevo(page)
+            page.views.append(vehiculoNuevo)
         elif page.route == "/recambios":
             recambios = VentanaRecambios(page)
             page.views.append(recambios)
@@ -2689,7 +3158,9 @@ def main(page: ft.page):
     page.on_route_change = router
     page.go("/inicio")
     #page.go("/clientes")
+    #page.go("/clienteNuevo")
     #page.go("/vehiculos")
+    #page.go("/vehiculoNuevo")
     #page.go("/recambios")
     #page.go("/crearRecambio")
     #page.go("/ingresos")

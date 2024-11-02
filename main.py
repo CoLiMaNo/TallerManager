@@ -24,7 +24,6 @@ def cliente_nuevo():
 
 # metodo para registrar nuevo vehiculo
 def vehiculo_nuevo():
-    #global cliente_seleccionado
     print("\n > Crear vehiculo")
 
     #seleccionamos al cliente
