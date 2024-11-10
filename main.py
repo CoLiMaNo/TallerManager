@@ -82,7 +82,7 @@ def recambio_nuevo():
     db.session.close()
 
 # metodo para registrar nuevo ingreso
-def ingreso_nuevo():
+def ingreso_nuevo(self):
     #global cliente_seleccionado, vehiculo_seleccionado
     print("\n > Crear ingreso")
 
@@ -158,28 +158,6 @@ def ingreso_nuevo():
     db.session.commit()
     db.session.close()
     print("Ingreso creado exitosamente.")
-
-# metodo para registros nuevos
-def registro_nuevo(self):
-    print("\n > Crear registro")
-
-    # asignamos variable al nuevo ingreso
-    ingreso_actual = self.page.session.get('nuevo_ingreso')
-
-    if ingreso_actual:
-        print(f" ID : {ingreso_actual.id_ingreso}, ID Recambio: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
-
-    else:
-        print(f"Error: No se ha establecido el ingreso {ingreso_actual.id_ingreso} ")
-
-    id_ingreso_actual = ingreso_actual
-
-    recambio = db.Base_mobile.query(Recambio).all
-
-    # Seleccionar el recambio para agregarlo al ingreso
-
-
-
 
 if __name__ == '__main__':
 

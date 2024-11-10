@@ -54,7 +54,7 @@ class VentanaInicio(ft.View):
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
                 # Define imagen
-                image_src="/logo-taller.png",
+                image_src="/logo-APP.png",
                 image_fit=ft.ImageFit.COVER,
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
@@ -229,8 +229,8 @@ class VentanaInicio(ft.View):
                 ft.Column([
                     ft.Divider(height=10, color="transparent"),
                     self.logo,
-                    ft.Divider(height=25, color="transparent"),
-                    self.ImagenVehiculo,
+                    ft.Divider(height=70, color="transparent"),
+                    #self.ImagenVehiculo,
                     ft.Divider(height=5, color="transparent"),
                     self.boton_CostoPorCliente,
                     ft.Divider(height=5, color="transparent"),
@@ -601,6 +601,7 @@ class VentanaCliente(ft.View):
                                         icon_size=25,
                                         tooltip="Eliminar",
                                     ),
+
                                 ],
                             alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                             vertical_alignment=ft.CrossAxisAlignment.END,
@@ -633,6 +634,7 @@ class VentanaCliente(ft.View):
             self.page.go("/recambios")
         elif selected_index == 4:
             self.page.go("/ingresos")
+
 
 class VentanaClienteNuevo(ft.View):
     '''Clase VentanaNuevoCliente: Interfaz gráfica para la gestión de clientes.
@@ -1107,7 +1109,7 @@ class VentanaVehiculo(ft.View):
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Desde:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"Marca:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
                                             ft.Text(f"{vehiculo.marca}",size=10, text_align=ft.TextAlign.LEFT),
                                         ],
                                         alignment=ft.MainAxisAlignment.START,
@@ -1493,7 +1495,7 @@ class VentanaCrearRecambio(ft.View):
         self.bgcolor = "#ede0cc"
 
         # Titulo imagen recambios
-        self.imagenRecambios = ft.Container(
+        self.imagenCrearRecambios = ft.Container(
             ft.Container(
                 bgcolor="#ede0cc",
                 width=320,
@@ -1688,7 +1690,7 @@ class VentanaCrearRecambio(ft.View):
         self.controls = [
             ft.Container(
                 ft.Column([
-                    self.imagenRecambios,
+                    self.imagenCrearRecambios,
                     self.input_nombreRecambio,
                     self.input_descripcionRecambio,
                     self.categoria,
@@ -2412,7 +2414,7 @@ class VentanaIngreso(ft.View):
         self.bgcolor = "#ede0cc"
 
         # Titulo imagen ingresos
-        self.imagenVehiculos = ft.Container(
+        self.imagenIngreso = ft.Container(
             ft.Container(
                 bgcolor="#ede0cc",
                 width=320,
@@ -2570,7 +2572,7 @@ class VentanaIngreso(ft.View):
         self.controls = [
             ft.Container(
                 ft.Column([
-                    self.imagenVehiculos,
+                    self.imagenIngreso,
                     self.input_buscar,
                     self.BotonBuscarVehiculo,
                     self.vistaResultadosBusqueda,
@@ -2821,7 +2823,7 @@ class VentanaNuevoIngreso(ft.View):
         self.bgcolor = "#ede0cc"
 
         # Titulo imagen ingresos
-        self.imagenVehiculos = ft.Container(
+        self.imagenNuevoIngreso = ft.Container(
             ft.Container(
                 bgcolor="#ede0cc",
                 width=320,
@@ -2982,7 +2984,7 @@ class VentanaNuevoIngreso(ft.View):
                         icon_color="#FAFAF3",
                         width=140,
                         height=30,
-                        on_click=lambda e: (self.ingreso_nuevo(e), page.go("/ingresos")),
+                        on_click=lambda e: (self.ingreso_nuevo(e), page.go("/registro")),
                     ),
                     ft.ElevatedButton(
                         text="Cancelar",
@@ -3018,7 +3020,7 @@ class VentanaNuevoIngreso(ft.View):
         self.controls = [
             ft.Container(
                 ft.Column([
-                    self.imagenVehiculos,
+                    self.imagenNuevoIngreso,
                     self.menu_clientes,
                     self.menu_vehiculosCliente,
                     self.input_kilometros,
@@ -3040,6 +3042,7 @@ class VentanaNuevoIngreso(ft.View):
 
             )
         ]
+
 
     # metodo para manejar la opcion seleccionada en el menu desplegable
     def pestaniaOpcion(self, e):
@@ -3077,6 +3080,7 @@ class VentanaNuevoIngreso(ft.View):
         # Actualiza el dropdown para reflejar los nuevos cambios
         self.menu_vehiculosCliente.update()
 
+
     # metodo para añadir nuevo ingreso
     def ingreso_nuevo(self, e):
         print("\n > Crear ingreso")
@@ -3102,7 +3106,8 @@ class VentanaNuevoIngreso(ft.View):
             return
 
         # Creación y adición del nuevo recambio
-        nuevo_ingreso = Ingreso(kilometros_ingreso=kilometros_ingreso, averia=averia, diagnostico=diagnostico,fecha_ingreso=fecha_ingreso)
+        nuevo_ingreso = Ingreso(kilometros_ingreso=kilometros_ingreso, averia=averia,
+                                diagnostico=diagnostico,fecha_ingreso=fecha_ingreso)
         db.session.add(nuevo_ingreso)
 
         # Relación bidireccional automática
@@ -3110,9 +3115,723 @@ class VentanaNuevoIngreso(ft.View):
         vehiculo.ingresos.append(nuevo_ingreso)
         # Guardar cambios
         db.session.commit()
-        db.session.close()
+
         print("Ingreso creado exitosamente.")
 
+        # Guardar el ID del nuevo ingreso en la sesión
+        self.page.session.set("nuevo_ingreso", nuevo_ingreso.id_ingreso)
+        self.page.session.set("nombre_cliente", cliente.nombre)
+        self.page.session.set("vehiculo", vehiculo.modelo)
+        self.page.session.set("matricula", vehiculo.matricula)
+        db.session.close()
+
+class VentanaRegistro(ft.View):
+    '''Clase VentanaRegistro: Interfaz gráfica para la gestión de registro de repuestos e historial.
+
+    Esta clase representa la ventana de la aplicación dedicada a la gestión de registro de repuestos e historial,
+    permitiendo al usuario mantener un seguimiento del historial por cliente o vehiculo.
+
+    Args:
+        - page: Instancia de la página actual, que gestiona el contenido y las interacciones de la ventana.
+
+    Contiene:
+        - Imagen de diagnóstico de ingresos como título: Identifica la sección de ingreso nuevo con una imagen representativa.
+        - Dropdown Cliente: Desplegable para seleccionar el cliente que ingresa el vehículo al taller.
+        - Dropdown Vehículo: Desplegable para seleccionar el vehículo del cliente que será ingresado al taller.
+        - Input Kilometraje: Campo de texto para introducir el kilometraje actual del vehículo al momento del ingreso.
+        - Input Motivo de Ingreso: Campo de texto para introducir el motivo por el cual el vehículo acude al taller.
+        - Input Diagnóstico Previo: Campo de texto para introducir el diagnóstico inicial del taller antes del ingreso.
+        - Botón Aceptar: Botón para confirmar y registrar el ingreso.
+    '''
+
+    def __init__(self, page: ft.Page):
+        '''Constructor de la interfaz grafica para la ventana registro'''
+        super(VentanaRegistro, self).__init__(
+            route="/registro", horizontal_alignment=CrossAxisAlignment.CENTER,
+            vertical_alignment=MainAxisAlignment.CENTER
+        )
+
+        # Ruta completa al archivo JSON del menu para los recambios
+        self.ruta_json = r'C:\Users\Juan Carlos\espacio_de_trabajo\AAA Practicas personal\TallerManager\database\menu_recambios.json'
+
+        self.page = page
+
+        # Color de fondo contenedor principal
+        self.bgcolor = "#ede0cc"
+
+        # Titulo imagen registro
+        self.imagenRegistro = ft.Container(
+            ft.Container(
+                bgcolor="#ede0cc",
+                width=320,
+                height=70,
+                padding=0,
+                image_repeat=ImageRepeat.NO_REPEAT,
+                shape=ft.BoxShape("rectangle"),
+                # Define imagen
+                image_src="/ImagenVehiculo3.png",
+                image_fit=ft.ImageFit.COVER,
+            ),
+            alignment=ft.alignment.Alignment(x=0, y=0)
+        )
+
+        # Nombre del cliente
+        self.nombre_cliente = ft.Row([
+            ft.Text(
+                value=f'',
+                width=None,
+                size=12,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+
+            ),
+            ft.Text(
+                value= self.page.session.get("nombre_cliente"),
+                size=12,
+                color='green700',
+                weight=FontWeight.W_600,
+            ),
+            ft.Text(
+                value=f' / ',
+                width=None,
+                size=12,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+            ),
+            ft.Text(
+                value= self.page.session.get("vehiculo"),
+                size=12,
+                color='green700',
+                weight=FontWeight.W_600,
+            ),
+            ft.Text(
+                value=f'-',
+                size=12,
+                color='green700',
+                weight=FontWeight.W_600,
+            ),
+            ft.Text(
+                value=self.page.session.get("matricula"),
+                size=12,
+                color='green700',
+                weight=FontWeight.W_600,
+            ),
+        ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
+
+        # Campo de entrada para la busqueda
+        self.input_buscar = ft.TextField(
+            label="Buscar Recambio...",
+            label_style=TextStyle(color='#6a6965', size=10),
+            value="",
+            border_radius=ft.border_radius.vertical(top=5, bottom=5),
+            hint_text="Introduce el recambio",
+            dense=True,
+            hint_style=TextStyle(color='#6a6965', size=10),
+            color='black',
+            height=35,
+            cursor_color="#12597b",
+            text_size=10,
+            border_color="#12597b",
+            autofocus=True,
+            bgcolor="#E1F5FE"
+        )
+
+        # Menu desplegable principal para elegir una opcion
+        self.menu_principal = ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                controls=[
+                    ft.Dropdown(
+                        label='Selecciona Categoría',
+                        alignment = Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally =True,
+                        dense = True,
+                        height=35,
+                        width=240,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        on_change=lambda e: (self.pestaniaOpcion(e),
+                                             self.actualizar_submenu(e)),
+                        options=[
+                            # Lista de opciones para los recambios
+                            ft.dropdown.Option("Accesorios para coche"),
+                            ft.dropdown.Option("Aceites y líquidos"),
+                            ft.dropdown.Option("Aire acondicionado"),
+                            ft.dropdown.Option("Amortiguacion"),
+                            ft.dropdown.Option("Árboles de transmisión y diferenciales"),
+                            ft.dropdown.Option("Caja de cambios"),
+                            ft.dropdown.Option("Calefacción y ventilación"),
+                            ft.dropdown.Option("Carrocería"),
+                            ft.dropdown.Option("Correas, cadenas, rodillos"),
+                            ft.dropdown.Option("Direccion"),
+                            ft.dropdown.Option("Embrague"),
+                            ft.dropdown.Option("Encendido y precalentamiento"),
+                            ft.dropdown.Option("Escape"),
+                            ft.dropdown.Option("Filtros"),
+                            ft.dropdown.Option("Frenos"),
+                            ft.dropdown.Option("Herramientas y equipo"),
+                            ft.dropdown.Option("Iluminación"),
+                            ft.dropdown.Option("Interior"),
+                            ft.dropdown.Option("Juntas y retenes"),
+                            ft.dropdown.Option("Kit de reparación"),
+                            ft.dropdown.Option("Motor"),
+                            ft.dropdown.Option("Neumáticos"),
+                            ft.dropdown.Option("Palier y junta homocinetica"),
+                            ft.dropdown.Option("Productos para cuidado del coche"),
+                            ft.dropdown.Option("Remolque / piezas adicionales"),
+                            ft.dropdown.Option("Rodamientos"),
+                            ft.dropdown.Option("Sensores, relés, unidades de control"),
+                            ft.dropdown.Option("Sistema de combustible"),
+                            ft.dropdown.Option("Sistema de refrigeración del motor"),
+                            ft.dropdown.Option("Sistema electrico"),
+                            ft.dropdown.Option("Sistema limpiaparabrisas"),
+                            ft.dropdown.Option("Sujeciones"),
+                            ft.dropdown.Option("Suspension"),
+                            ft.dropdown.Option("Tuberías y mangueras"),
+                            ft.dropdown.Option("Tuning")
+
+                        ],
+                        bgcolor="#ede0cc",
+                        padding = 0,
+                    ),
+                    ft.IconButton(
+                        icon=ft.icons.SEARCH,
+                        icon_color="#12597b",
+                        icon_size=30,
+                        tooltip="Buscar Recambio",
+                        on_click=lambda e: self.buscar_recambio(e),
+                    ),
+                ]
+            ),
+        )
+
+        # Menu desplegable secundario para elegir una opcion
+        self.submenu_opciones = ft.Dropdown(
+                        label='Selecciona Subcategoría',
+                        alignment = Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally =True,
+                        dense = True,
+                        max_menu_height=True,
+                        height=35,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        options=[],
+                        bgcolor="#ede0cc",
+                        padding=0,
+                    )
+
+        # campo de entrada para la cantidad y el precio del proveedor sin descuento
+        self.cantidadYprecio = ft.Row([
+            ft.Text(
+                value=f' Precio',
+                width=None,
+                size=10,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+
+            ),
+            ft.TextField(
+                label= None,
+                label_style=TextStyle(color='#6a6965', size=12),
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                dense=True,
+                text_align=TextAlign.CENTER,
+                hint_style=TextStyle(color='#6a6965', size=10),
+                color='black',
+                height=30,
+                width=80,
+                cursor_color="#12597b",
+                text_size=10,
+                border_color="#12597b",
+                autofocus=False,
+                bgcolor="#E1F5FE"
+            ),
+            ft.Text(
+                value= f' Cantidad',
+                width=None,
+                size=10,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+            ),
+            ft.TextField(
+                label=None,
+                label_style=TextStyle(color='#6a6965', size=10),
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                #hint_text="cantidad",
+                dense=True,
+                text_align=TextAlign.CENTER,
+                hint_style=TextStyle(color='#6a6965', size=10),
+                color='black',
+                height=30,
+                width=60,
+                cursor_color="#12597b",
+                text_size=10,
+                border_color="#12597b",
+                autofocus=False,
+                bgcolor="#E1F5FE"
+            ),
+        ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
+
+        # Campo de entrada para el descuento del proveedor y el costo con el descuento aplicado
+        self.descuentoYtotal = ft.Row([
+            ft.Text(
+                value=f'Descuento % ',
+                width=None,
+                size=10,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+
+            ),
+            ft.TextField(
+                label= None,
+                label_style=TextStyle(color='#6a6965', size=10),
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                #hint_text="%",
+                dense=True,
+                text_align=TextAlign.CENTER,
+                hint_style=TextStyle(color='#6a6965', size=10),
+                color='black',
+                height=30,
+                width=60,
+                cursor_color="#12597b",
+                text_size=10,
+                border_color="#12597b",
+                autofocus=False,
+                bgcolor="#E1F5FE"
+            ),
+            ft.Text(
+                value= f'Total',
+                width=None,
+                size=10,
+                text_align=TextAlign.START,
+                weight=FontWeight.W_600,
+                color="#333333"
+            ),
+            ft.TextField(
+                label=None,
+                label_style=TextStyle(color='#6a6965', size=10),
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                dense=True,
+                text_align=TextAlign.CENTER,
+                hint_style=TextStyle(color='#6a6965', size=10),
+                color='black',
+                height=30,
+                width=60,
+                cursor_color="#12597b",
+                text_size=10,
+                border_color="#12597b",
+                autofocus=False,
+                bgcolor="#E1F5FE"
+            ),
+        ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
+
+        # Contenedor para mostrar los resultados de búsqueda
+        self.vistaResultadosBusqueda = ft.Container(
+            bgcolor='#ede0cc',
+            expand=True,
+            content=ft.GridView(
+                expand=1,
+                child_aspect_ratio=1.7, # ajusta la relacion alto por ancho
+                runs_count=1,  # ajusta el número de columnas según el diseño
+                spacing=1,  # Espacio entre las imágenes
+                run_spacing=1,  # Espacio entre las filas
+            )
+        )
+
+        # Boton para finalizar
+        self.BotonSalir = ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Salir",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Salir',
+                        icon=icons.EXIT_TO_APP_SHARP,
+                        icon_color="#FAFAF3",
+                        width=185,
+                        height=30,
+                        on_click=lambda e: page.go("/ingresos"),
+                    )
+                ]
+            )
+        )
+
+
+
+
+        # Contenedor principal que contiene todos los elementos de la interfaz
+        self.controls = [
+            ft.Container(
+                ft.Column([
+                    #self.imagenRegistro,
+                    self.nombre_cliente,
+                    #self.vehiculo_cliente,
+                    self.input_buscar,
+                    self.menu_principal,
+                    self.submenu_opciones,
+                    self.cantidadYprecio,
+                    self.descuentoYtotal,
+                    self.vistaResultadosBusqueda,
+                    self.BotonSalir
+                ]
+                ),
+
+                # propiedades contenedor principal
+                border_radius=25,
+                width=350,  # ancho
+                height=655,  # Alto
+                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
+                    "#ede0cc",
+                    "#ede0cc",
+                ])
+
+            )
+        ]
+
+    # metodo para manejar la opcion seleccionada en el menu desplegable principal
+    def pestaniaOpcion(self, e):
+        try:
+            # Crear un objeto Text para mostrar la opcion elegida
+            t = ft.Text()
+
+            # Obtener la opcion elegida del menu desplegable
+            elegirOpcion = self.menu_principal.content.controls[0].value
+
+            # Actualizar el valor del objeto Text con la opcion elegida
+            t.value = f"Opción elegida: {elegirOpcion}"
+
+            # Diccionario que mapea las opciones a las acciones correspondientes
+            acciones = {
+                'Neumaticos': 'Buscar en Neumaticos',
+                'Aceites y liquidos': 'Buscar en Aceites y liquidos',
+                'Frenos': 'Buscar en Frenos',
+                'Filtros': 'Buscar en Filtros',
+                'Motor': 'Buscar en Motor',
+                'Sistema limpiaparabrisas': 'Buscar en Sistema limpiparabrisas',
+                'Encendido y precalentamiento': 'Buscar en Encendido y precalentamiento',
+                'Suspension': 'Buscar en Suspension',
+                'Sistema electrico': 'Buscar en Sistema electrico',
+                'Amortiguacion': 'Buscar en Amortiguacion',
+                'Correas,cadenas,rodillos': 'Buscar en Correas,cadenas,rodillos',
+                'Sistema de refrigeracion del motor': 'Buscar en Sistema de refrigeracion del motor',
+                'Carroceria': 'Buscar en Carroceria',
+                'Calefaccion y ventilacion': 'Buscar en Calefaccion y ventilacion',
+                'Juntas y retenes': 'Buscar en Juntas y retenes',
+                'Escape': 'Buscar en Escape',
+                'Interior': 'Buscar en Interior',
+                'Sistema de combustible': 'Buscar en Sistema de combustible',
+                'Direccion': 'Buscar en Direccion',
+                'Embrague': 'Buscar en Embrague',
+                'Palier y junta homocinetica': 'Buscar en Palier y junta homocinetica',
+                'Remolque / piezas adicionales': 'buscar en Remolque / piezas adicionales',
+                'Caja de cambios': 'Buscar en Caja de cambios',
+                'Aire acondicionado': 'Buscar en Aire acondicionado',
+                'Rodamientos': 'Buscar en Rodamintos',
+                'Arboles de transmision y diferenciales': 'Buscar en Arboles de transmision y diferenciales',
+                'Sensores, reles, unidades de control': 'Buscar en Sensores, reles, unidades de control',
+                'Accesorios para coche': 'Buscar en Accesorios para coche',
+                'Kit de reparacion': 'Buscar en Kit de reparacion',
+                'Herramientas y equipo': 'Buscar en Herramientas y equipo',
+                'Tuberias y mangueras': 'Buscar en Tuberis y mangueras',
+                'Productos para cuidado del coche': 'Buscar en Productos para cuidado del coche',
+                'Iluminación': 'Buscar en Iluminación',
+                'Tuning': 'Buscar en Tuning',
+                'Sujeciones': 'Buscar en Sujeciones',
+            }
+
+            # Imprimir un mensaje segun la opcion elegida
+            if elegirOpcion in acciones:
+                print(acciones[elegirOpcion])
+            else:
+                print('Opcion no valida')
+
+            # Actualizar la pagina con el objeto Text
+            self.page.update(self)
+            # Agregar el objeto Text a la pagina
+            self.page.add(t)
+        except Exception as e:
+            print(f'Error: {e}')
+            # Registrar el error en el archivo de texto
+            with open("errores.txt", "a") as file:
+                momentoEspecificoError = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                nombre_metodo = "pestaniaOpcion, VentanaRecambios"
+                mensaje_error = f"{momentoEspecificoError} - Método: {nombre_metodo} - Error general: {e}\n"
+                file.write(mensaje_error)
+        finally:
+            db.session.close()
+
+    # metodo para cargar el menu de recambios en .json
+    def cargar_menu_json(self, ruta_json):
+        with open(ruta_json, 'r', encoding='utf-8') as archivo:
+            return json.load(archivo)
+
+    # Submenús asociados a cada opción del menú principal
+    def actualizar_submenu(self, e):
+        # Obtiene las opciones del submenú basadas en la selección del primer dropdown
+        seleccion = e.control.value
+
+        # Submenús asociados a cada opción del menú principal
+        menu = self.cargar_menu_json(self.ruta_json)
+
+        # Actualizar el valor del objeto Text con la opcion elegida
+        if seleccion in menu:
+            print(menu[seleccion])
+            self.submenu_opciones.options = [ft.dropdown.Option(sub) for sub in menu[seleccion]]
+            print(self.submenu_opciones.options)
+
+        else:
+            self.submenu_opciones.options = []  # Si no hay submenú, vacía las opciones
+        self.submenu_opciones.value = None  # Resetea la selección del submenú
+        self.submenu_opciones.update()
+
+    # metodo para el evento de clic del boton de busqueda
+    def botonBuscar(self, e):
+        categoria = self.menu_principal.content.controls[0].value
+
+        categorias = ['Accesorios para coche', 'Aceites y liquidos', 'Aire acondicionado', 'Amortiguacion',
+                      'Arboles de transmision y diferenciales', 'Caja de cambios', 'Calefaccion y ventilacion',
+                      'Carroceria', 'Correas, cadenas, rodillos', 'Direccion', 'Embrague',
+                      'Encendido y precalentamiento',
+                      'Escape', 'Filtros', 'Frenos', 'Herramientas y equipo', 'Iluminacion', 'Interior',
+                      'Juntas y retenes',
+                      'Kit de reparacion', 'Motor', 'Neumaticos', 'Palier y junta homocinetica',
+                      'Productos para cuidado del coche',
+                      'Remolque / piezas adicionales', 'Rodamientos', 'Sensores, reles, unidades de control',
+                      'Sistema de conbustible',
+                      'Sistema de refrigeracion de motor', 'Sistema electrico', 'Sistema limpiaparabrisas',
+                      'Sujeciones', 'Suspension',
+                      'Tuberias y mangueras', 'Tuning']
+
+        # Realizar la búsqueda segun la categoria seleccionada
+        if categoria in categorias:
+            self.buscar_recambio(e)
+        else:
+            print('Opción no válida, elige categoria en el desplegable')
+
+    # metodo para cargar los recambios existentes en el GridView
+    def buscar_recambio(self, e):
+        # Limpia los controles actuales del GridView
+        self.vistaResultadosBusqueda.content.controls = []
+
+        # inputs donde el usuario ingresa el nombre, categoria y subcategoria del recambio que quiere buscar
+        recambio = self.input_buscar.value.strip()  # este es el Input
+        categoria = self.menu_principal.content.controls[0].value.strip()
+        subcategoria = (self.submenu_opciones.value.strip() if self.submenu_opciones.value else "")
+
+        # Buscamos el recambio por nombre (ignorando mayúsculas y minusculas)
+        recambio_localizado = db.session.query(Recambio).filter(
+            and_(
+                Recambio.nombre_recambio.ilike(f'%{recambio}%'),
+                Recambio.categoria.ilike(f'%{categoria}%'),
+                or_(
+                    Recambio.subcategoria.ilike(f'%{subcategoria}%'),
+                    Recambio.subcategoria.is_(None)  # Opcional: permite que sea None si no se proporciona un valor
+                )
+            )
+        ).all()
+
+        self.input_buscar.value = ""
+        self.input_buscar.update()
+
+        # Diccionario para mapear el campo de entrada de cantidad con el ID del producto seleccionado
+        self.cantidad = {}
+
+        if recambio_localizado:
+            cards = []
+            for recambios in recambio_localizado:
+                self.cantidad[recambios.id_recambio] = self.cantidadYprecio
+                # mostramos detalles del cliente encontrado
+                print(f"Nombre: {recambios.nombre_recambio}, Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}")
+
+                # Crear un nuevo campo de entrada de cantidad para cada producto
+                input_cantidadRecambio = ft.TextField(
+                    label_style=TextStyle(color='#873600', size=12),
+                    border_color="#EFEBE9",
+                    value="0",
+                    text_size=12,
+                    text_align=ft.TextAlign.RIGHT,
+                    width=40,
+                    height=50,
+                    cursor_height=12
+                )
+
+                self.cantidad[recambios.id_recambio] = input_cantidadRecambio
+
+                card = ft.Card(
+                    content=ft.Container(
+                        alignment=ft.alignment.Alignment(x=0, y=0),
+                        bgcolor="#4b8ca8",
+                        padding=5,
+                        border=ft.border.all(1, ft.colors.BLUE_800),
+                        border_radius=ft.border_radius.all(10),
+                        content=ft.Column([
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"ID:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.id_recambio}", size=10, text_align=ft.TextAlign.LEFT),
+                                    ],
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Nombre:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.nombre_recambio}", size=10,
+                                                text_align=ft.TextAlign.CENTER, no_wrap=False)
+                                        # no_wrap Asegura que el texto se ajuste si es largo
+                                    ],
+                                    wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                bgcolor="transparent",
+                                padding=0,
+                                alignment=ft.alignment.center_left,
+                            ),
+                            ft.Container(
+                                ft.Row(
+                                    [
+                                        ft.Text(f"Descripcion:", size=10, weight=ft.FontWeight.W_700,
+                                                text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.descripcion}", size=10, text_align=ft.TextAlign.LEFT,
+                                                no_wrap=False) # no_wrap asegura que el texto se ajuste si es largo)
+                                    ],
+                                    wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
+                                    alignment=ft.MainAxisAlignment.START,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                ),
+                                expand=True,
+                                bgcolor="transparent",
+                                padding=1,
+                                alignment=ft.alignment.center_left,
+                            ),
+
+                            ft.Row([
+                                ft.ElevatedButton(
+                                    bgcolor="#12597b",
+                                    width=95,
+                                    height=20,
+                                    content=ft.Text("Asignar", color="white", size=11, bgcolor="#12597b"),
+                                    on_click=lambda e, producto_seleccionado_id=recambios.id_recambio:
+                                    self.registro_nuevo(e, producto_seleccionado_id),
+                                ),
+                            ],
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                vertical_alignment=ft.CrossAxisAlignment.END,
+                            )
+                        ])
+                    )
+                )
+
+                cards.append(card)
+
+            # agregar cards al GridView
+            for card in cards:
+                self.vistaResultadosBusqueda.content.controls.append(card)
+            # actualizar la interfaz
+            self.vistaResultadosBusqueda.update()
+
+    # metodo para registrar recambios al registro del ingreso
+    def registro_nuevo(self, e,  producto_seleccionado_id):
+        print("\n > Crear registro")
+
+        # Obtener el ID del ingreso almacenado en la sesión
+        ingreso_id = self.page.session.get('nuevo_ingreso')
+        if ingreso_id:
+            ingreso_actual = db.session.query(Ingreso).filter_by(id_ingreso=ingreso_id).first()
+            if ingreso_actual:
+                print(f" ID : {ingreso_actual.id_ingreso}, ID Cliente: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
+            else:
+                print("Error: No se ha encontrado el ingreso en la base de datos.")
+                return
+        else:
+            print("Error: No se ha establecido el ingreso en la sesión.")
+            return
+
+        # Seleccionar el recambio para agregar al registro del ingreso
+        recambios = db.session.query(Recambio).all()
+        if recambios:
+            for recambio in recambios:
+                print(f" ID: {recambio.id_recambio}, Nombre: {recambio.nombre_recambio}")
+
+            # elimina impresion de la ultima busqueda en pantalla
+            self.vistaResultadosBusqueda.clean()
+
+            # Seleccionar el recambio para agregar al registro del ingreso
+            id_recambio_seleccionado = producto_seleccionado_id
+
+            recambio_seleccionado = db.session.query(Recambio).filter(
+                Recambio.id_recambio == id_recambio_seleccionado).first()
+
+            # Obtener precio, cantidad, descuento y total
+            precio = float(self.cantidadYprecio.controls[1].value.strip())
+            cantidad = float(self.cantidadYprecio.controls[3].value.strip())
+            descuento =float(self.descuentoYtotal.controls[1].value.strip())
+            total = float(self.descuentoYtotal.controls[3].value.strip())
+
+            if recambio_seleccionado:
+                print(f"Recambio seleccionado: {recambio_seleccionado.nombre_recambio}")
+                registro_recambio = Registro(precio=precio, descuento=descuento, cantidad=cantidad, costo_real=total)
+
+                # Relación bidireccional automática
+                ingreso_actual.registros.append(registro_recambio)
+                recambio_seleccionado.registros.append(registro_recambio)
+
+                # Guardar cambios
+                db.session.add(registro_recambio)
+                db.session.commit()
+                print("Registro guardado exitosamente.")
+            else:
+                print("Error: Cliente o recambio no encontrado.")
+
+            # Restablecer el valor del campo de busqueda a una cadena vacia
+            self.cantidadYprecio.controls[1].value = ""
+            self.cantidadYprecio.controls[3].value = ""
+            self.descuentoYtotal.controls[1].value = ""
+            self.descuentoYtotal.controls[3].value = ""
+
+            # Actualizar el campo de busqueda en la interfaz de usuario
+            self.cantidadYprecio.update()
+            self.descuentoYtotal.update()
+
+
+            db.session.close()
 
 def main(page: ft.page):
     # configuración relacionada con la página
@@ -3152,11 +3871,14 @@ def main(page: ft.page):
         elif page.route == "/nuevo_ingreso":
             nuevo_ingreso = VentanaNuevoIngreso(page)
             page.views.append(nuevo_ingreso)
+        elif page.route == "/registro":
+            registro = VentanaRegistro(page)
+            page.views.append(registro)
 
         page.update()
 
     page.on_route_change = router
-    page.go("/inicio")
+    #page.go("/inicio")
     #page.go("/clientes")
     #page.go("/clienteNuevo")
     #page.go("/vehiculos")
@@ -3164,7 +3886,8 @@ def main(page: ft.page):
     #page.go("/recambios")
     #page.go("/crearRecambio")
     #page.go("/ingresos")
-    #page.go("/nuevo_ingreso")
+    page.go("/nuevo_ingreso")
+    #page.go("/registro")
 
 
 # instanciar y ejecutar la aplicación
