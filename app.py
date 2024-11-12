@@ -306,12 +306,12 @@ class VentanaCliente(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Imagen clientes
         self.imagenClientes = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
+                bgcolor="#E0E7ED",
                 width=320,
                 height=70,
                 padding=0,
@@ -329,7 +329,7 @@ class VentanaCliente(ft.View):
             label="Buscar Cliente...",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce el nombre del cliente",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
@@ -338,7 +338,7 @@ class VentanaCliente(ft.View):
             text_size=13,
             border_color="#12597b",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Boton para activar la busqueda cliente y boton agregar nuevo cliente
@@ -362,7 +362,7 @@ class VentanaCliente(ft.View):
                     # Boton añadir nuevo
                     ft.IconButton(
                         icon=ft.icons.PERSON_ADD,
-                        icon_color="#12597b",
+                        icon_color="#709775",
                         icon_size=30,
                         tooltip="Añadir Nuevo",
                         on_click=lambda e: page.go("/clienteNuevo"),
@@ -373,13 +373,14 @@ class VentanaCliente(ft.View):
 
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#ede0cc',
+            bgcolor='#E0E7ED',
             expand=True,
             content=ft.GridView(
                 expand=1,
+                on_scroll_interval=10,
                 child_aspect_ratio=1.9, # ajusta la relacion alto por ancho
                 runs_count=1,  # ajusta el número de columnas según el diseño
-                spacing=1,  # Espacio entre las imágenes
+                spacing=10,  # Espacio entre las imágenes
                 run_spacing=1,  # Espacio entre las filas
             )
         )
@@ -393,26 +394,26 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.HOME_ROUNDED,
-                        color="#12597b",
-                        size=24  # Ajusta el tamaño del ícono seleccionado
+                        color="#31708E",
+                        size=28  # Ajusta el tamaño del ícono seleccionado
                     ),
                     label="Inicio",
                 ),
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.PERSON,
-                        color="#12597b",
-                        size=24
+                        color="#31708E",
+                        size=28
                     ),
                     label="Cliente",
 
@@ -420,46 +421,46 @@ class VentanaCliente(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR,
-                        color="#12597b",
-                        size=24
+                        color="#31708E",
+                        size=28
                     ),
                     label="Vehículo",
                 ),
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.SETTINGS,
-                        color="#12597b",
-                        size=24
+                        color="#31708E",
+                        size=28
                     ),
                     label="Recambio",
                 ),
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR,
-                        color="#12597b",
-                        size=24
+                        color="#31708E",
+                        size=28
                     ),
                     label="Ingreso",
                 )
             ],
-            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
-            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
+            bgcolor="#D1E2E7",  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color="#FFD700",  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color="#E0E7ED",  # Color de superficie para el material (gris claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -471,6 +472,7 @@ class VentanaCliente(ft.View):
                     self.imagenClientes,
                     self.input_buscar,
                     self.BotonBuscarCliente,
+                    ft.Divider(height=10, color="#B0BEC5"),
                     self.vistaResultadosBusqueda,
                     self.barraNavegacion,
 
@@ -482,8 +484,8 @@ class VentanaCliente(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -510,18 +512,19 @@ class VentanaCliente(ft.View):
                 # mostramos detalles del cliente encontrado
                 print(f"Nombre: {cliente.nombre}, Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}")
                 card = ft.Card(
+                    elevation=15,
                     content=ft.Container(
                         alignment=ft.alignment.Alignment(x=0, y=0),
-                        bgcolor="#4b8ca8",
+                        bgcolor="#9ec4cc",
                         padding=5,
                         border=ft.border.all(1, ft.colors.BLUE_800),
-                        border_radius=ft.border_radius.all(10),
+                        border_radius=ft.border_radius.all(12),
                         content=ft.Column([
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"{cliente.nombre}, ", size=12, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.CENTER, no_wrap = False), # no_wrap Asegura que el texto se ajuste si es largo
-                                        ft.Text(f"Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}", size=10, text_align=ft.TextAlign.LEFT)
+                                        ft.Text(f"{cliente.nombre}, ", size=14, weight=ft.FontWeight.W_700, color="#283747", text_align=ft.TextAlign.CENTER, no_wrap = False), # no_wrap Asegura que el texto se ajuste si es largo
+                                        ft.Text(f"Desde: {cliente.fecha_alta.strftime('%d/%m/%Y')}", size=14, text_align=ft.TextAlign.LEFT, color="#283747")
                                     ],
                                     wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
                                     alignment=ft.MainAxisAlignment.CENTER,
@@ -533,11 +536,11 @@ class VentanaCliente(ft.View):
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Telefono:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{cliente.telefono}",size=10, text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"Telefono:", size=12, weight=ft.FontWeight.W_700, color="#283747",text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.telefono}",size=12, text_align=ft.TextAlign.LEFT, color="#283747")
                                     ],
                                     alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER
                                 ),
                                 bgcolor="transparent",
                                 padding=0,
@@ -547,8 +550,8 @@ class VentanaCliente(ft.View):
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Dirección:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{cliente.direccion}",size=10, text_align=ft.TextAlign.LEFT, no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
+                                        ft.Text(f"Dirección:", size=11, weight=ft.FontWeight.W_700, color="#283747", text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.direccion}",size=11, text_align=ft.TextAlign.LEFT, color="#283747", no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
                                     ],
                                     wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
                                     alignment=ft.MainAxisAlignment.START,
@@ -562,9 +565,8 @@ class VentanaCliente(ft.View):
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Correo:", size=10, weight=ft.FontWeight.W_700,
-                                                text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{cliente.correo}", size=10, text_align=ft.TextAlign.LEFT, no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
+                                        ft.Text(f"Correo:", size=12, weight=ft.FontWeight.W_700, color="#283747", text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{cliente.correo}", size=12, text_align=ft.TextAlign.LEFT, color="#283747", no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
                                     ],
                                     wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
                                     alignment=ft.MainAxisAlignment.START,
@@ -579,25 +581,25 @@ class VentanaCliente(ft.View):
                                 [
                                     ft.IconButton(
                                         icon=ft.icons.CAR_RENTAL,
-                                        icon_color="#FAFAF3",
+                                        icon_color="E0E7ED",
                                         icon_size=25,
                                         tooltip="Ingresos",
                                     ),
                                     ft.IconButton(
                                         icon=ft.icons.DIRECTIONS_CAR,
-                                        icon_color="#FAFAF3",
+                                        icon_color="E0E7ED",
                                         icon_size=25,
                                         tooltip="Vehiculos",
                                     ),
                                     ft.IconButton(
                                         icon=ft.icons.EDIT_NOTE,
-                                        icon_color="#FAFAF3",
+                                        icon_color="E0E7ED",
                                         icon_size=25,
                                         tooltip="Editar",
                                     ),
                                     ft.IconButton(
                                         icon=ft.icons.DELETE_FOREVER_ROUNDED,
-                                        icon_color="red",
+                                        icon_color="E0E7ED",
                                         icon_size=25,
                                         tooltip="Eliminar",
                                     ),
@@ -3879,14 +3881,14 @@ def main(page: ft.page):
 
     page.on_route_change = router
     #page.go("/inicio")
-    #page.go("/clientes")
+    page.go("/clientes")
     #page.go("/clienteNuevo")
     #page.go("/vehiculos")
     #page.go("/vehiculoNuevo")
     #page.go("/recambios")
     #page.go("/crearRecambio")
     #page.go("/ingresos")
-    page.go("/nuevo_ingreso")
+    #page.go("/nuevo_ingreso")
     #page.go("/registro")
 
 
