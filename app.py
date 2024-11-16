@@ -1,7 +1,7 @@
 from datetime import datetime
 import flet as ft
 from flet import *
-from sqlalchemy import and_, desc, asc, or_
+from sqlalchemy import and_, or_, desc, asc
 from sqlalchemy.exc import SQLAlchemyError
 from models import Cliente, Vehiculo, Recambio, Ingreso, Registro
 import db
@@ -42,19 +42,19 @@ class VentanaInicio(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Logo de la App
         self.logo = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
+                bgcolor="#E0E7ED",
                 width=250,
                 height=180,
                 padding=0,
                 image_repeat=ImageRepeat.NO_REPEAT,
                 shape=ft.BoxShape("rectangle"),
                 # Define imagen
-                image_src="/logo-APP.png",
+                image_src="/logo-APP3.png",
                 image_fit=ft.ImageFit.COVER,
             ),
             alignment=ft.alignment.Alignment(x=0, y=0)
@@ -62,9 +62,8 @@ class VentanaInicio(ft.View):
 
         # Imagen vehiculo
         self.ImagenVehiculo = ft.Container(
-
             ft.Container(
-                bgcolor="#ede0cc",
+                bgcolor="#E0E7ED",
                 width=200,
                 height=90,
                 padding=0,
@@ -153,12 +152,12 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.HOME_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20  # Ajusta el tamaño del ícono no seleccionado
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.HOME_ROUNDED,
-                        color="#12597b",
+                        color="#31708E",
                         size=24  # Ajusta el tamaño del ícono seleccionado
                     ),
                     label="Inicio",
@@ -166,12 +165,12 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.PERSON_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.PERSON,
-                        color="#12597b",
+                        color="#31708E",
                         size=24
                     ),
                     label="Cliente",
@@ -180,12 +179,12 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.DIRECTIONS_CAR,
-                        color="#12597b",
+                        color="#31708E",
                         size=24
                     ),
                     label="Vehículo",
@@ -193,12 +192,12 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.SETTINGS_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.SETTINGS,
-                        color="#12597b",
+                        color="#31708E",
                         size=24
                     ),
                     label="Recambio",
@@ -206,20 +205,20 @@ class VentanaInicio(ft.View):
                 ft.NavigationBarDestination(
                     icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR_OUTLINED,
-                        color="#12597b",
+                        color="#31708E",
                         size=20
                     ),
                     selected_icon_content=ft.Icon(
                         name=ft.icons.CAR_REPAIR,
-                        color="#12597b",
+                        color="#31708E",
                         size=24
                     ),
                     label="Ingreso",
                 )
             ],
-            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
-            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
+            bgcolor="#D1E2E7",  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color="#FFD700",  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color="#E0E7ED",  # Color de superficie para el material (#ede0cc)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -249,8 +248,8 @@ class VentanaInicio(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -667,12 +666,24 @@ class VentanaClienteNuevo(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Imagen gestion de cliente
         self.imagen_gestionCliente = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
+                    content=ft.Text(
+                        value="Gestión de Clientes",
+                        size=22,
+                        color=ft.colors.WHITE,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                shadow=ft.BoxShadow(
+                    blur_radius=8,  # Difuminado de la sombra
+                    spread_radius=2,  # Expansión de la sombra
+                    offset=ft.Offset(0, 4),  # Posición: hacia abajo
+                    color=ft.colors.GREY_500,  # Color de la sombra
+                ),
+                bgcolor="#E0E7ED",
                 width=320,
                 height=120,
                 padding=0,
@@ -688,68 +699,69 @@ class VentanaClienteNuevo(ft.View):
         # Campo de entrada para el nombre del cliente
         self.input_nombreCliente = ft.TextField(
             label="Nombre",
-            label_style=TextStyle(color='#12597b', size=12),
+            label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce el nombre del cliente",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
             height=35,
             cursor_color="#12597b",
             text_size=13,
-            border_color="transparent",
+            border_color="#B0BEC5",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Campo de entrada para el telefono del cliente
         self.input_telefonoCliente = ft.TextField(
             label="Telefono",
-            label_style=TextStyle(color='#12597b', size=12),
+            label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce el telefono del cliente",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
             height=35,
             cursor_color="#12597b",
             text_size=13,
-            border_color="transparent",
+            border_color="#B0BEC5",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Campo de entrada para el correo electronico del cliente
         self.input_correoCliente = ft.TextField(
             label="Correo Electronico",
-            label_style=TextStyle(color='#12597b', size=12),
+            label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce el correo del cliente",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
             height=35,
             cursor_color="#12597b",
             text_size=13,
-            border_color="transparent",
+            border_color="#B0BEC5",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Campo de entrada para la direccion del cliente
         self.input_direccionCliente = ft.Container(
-            bgcolor='#E1F5FE',
-            # border=ft.border.all(ft.colors.ORANGE_100),
+            bgcolor='#D9E4EA',
+            border=ft.border.all(color="#B0BEC5", width=1),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             # expand=True,
             height=180,
             content=
             ft.TextField(
                 filled=False,
                 label="Direccion",
-                label_style=TextStyle(color='#12597b', size=12, ),
+                label_style=TextStyle(color='#6a6965', size=12, ),
                 expand=True,
                 value="",
-                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                border_radius=ft.border_radius.vertical(top=6, bottom=6),
                 hint_text="Introduce la direccion del cliente",
                 hint_style=TextStyle(color='#6a6965', size=10),
                 max_length=200,  # maximo de caracteres que se pueden ingresar en TextField
@@ -761,7 +773,7 @@ class VentanaClienteNuevo(ft.View):
                 text_size=13,
                 border_color="transparent",
                 autofocus=False,
-                bgcolor="#E1F5FE",
+                bgcolor="#D9E4EA",
                 text_vertical_align=ft.VerticalAlignment.START,
             )
         )
@@ -807,6 +819,7 @@ class VentanaClienteNuevo(ft.View):
                 ft.Column([
                     # self.tituloClientes,
                     self.imagen_gestionCliente,
+                    ft.Divider(height=10, color="transparent"),
                     self.input_nombreCliente,
                     self.input_telefonoCliente,
                     self.input_correoCliente,
@@ -820,8 +833,8 @@ class VentanaClienteNuevo(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -3127,6 +3140,7 @@ class VentanaNuevoIngreso(ft.View):
         self.page.session.set("matricula", vehiculo.matricula)
         db.session.close()
 
+
 class VentanaRegistro(ft.View):
     '''Clase VentanaRegistro: Interfaz gráfica para la gestión de registro de repuestos e historial.
 
@@ -3835,6 +3849,7 @@ class VentanaRegistro(ft.View):
 
             db.session.close()
 
+
 def main(page: ft.page):
     # configuración relacionada con la página
     page.title = "app"
@@ -3881,8 +3896,8 @@ def main(page: ft.page):
 
     page.on_route_change = router
     #page.go("/inicio")
-    page.go("/clientes")
-    #page.go("/clienteNuevo")
+    #page.go("/clientes")
+    page.go("/clienteNuevo")
     #page.go("/vehiculos")
     #page.go("/vehiculoNuevo")
     #page.go("/recambios")
