@@ -47,7 +47,7 @@ class VentanaInicio(ft.View):
         # Logo de la App
         self.logo = ft.Container(
             ft.Container(
-                bgcolor="#E0E7ED",
+                bgcolor="black",
                 width=250,
                 height=180,
                 padding=0,
@@ -322,7 +322,7 @@ class VentanaCliente(ft.View):
                         offset=ft.Offset(0, 4),  # Posición: hacia abajo
                         color=ft.colors.GREY_500,  # Color de la sombra
                     ),
-                    bgcolor="#E0E7ED",
+                    bgcolor="black",
                     width=320,
                     height=120,
                     padding=0,
@@ -331,13 +331,14 @@ class VentanaCliente(ft.View):
                     # Define imagen
                     image_src="/ImagenClientes.png",
                     image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
                 ),
                 alignment=ft.alignment.Alignment(x=0, y=0)
             )
 
         # Campo de entrada para la busqueda
         self.input_buscar = ft.TextField(
-            label="Buscar Cliente...",
+            label="Buscar Cliente",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
             border_radius=ft.border_radius.vertical(top=6, bottom=6),
@@ -694,7 +695,7 @@ class VentanaClienteNuevo(ft.View):
                         offset=ft.Offset(0, 4),  # Posición: hacia abajo
                         color=ft.colors.GREY_500,  # Color de la sombra
                     ),
-                    bgcolor="#E0E7ED",
+                    bgcolor="black",
                     width=320,
                     height=120,
                     padding=0,
@@ -703,6 +704,7 @@ class VentanaClienteNuevo(ft.View):
                     # Define imagen
                     image_src="/ImagenClienteNuevo.png",
                     image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
                 ),
                 alignment=ft.alignment.Alignment(x=0, y=0)
             )
@@ -922,7 +924,7 @@ class VentanaVehiculo(ft.View):
                         offset=ft.Offset(0, 4),  # Posición: hacia abajo
                         color=ft.colors.GREY_500,  # Color de la sombra
                     ),
-                    bgcolor="#E0E7ED",
+                    bgcolor="black",
                     width=320,
                     height=120,
                     padding=0,
@@ -931,13 +933,14 @@ class VentanaVehiculo(ft.View):
                     # Define imagen
                     image_src="/ImagenVehiculos.png",
                     image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
                 ),
                 alignment=ft.alignment.Alignment(x=0, y=0)
             )
 
         # Campo de entrada para la busqueda
         self.input_buscar = ft.TextField(
-            label="Buscar Vehiculo...",
+            label="Buscar Vehiculo",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
             border_radius=ft.border_radius.vertical(top=6, bottom=6),
@@ -949,7 +952,7 @@ class VentanaVehiculo(ft.View):
             text_size=13,
             border_color="#12597b",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Boton para activar la busqueda del vehiculo y boton agregar nuevo vehiculo
@@ -1273,7 +1276,7 @@ class VentanaVehiculoNuevo(ft.View):
                         offset=ft.Offset(0, 4),  # Posición: hacia abajo
                         color=ft.colors.GREY_500,  # Color de la sombra
                     ),
-                    bgcolor="#E0E7ED",
+                    bgcolor="black",
                     width=320,
                     height=120,
                     padding=0,
@@ -1282,6 +1285,7 @@ class VentanaVehiculoNuevo(ft.View):
                     # Define imagen
                     image_src="/imagen_de_nuevo_vehiculo.png",
                     image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
                 ),
                 alignment=ft.alignment.Alignment(x=0, y=0)
             )
@@ -1298,7 +1302,7 @@ class VentanaVehiculoNuevo(ft.View):
                     ft.Dropdown(
                         label='Selecciona un Cliente',
                         alignment=Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#E0E7ED', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#D9E4EA', weight=ft.FontWeight.W_700),
                         options_fill_horizontally=True,
                         dense=True,
                         max_menu_height=True,
@@ -1311,7 +1315,7 @@ class VentanaVehiculoNuevo(ft.View):
                         on_change=lambda e: (self.pestaniaOpcion(e)),
                         options=[ft.dropdown.Option(str(cliente.nombre))
                             for cliente in db.session.query(Cliente).all()],
-                        bgcolor="#E0E7ED",
+                        bgcolor="#D9E4EA",
                         padding=0,
                     )
                 ]
@@ -1492,367 +1496,6 @@ class VentanaVehiculoNuevo(ft.View):
         db.session.close()
 
 
-class VentanaCrearRecambio(ft.View):
-    '''Clase VentanaRecambios: Interfaz gráfica para la gestión de recambios.
-
-      Esta clase representa la ventana de la aplicación dedicada a la gestión de recambios, donde el
-      usuario puede realizar operaciones como búsqueda, adición, modificación y eliminación de recambios
-      utilizados en las reparaciones.
-
-      Args:
-          - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
-
-      Contiene:
-          - Imagen de título: Muestra una imagen de "Recambios" para identificar visualmente la sección.
-          - Input: Campo de texto para ingresar el nombre o los detalles del recambio a buscar.
-          - Botón ElevatedButton "Buscar Recambio": Activa la búsqueda de recambios en base a los datos ingresados.
-          - Botón ElevatedButton "Añadir Recambio": Permite al usuario añadir un nuevo recambio al sistema ingresando
-            los datos requeridos (nombre, descripción, costo, etc.).
-          - Botón ElevatedButton "Modificar Recambio": Accede a una interfaz para modificar los datos de un
-            recambio existente en el sistema.
-          - Botón ElevatedButton "Eliminar Recambio": Elimina del sistema los registros del recambio seleccionado.
-      '''
-
-    def __init__(self, page: ft.Page):
-        '''Constructor de la interfaz grafica para la ventana recambios'''
-        super(VentanaCrearRecambio, self).__init__(
-            route="/crearRecambio", horizontal_alignment=CrossAxisAlignment.CENTER,
-            vertical_alignment=MainAxisAlignment.CENTER
-        )
-
-        # Ruta completa al archivo JSON del menu para los recambios
-        self.ruta_json = r'C:\Users\Juan Carlos\espacio_de_trabajo\AAA Practicas personal\TallerManager\database\menu_recambios.json'
-
-        self.page = page
-
-        # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
-
-        # Titulo imagen recambios
-        self.imagenCrearRecambios = ft.Container(
-            ft.Container(
-                bgcolor="#ede0cc",
-                width=320,
-                height=100,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/ImagenCrearRecambio.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
-
-        # Campo de entrada para nombre del recambio
-        self.input_nombreRecambio = ft.Container(
-            bgcolor='#FAFAF3',
-            # border=ft.border.all(ft.colors.ORANGE_100),
-            #expand=True,
-            height=70,
-            content=
-            ft.TextField(
-                filled=False,
-                label="Nombre del Recambio...",
-                label_style=TextStyle(color='#12597b', size=12),
-                value="",
-                border_radius=ft.border_radius.vertical(top=5, bottom=5),
-                hint_text="Introduce el Nombre",
-                hint_style=TextStyle(color='#6a6965', size=10),
-                max_length=70,  # maximo de caracteres que se pueden ingresar en TextField
-                multiline=True,  # puede contener varias lineas de texto
-                color='black',
-                height=90,
-                cursor_color="#12597b",
-                text_size=13,
-                border_color="transparent",
-                autofocus=True,
-                bgcolor="transparent",
-            )
-        )
-
-        # Campo de entrada para la descripcion del recambio
-        self.input_descripcionRecambio = ft.Container(
-            bgcolor='#FAFAF3',
-            # border=ft.border.all(ft.colors.ORANGE_100),
-            #expand=True,
-            height=180,
-            content=
-                ft.TextField(
-                    filled=False,
-                    label="Descripccion del Recambio...",
-                    label_style=TextStyle(color='#12597b', size=12, ),
-                    expand=True,
-                    value="",
-                    border_radius=ft.border_radius.vertical(top=5, bottom=5),
-                    hint_text="Introduce la Descripcion",
-                    hint_style=TextStyle(color='#6a6965', size=10),
-                    max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
-                    # max_lines =  10, # maximo de líneas que se mostraran a la vez
-                    multiline=True,  # puede contener varias lineas de texto
-                    color='black',
-                    height=180,
-                    cursor_color="#12597b",
-                    text_size=13,
-                    border_color="transparent",
-                    autofocus=False,
-                    bgcolor="transparent",
-                    text_vertical_align=ft.VerticalAlignment.START,
-                )
-            )
-
-        # Menu desplegable principal para elegir una opcion
-        self.categoria = ft.Container(
-            alignment=ft.alignment.Alignment(x=0, y=0),
-            content=Row(
-                alignment=ft.MainAxisAlignment.START,
-                controls=[
-                    ft.Dropdown(
-                        label='Selecciona Categoría',
-                        alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
-                        options_fill_horizontally =True,
-                        dense = True,
-                        height=40,
-                        width=300,
-                        content_padding=6,
-                        color='#12597b',
-                        border_color='#12597b',
-                        text_size=11,
-                        on_change=lambda e: (self.pestaniaOpcion(e),
-                                             self.actualizar_submenu(e)),
-                        options=[
-                            # Lista de opciones para los recambios
-                            ft.dropdown.Option("Accesorios para coche"),
-                            ft.dropdown.Option("Aceites y líquidos"),
-                            ft.dropdown.Option("Aire acondicionado"),
-                            ft.dropdown.Option("Amortiguacion"),
-                            ft.dropdown.Option("Árboles de transmisión y diferenciales"),
-                            ft.dropdown.Option("Caja de cambios"),
-                            ft.dropdown.Option("Calefacción y ventilación"),
-                            ft.dropdown.Option("Carrocería"),
-                            ft.dropdown.Option("Correas, cadenas, rodillos"),
-                            ft.dropdown.Option("Direccion"),
-                            ft.dropdown.Option("Embrague"),
-                            ft.dropdown.Option("Encendido y precalentamiento"),
-                            ft.dropdown.Option("Escape"),
-                            ft.dropdown.Option("Filtros"),
-                            ft.dropdown.Option("Frenos"),
-                            ft.dropdown.Option("Herramientas y equipo"),
-                            ft.dropdown.Option("Iluminación"),
-                            ft.dropdown.Option("Interior"),
-                            ft.dropdown.Option("Juntas y retenes"),
-                            ft.dropdown.Option("Kit de reparación"),
-                            ft.dropdown.Option("Motor"),
-                            ft.dropdown.Option("Neumáticos"),
-                            ft.dropdown.Option("Palier y junta homocinetica"),
-                            ft.dropdown.Option("Productos para cuidado del coche"),
-                            ft.dropdown.Option("Remolque / piezas adicionales"),
-                            ft.dropdown.Option("Rodamientos"),
-                            ft.dropdown.Option("Sensores, relés, unidades de control"),
-                            ft.dropdown.Option("Sistema de combustible"),
-                            ft.dropdown.Option("Sistema de refrigeración del motor"),
-                            ft.dropdown.Option("Sistema electrico"),
-                            ft.dropdown.Option("Sistema limpiaparabrisas"),
-                            ft.dropdown.Option("Sujeciones"),
-                            ft.dropdown.Option("Suspension"),
-                            ft.dropdown.Option("Tuberías y mangueras"),
-                            ft.dropdown.Option("Tuning")
-
-                        ],
-                        bgcolor="#ede0cc",
-                        padding = 0,
-                    )
-                ]
-            )
-        )
-
-        # Menu desplegable secundario para elegir una opcion
-        self.subcategoria = ft.Dropdown(
-                        label='Selecciona Subcategoría ',
-                        alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
-                        options_fill_horizontally =True,
-                        dense = True,
-                        max_menu_height=True,
-                        height=50,
-                        width=300,
-                        content_padding=6,
-                        color='#12597b',
-                        border_color='#12597b',
-                        text_size=10,
-                        on_change=lambda e: (self.actualizar_submenu(e)),
-                        options=[],
-                        bgcolor="#ede0cc",
-                        padding=0,
-                    )
-
-        # Boton para activar la creacion del recambio
-        self.BotonCrearRecambio = ft.Container(
-            expand=True,
-            alignment=ft.alignment.Alignment(x=0, y=0),
-            content=Row(
-                alignment=ft.MainAxisAlignment.CENTER,
-                controls=[
-                    # Boton buscar cliente y añadir nuevo
-                    ft.ElevatedButton(
-                        text="Aceptar",
-                        color="#FAFAF3",
-                        bgcolor="#12597b",
-                        tooltip='Añadir Recambio',
-                        icon=icons.ADD,
-                        icon_color="#FAFAF3",
-                        width=140,
-                        height=30,
-                        on_click=lambda e: (self.crear_recambio(e), page.go("/recambios")),
-                    ), ft.ElevatedButton(
-                        text="Cancelar",
-                        color="#FAFAF3",
-                        bgcolor="#12597b",
-                        tooltip='Cancelar Ingreso',
-                        icon=icons.CANCEL,
-                        icon_color="#FAFAF3",
-                        width=140,
-                        height=30,
-                        on_click=lambda _: page.go("/recambios"),
-                    ),
-                ]
-            )
-        )
-
-        # Contenedor principal que contiene todos los elementos de la interfaz
-        self.controls = [
-            ft.Container(
-                ft.Column([
-                    self.imagenCrearRecambios,
-                    self.input_nombreRecambio,
-                    self.input_descripcionRecambio,
-                    self.categoria,
-                    self.subcategoria,
-                    self.BotonCrearRecambio,
-                ]
-                ),
-
-                # propiedades contenedor principal
-                border_radius=25,
-                width=350,  # ancho
-                height=655,  # Alto
-                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
-                ])
-
-            )
-        ]
-
-
-    # metodo para manejar la opcion seleccionada en el menu desplegable principal
-    def pestaniaOpcion(self, e):
-
-        # Crear un objeto Text para mostrar la opcion elegida
-        t = ft.Text()
-
-        # Obtener la opcion elegida del menu desplegable
-        elegirOpcion = self.categoria.content.controls[0].value
-
-        # Actualizar el valor del objeto Text con la opcion elegida
-        t.value = f"Opción elegida: {elegirOpcion}"
-
-        # Diccionario que mapea las opciones a las acciones correspondientes
-        acciones = {
-            'Neumaticos':'Añadir en Neumaticos',
-            'Aceites y liquidos': 'Añadir en Aceites y liquidos',
-            'Frenos': 'Añadir en Frenos',
-            'Filtros': 'Añadir en Filtros',
-            'Motor': 'Añadir en Motor',
-            'Sistema limpiaparabrisas': 'Añadir en Sistema limpiparabrisas',
-            'Encendido y precalentamiento': 'Añadir en Encendido y precalentamiento',
-            'Suspension': 'Añadir en Suspension',
-            'Sistema electrico': 'Añadir en Sistema electrico',
-            'Amortiguacion': 'Añadir en Amortiguacion',
-            'Correas,cadenas,rodillos': 'Añadir en Correas,cadenas,rodillos',
-            'Sistema de refrigeracion del motor': 'Añadir en Sistema de refrigeracion del motor',
-            'Carroceria': 'Añadir en Carroceria',
-            'Calefaccion y ventilacion': 'Añadir en Calefaccion y ventilacion',
-            'Juntas y retenes': 'Añadir en Juntas y retenes',
-            'Escape': 'Añadir en Escape',
-            'Interior': 'Añadir en Interior',
-            'Sistema de combustible': 'Añadir en Sistema de combustible',
-            'Direccion': 'Añadir en Direccion',
-            'Embrague': 'Añadir en Embrague',
-            'Palier y junta homocinetica': 'Añadir en Palier y junta homocinetica',
-            'Remolque / piezas adicionales': 'Añadir en Remolque / piezas adicionales',
-            'Caja de cambios': 'Añadir en Caja de cambios',
-            'Aire acondicionado': 'Añadir en Aire acondicionado',
-            'Rodamientos': 'Añadir en Rodamintos',
-            'Arboles de transmision y diferenciales': 'Añadir en Arboles de transmision y diferenciales',
-            'Sensores, reles, unidades de control': 'Añadir en Sensores, reles, unidades de control',
-            'Accesorios para coche': 'Añadir en Accesorios para coche',
-            'Kit de reparacion': 'Añadir en Kit de reparacion',
-            'Herramientas y equipo': 'Añadir en Herramientas y equipo',
-            'Tuberias y mangueras': 'Añadir en Tuberis y mangueras',
-            'Productos para cuidado del coche': 'Añadir en Productos para cuidado del coche',
-            'Iluminación': 'Añadir en Iluminación',
-            'Tuning': 'Añadir en Tuning',
-            'Sujeciones': 'Añadir en Sujeciones',
-        }
-
-        # Imprimir un mensaje segun la opcion elegida
-        if elegirOpcion in acciones:
-            print(acciones[elegirOpcion])
-        else:
-            print('Opcion no valida')
-
-        # Actualizar la pagina con el objeto Text
-        self.page.update(self)
-        # Agregar el objeto Text a la pagina
-        self.page.add(t)
-
-        db.session.close()
-
-    # metodo para cargar el menu de recambios en .json
-    def cargar_menu_json(self, ruta_json):
-        with open(ruta_json, 'r', encoding='utf-8') as archivo:
-            return json.load(archivo)
-
-    # Submenús asociados a cada opción del menú principal
-    def actualizar_submenu(self, e):
-        # Obtiene las opciones del submenú basadas en la selección del primer dropdown
-        seleccion = e.control.value
-
-        # Submenús asociados a cada opción del menú principal
-        menu = self.cargar_menu_json(self.ruta_json)
-
-        # Actualizar el valor del objeto Text con la opcion elegida
-        if seleccion in menu:
-            print(menu[seleccion])
-            self.subcategoria.options = [ft.dropdown.Option(sub) for sub in menu[seleccion]]
-            print(self.subcategoria.options)
-        self.subcategoria.update()
-
-    # metodo para registrar nuevo recambio
-    def crear_recambio(self, e):
-        print("\n > Crear recambio")
-        nombre_recambio = self.input_nombreRecambio.content.value.strip()  # este es el Input
-        descripcion = self.input_descripcionRecambio.content.value.strip()  # este es el Input
-        categoria = self.categoria.content.controls[0].value
-        subcategoria = self.subcategoria.value.strip()
-        fecha_alta = datetime.now()
-
-        # Creación y adición del nuevo recambio
-        nuevo_recambio = Recambio(nombre_recambio=nombre_recambio, descripcion=descripcion, categoria=categoria,
-                                  subcategoria=subcategoria, fecha_alta=fecha_alta)
-        try:
-            db.session.add(nuevo_recambio)
-            db.session.commit()
-            print("Recambio creado con éxito.")
-        except SQLAlchemyError as e:
-            db.session.rollback()
-            print(f"Error al crear el recambio: {e}")
-        finally:
-            db.session.close()
-
-
 class VentanaRecambios(ft.View):
     '''Clase VentanaRecambios: Interfaz gráfica para la gestión de recambios.
 
@@ -1888,30 +1531,43 @@ class VentanaRecambios(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Titulo imagen recambios
         self.imagenRecambios = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
-                width=320,
-                height=70,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/ImagenRecambios.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
+                    content=ft.Text(
+                        value=" Gestión de Recambios",
+                        size=22,
+                        color=ft.colors.WHITE,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                    shadow=ft.BoxShadow(
+                        blur_radius=4,  # Difuminado de la sombra
+                        spread_radius=2,  # Expansión de la sombra
+                        offset=ft.Offset(0, 4),  # Posición: hacia abajo
+                        color=ft.colors.GREY_500,  # Color de la sombra
+                    ),
+                    bgcolor="black",
+                    width=320,
+                    height=120,
+                    padding=0,
+                    image_repeat=ImageRepeat.NO_REPEAT,
+                    shape=ft.BoxShape("rectangle"),
+                    # Define imagen
+                    image_src="/ImagenRecambios.png",
+                    image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
+                ),
+                alignment=ft.alignment.Alignment(x=0, y=0)
+            )
 
         # Campo de entrada para la busqueda
         self.input_buscar = ft.TextField(
-            label="Buscar Recambio...",
+            label="Buscar Recambio",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=5, bottom=5),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce el recambio",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
@@ -1920,7 +1576,7 @@ class VentanaRecambios(ft.View):
             text_size=13,
             border_color="#12597b",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Menu desplegable principal para elegir una opcion
@@ -1932,7 +1588,7 @@ class VentanaRecambios(ft.View):
                     ft.Dropdown(
                         label='Selecciona Categoría',
                         alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#E0E7ED', weight=ft.FontWeight.W_700),
                         options_fill_horizontally =True,
                         dense = True,
                         height=40,
@@ -1982,7 +1638,7 @@ class VentanaRecambios(ft.View):
                             ft.dropdown.Option("Tuning")
 
                         ],
-                        bgcolor="#ede0cc",
+                        bgcolor="#E0E7ED",
                         padding = 0,
                     )
                 ]
@@ -1993,7 +1649,7 @@ class VentanaRecambios(ft.View):
         self.submenu_opciones = ft.Dropdown(
                         label='Selecciona Subcategoría',
                         alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=12, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor= '#E0E7ED', weight=ft.FontWeight.W_700),
                         options_fill_horizontally =True,
                         dense = True,
                         max_menu_height=True,
@@ -2005,7 +1661,7 @@ class VentanaRecambios(ft.View):
                         text_size=10,
                         #on_change=lambda e: (self.actualizar_submenu(e)),
                         options=[],
-                        bgcolor="#ede0cc",
+                        bgcolor="#E0E7ED",
                         padding=0,
                     )
 
@@ -2030,7 +1686,7 @@ class VentanaRecambios(ft.View):
                     # Boton para añadir nuevo recambio a la db
                     ft.IconButton(
                         content=ft.Image(src="add-spare part.png",
-                                         color="#12597b",
+                                         color="#709775",
                                          height=30,
                                          width=30),
                         tooltip="Añadir Nuevo",
@@ -2043,7 +1699,7 @@ class VentanaRecambios(ft.View):
 
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#ede0cc',
+            bgcolor='#E0E7ED',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -2128,9 +1784,9 @@ class VentanaRecambios(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
-            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
+            bgcolor="#D1E2E7",  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color="#FFD700",  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color="#E0E7ED",  # Color de superficie para el material (gris claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -2154,8 +1810,8 @@ class VentanaRecambios(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -2309,45 +1965,21 @@ class VentanaRecambios(ft.View):
                 # mostramos detalles del cliente encontrado
                 print(f"Nombre: {recambios.nombre_recambio}, Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}")
                 card = ft.Card(
+                    elevation=15,
                     content=ft.Container(
                         alignment=ft.alignment.Alignment(x=0, y=0),
-                        bgcolor="#4b8ca8",
+                        bgcolor="#9ec4cc",
                         padding=5,
                         border=ft.border.all(1, ft.colors.BLUE_800),
-                        border_radius=ft.border_radius.all(10),
+                        border_radius=ft.border_radius.all(12),
                         content=ft.Column([
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}",size=11, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START),
+                                        ft.Text(f"Recambio:", size=12, weight=ft.FontWeight.W_700, color="#283747", text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.nombre_recambio}",size=12, text_align=ft.TextAlign.CENTER, color="#283747", no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
                                     ],
-                                    alignment=ft.MainAxisAlignment.CENTER,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                alignment=ft.alignment.center
-                            ),
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"ID:", size=10, weight=ft.FontWeight.W_700,text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.id_recambio}",size=10, text_align=ft.TextAlign.LEFT),
-                                    ],
-                                    alignment=ft.MainAxisAlignment.START,
-                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                                ),
-                                bgcolor="transparent",
-                                padding=0,
-                                alignment=ft.alignment.center_left,
-
-                            ),
-                            ft.Container(
-                                ft.Row(
-                                    [
-                                        ft.Text(f"Nombre:", size=10, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.nombre_recambio}",size=10, text_align=ft.TextAlign.CENTER, no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo
-                                    ],
-                                    wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
+                                    wrap=True,
                                     alignment=ft.MainAxisAlignment.START,
                                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
                                 ),
@@ -2355,12 +1987,28 @@ class VentanaRecambios(ft.View):
                                 padding=0,
                                 alignment=ft.alignment.center_left,
                             ),
+     #                       ft.Container(
+     #                           ft.Row(
+     #                               [
+     #                                   ft.Text(f"Marca:", size=12, weight=ft.FontWeight.W_700, color="#283747",
+     #                                           text_align=ft.TextAlign.LEFT),
+     #                                   ft.Text(f"{recambios.id_recambio}", size=12, text_align=ft.TextAlign.LEFT,
+     #                                           color="#283747"),
+     #                               ],
+     #                               alignment=ft.MainAxisAlignment.START,
+     #                               vertical_alignment=ft.CrossAxisAlignment.CENTER,
+     #                           ),
+     #                           bgcolor="transparent",
+     #                           padding=0,
+     #                           alignment=ft.alignment.center_left,
+     #
+     #                       ),
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Descripcion:", size=10, weight=ft.FontWeight.W_700,
+                                        ft.Text(f"Descripcion:", size=12, weight=ft.FontWeight.W_700,
                                                 text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.descripcion}", size=10, text_align=ft.TextAlign.LEFT,  no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo)
+                                        ft.Text(f"{recambios.descripcion}", size=11, text_align=ft.TextAlign.LEFT,  no_wrap = False) # no_wrap Asegura que el texto se ajuste si es largo)
                                     ],
                                     wrap=True, # asegura que el contenido se ajuste en varias filas si es necesario
                                     alignment=ft.MainAxisAlignment.START,
@@ -2377,7 +2025,7 @@ class VentanaRecambios(ft.View):
                                     bgcolor="#12597b",
                                     width=95,
                                     height=20,
-                                    content=ft.Text("Asignar", color="white", size=11, bgcolor="#12597b")),# on_click=lambda: editar_cliente(cliente)),
+                                    content=ft.Text("Añadir", color="white", size=11, bgcolor="#12597b")),# on_click=lambda: editar_cliente(cliente)),
                                 ft.ElevatedButton(
                                     bgcolor="#12597b",
                                     width=80,
@@ -2414,6 +2062,379 @@ class VentanaRecambios(ft.View):
             self.page.go("/ingresos")
 
 
+class VentanaCrearRecambio(ft.View):
+    '''Clase VentanaRecambios: Interfaz gráfica para la gestión de recambios.
+
+      Esta clase representa la ventana de la aplicación dedicada a la gestión de recambios, donde el
+      usuario puede realizar operaciones como búsqueda, adición, modificación y eliminación de recambios
+      utilizados en las reparaciones.
+
+      Args:
+          - page: Instancia de la página actual, que maneja el contenido y las interacciones de la ventana.
+
+      Contiene:
+          - Imagen de título: Muestra una imagen de "Recambios" para identificar visualmente la sección.
+          - Input: Campo de texto para ingresar el nombre o los detalles del recambio a buscar.
+          - Botón ElevatedButton "Buscar Recambio": Activa la búsqueda de recambios en base a los datos ingresados.
+          - Botón ElevatedButton "Añadir Recambio": Permite al usuario añadir un nuevo recambio al sistema ingresando
+            los datos requeridos (nombre, descripción, costo, etc.).
+          - Botón ElevatedButton "Modificar Recambio": Accede a una interfaz para modificar los datos de un
+            recambio existente en el sistema.
+          - Botón ElevatedButton "Eliminar Recambio": Elimina del sistema los registros del recambio seleccionado.
+      '''
+
+    def __init__(self, page: ft.Page):
+        '''Constructor de la interfaz grafica para la ventana recambios'''
+        super(VentanaCrearRecambio, self).__init__(
+            route="/crearRecambio", horizontal_alignment=CrossAxisAlignment.CENTER,
+            vertical_alignment=MainAxisAlignment.CENTER
+        )
+
+        # Ruta completa al archivo JSON del menu para los recambios
+        self.ruta_json = r'C:\Users\Juan Carlos\espacio_de_trabajo\AAA Practicas personal\TallerManager\database\menu_recambios.json'
+
+        self.page = page
+
+        # Color de fondo contenedor principal
+        self.bgcolor = "#E0E7ED"
+
+        # Titulo imagen recambios
+        self.imagenCrearRecambios = ft.Container(
+            ft.Container(
+                    content=ft.Text(
+                        value=" Añadir Nuevo",
+                        size=22,
+                        color=ft.colors.WHITE,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                    shadow=ft.BoxShadow(
+                        blur_radius=8,  # Difuminado de la sombra
+                        spread_radius=2,  # Expansión de la sombra
+                        offset=ft.Offset(0, 4),  # Posición: hacia abajo
+                        color=ft.colors.GREY_500,  # Color de la sombra
+                    ),
+                    bgcolor="black",
+                    width=320,
+                    height=120,
+                    padding=0,
+                    image_repeat=ImageRepeat.NO_REPEAT,
+                    shape=ft.BoxShape("rectangle"),
+                    # Define imagen
+                    image_src="/ImagenCrearRecambio.png",
+                    image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
+                ),
+                alignment=ft.alignment.Alignment(x=0, y=0)
+            )
+
+        # Campo de entrada para nombre del recambio
+        self.input_nombreRecambio = ft.Container(
+            bgcolor='#D9E4EA',
+            border=ft.border.all(color="#B0BEC5"),
+            #expand=True,
+            height=70,
+            content = ft.TextField(
+                filled=False,
+                #label="Nombre del Recambio",
+                label_style=TextStyle(color='#6a6965', size=12),
+                value="",
+                border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                hint_text="Introduce el Recambio",
+                hint_style=TextStyle(color='#6a6965', size=10),
+                max_length=70,  # maximo de caracteres que se pueden ingresar en TextField
+                multiline=True,  # puede contener varias lineas de texto
+                color='black',
+                height=90,
+                cursor_color="#12597b",
+                text_size=13,
+                border_color="transparent",
+                autofocus=True,
+                bgcolor="#D9E4EA",
+            )
+        )
+
+        # Campo de entrada para la descripcion del recambio
+        self.input_descripcionRecambio = ft.Container(
+            bgcolor='#D9E4EA',
+            border=ft.border.all(color="#B0BEC5"),
+            #expand=True,
+            height=180,
+            content=
+                ft.TextField(
+                    filled=False,
+                    #label="Descripccion del Recambio...",
+                    label_style=TextStyle(color='#12597b', size=12, ),
+                    expand=True,
+                    value="",
+                    border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                    hint_text="Introduce la Descripcion",
+                    hint_style=TextStyle(color='#6a6965', size=10),
+                    max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
+                    # max_lines =  10, # maximo de líneas que se mostraran a la vez
+                    multiline=True,  # puede contener varias lineas de texto
+                    color='black',
+                    height=180,
+                    cursor_color="#12597b",
+                    text_size=13,
+                    border_color="transparent",
+                    autofocus=False,
+                    bgcolor="#D9E4EA",
+                    text_vertical_align=ft.VerticalAlignment.START,
+                )
+            )
+
+        # Menu desplegable principal para elegir una opcion
+        self.categoria = ft.Container(
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.START,
+                controls=[
+                    ft.Dropdown(
+                        label='Selecciona Categoría',
+                        alignment = Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally =True,
+                        dense = True,
+                        height=40,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=11,
+                        on_change=lambda e: (self.pestaniaOpcion(e),
+                                             self.actualizar_submenu(e)),
+                        options=[
+                            # Lista de opciones para los recambios
+                            ft.dropdown.Option("Accesorios para coche"),
+                            ft.dropdown.Option("Aceites y líquidos"),
+                            ft.dropdown.Option("Aire acondicionado"),
+                            ft.dropdown.Option("Amortiguacion"),
+                            ft.dropdown.Option("Árboles de transmisión y diferenciales"),
+                            ft.dropdown.Option("Caja de cambios"),
+                            ft.dropdown.Option("Calefacción y ventilación"),
+                            ft.dropdown.Option("Carrocería"),
+                            ft.dropdown.Option("Correas, cadenas, rodillos"),
+                            ft.dropdown.Option("Direccion"),
+                            ft.dropdown.Option("Embrague"),
+                            ft.dropdown.Option("Encendido y precalentamiento"),
+                            ft.dropdown.Option("Escape"),
+                            ft.dropdown.Option("Filtros"),
+                            ft.dropdown.Option("Frenos"),
+                            ft.dropdown.Option("Herramientas y equipo"),
+                            ft.dropdown.Option("Iluminación"),
+                            ft.dropdown.Option("Interior"),
+                            ft.dropdown.Option("Juntas y retenes"),
+                            ft.dropdown.Option("Kit de reparación"),
+                            ft.dropdown.Option("Motor"),
+                            ft.dropdown.Option("Neumáticos"),
+                            ft.dropdown.Option("Palier y junta homocinetica"),
+                            ft.dropdown.Option("Productos para cuidado del coche"),
+                            ft.dropdown.Option("Remolque / piezas adicionales"),
+                            ft.dropdown.Option("Rodamientos"),
+                            ft.dropdown.Option("Sensores, relés, unidades de control"),
+                            ft.dropdown.Option("Sistema de combustible"),
+                            ft.dropdown.Option("Sistema de refrigeración del motor"),
+                            ft.dropdown.Option("Sistema electrico"),
+                            ft.dropdown.Option("Sistema limpiaparabrisas"),
+                            ft.dropdown.Option("Sujeciones"),
+                            ft.dropdown.Option("Suspension"),
+                            ft.dropdown.Option("Tuberías y mangueras"),
+                            ft.dropdown.Option("Tuning")
+
+                        ],
+                        bgcolor="#D9E4EA",
+                        padding = 0,
+                    )
+                ]
+            )
+        )
+
+        # Menu desplegable secundario para elegir una opcion
+        self.subcategoria = ft.Dropdown(
+                        label='Selecciona Subcategoría ',
+                        alignment = Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=13, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally =True,
+                        dense = True,
+                        max_menu_height=True,
+                        height=50,
+                        width=300,
+                        content_padding=6,
+                        color='#12597b',
+                        border_color='#12597b',
+                        text_size=10,
+                        on_change=lambda e: (self.actualizar_submenu(e)),
+                        options=[],
+                        bgcolor="#D9E4EA",
+                        padding=0,
+                    )
+
+        # Boton para activar la creacion del recambio
+        self.BotonCrearRecambio = ft.Container(
+            expand=True,
+            alignment=ft.alignment.Alignment(x=0, y=0),
+            content=Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    # Boton buscar cliente y añadir nuevo
+                    ft.ElevatedButton(
+                        text="Aceptar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Añadir Recambio',
+                        icon=icons.ADD,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda e: (self.crear_recambio(e), page.go("/recambios")),
+                    ), ft.ElevatedButton(
+                        text="Cancelar",
+                        color="#FAFAF3",
+                        bgcolor="#12597b",
+                        tooltip='Cancelar Ingreso',
+                        icon=icons.CANCEL,
+                        icon_color="#FAFAF3",
+                        width=140,
+                        height=30,
+                        on_click=lambda _: page.go("/recambios"),
+                    ),
+                ]
+            )
+        )
+
+        # Contenedor principal que contiene todos los elementos de la interfaz
+        self.controls = [
+            ft.Container(
+                ft.Column([
+                    self.imagenCrearRecambios,
+                    self.input_nombreRecambio,
+                    self.input_descripcionRecambio,
+                    self.categoria,
+                    self.subcategoria,
+                    self.BotonCrearRecambio,
+                ]
+                ),
+
+                # propiedades contenedor principal
+                border_radius=25,
+                width=350,  # ancho
+                height=655,  # Alto
+                gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
+                    "#E0E7ED",
+                    "#E0E7ED",
+                ])
+
+            )
+        ]
+
+
+    # metodo para manejar la opcion seleccionada en el menu desplegable principal
+    def pestaniaOpcion(self, e):
+
+        # Crear un objeto Text para mostrar la opcion elegida
+        t = ft.Text()
+
+        # Obtener la opcion elegida del menu desplegable
+        elegirOpcion = self.categoria.content.controls[0].value
+
+        # Actualizar el valor del objeto Text con la opcion elegida
+        t.value = f"Opción elegida: {elegirOpcion}"
+
+        # Diccionario que mapea las opciones a las acciones correspondientes
+        acciones = {
+            'Neumaticos':'Añadir en Neumaticos',
+            'Aceites y liquidos': 'Añadir en Aceites y liquidos',
+            'Frenos': 'Añadir en Frenos',
+            'Filtros': 'Añadir en Filtros',
+            'Motor': 'Añadir en Motor',
+            'Sistema limpiaparabrisas': 'Añadir en Sistema limpiparabrisas',
+            'Encendido y precalentamiento': 'Añadir en Encendido y precalentamiento',
+            'Suspension': 'Añadir en Suspension',
+            'Sistema electrico': 'Añadir en Sistema electrico',
+            'Amortiguacion': 'Añadir en Amortiguacion',
+            'Correas,cadenas,rodillos': 'Añadir en Correas,cadenas,rodillos',
+            'Sistema de refrigeracion del motor': 'Añadir en Sistema de refrigeracion del motor',
+            'Carroceria': 'Añadir en Carroceria',
+            'Calefaccion y ventilacion': 'Añadir en Calefaccion y ventilacion',
+            'Juntas y retenes': 'Añadir en Juntas y retenes',
+            'Escape': 'Añadir en Escape',
+            'Interior': 'Añadir en Interior',
+            'Sistema de combustible': 'Añadir en Sistema de combustible',
+            'Direccion': 'Añadir en Direccion',
+            'Embrague': 'Añadir en Embrague',
+            'Palier y junta homocinetica': 'Añadir en Palier y junta homocinetica',
+            'Remolque / piezas adicionales': 'Añadir en Remolque / piezas adicionales',
+            'Caja de cambios': 'Añadir en Caja de cambios',
+            'Aire acondicionado': 'Añadir en Aire acondicionado',
+            'Rodamientos': 'Añadir en Rodamintos',
+            'Arboles de transmision y diferenciales': 'Añadir en Arboles de transmision y diferenciales',
+            'Sensores, reles, unidades de control': 'Añadir en Sensores, reles, unidades de control',
+            'Accesorios para coche': 'Añadir en Accesorios para coche',
+            'Kit de reparacion': 'Añadir en Kit de reparacion',
+            'Herramientas y equipo': 'Añadir en Herramientas y equipo',
+            'Tuberias y mangueras': 'Añadir en Tuberis y mangueras',
+            'Productos para cuidado del coche': 'Añadir en Productos para cuidado del coche',
+            'Iluminación': 'Añadir en Iluminación',
+            'Tuning': 'Añadir en Tuning',
+            'Sujeciones': 'Añadir en Sujeciones',
+        }
+
+        # Imprimir un mensaje segun la opcion elegida
+        if elegirOpcion in acciones:
+            print(acciones[elegirOpcion])
+        else:
+            print('Opcion no valida')
+
+        # Actualizar la pagina con el objeto Text
+        self.page.update(self)
+        # Agregar el objeto Text a la pagina
+        self.page.add(t)
+
+        db.session.close()
+
+    # metodo para cargar el menu de recambios en .json
+    def cargar_menu_json(self, ruta_json):
+        with open(ruta_json, 'r', encoding='utf-8') as archivo:
+            return json.load(archivo)
+
+    # Submenús asociados a cada opción del menú principal
+    def actualizar_submenu(self, e):
+        # Obtiene las opciones del submenú basadas en la selección del primer dropdown
+        seleccion = e.control.value
+
+        # Submenús asociados a cada opción del menú principal
+        menu = self.cargar_menu_json(self.ruta_json)
+
+        # Actualizar el valor del objeto Text con la opcion elegida
+        if seleccion in menu:
+            print(menu[seleccion])
+            self.subcategoria.options = [ft.dropdown.Option(sub) for sub in menu[seleccion]]
+            print(self.subcategoria.options)
+        self.subcategoria.update()
+
+    # metodo para registrar nuevo recambio
+    def crear_recambio(self, e):
+        print("\n > Crear recambio")
+        nombre_recambio = self.input_nombreRecambio.content.value.strip()  # este es el Input
+        descripcion = self.input_descripcionRecambio.content.value.strip()  # este es el Input
+        categoria = self.categoria.content.controls[0].value
+        subcategoria = self.subcategoria.value.strip()
+        fecha_alta = datetime.now()
+
+        # Creación y adición del nuevo recambio
+        nuevo_recambio = Recambio(nombre_recambio=nombre_recambio, descripcion=descripcion, categoria=categoria,
+                                  subcategoria=subcategoria, fecha_alta=fecha_alta)
+        try:
+            db.session.add(nuevo_recambio)
+            db.session.commit()
+            print("Recambio creado con éxito.")
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            print(f"Error al crear el recambio: {e}")
+        finally:
+            db.session.close()
+
+
 class VentanaIngreso(ft.View):
     '''Clase VentanaIngreso: Interfaz gráfica para la gestión de ingresos de vehículos al taller.
 
@@ -2445,30 +2466,43 @@ class VentanaIngreso(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Titulo imagen ingresos
         self.imagenIngreso = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
-                width=320,
-                height=70,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/Imagen_de_Ingresos.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
+                    content=ft.Text(
+                        value=" Gestión de Ingresos",
+                        size=22,
+                        color=ft.colors.WHITE,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                    shadow=ft.BoxShadow(
+                        blur_radius=8,  # Difuminado de la sombra
+                        spread_radius=2,  # Expansión de la sombra
+                        offset=ft.Offset(0, 4),  # Posición: hacia abajo
+                        color=ft.colors.GREY_500,  # Color de la sombra
+                    ),
+                    bgcolor="black",
+                    width=320,
+                    height=120,
+                    padding=0,
+                    image_repeat=ImageRepeat.NO_REPEAT,
+                    shape=ft.BoxShape("rectangle"),
+                    # Define imagen
+                    image_src="/Imagen_de_Ingresos.png",
+                    image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
+                ),
+                alignment=ft.alignment.Alignment(x=0, y=0)
+            )
 
         # Campo de entrada para la busqueda
         self.input_buscar = ft.TextField(
             label="Buscar Ingresos...",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce la matricula del vehiculo",
             hint_style=TextStyle(color='#6a6965', size=10),
             color='black',
@@ -2477,7 +2511,7 @@ class VentanaIngreso(ft.View):
             text_size=13,
             border_color="#12597b",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Boton para activar la busqueda del ingreso y agregar nuevo ingreso
@@ -2500,7 +2534,7 @@ class VentanaIngreso(ft.View):
                     ),
                     ft.IconButton(
                         content=ft.Image(src="add-new entry.png",
-                                         color= "#12597b",
+                                         color= "#709775",
                                          height=30,
                                          width=30),
                         tooltip="Añadir Nuevo",
@@ -2512,7 +2546,7 @@ class VentanaIngreso(ft.View):
 
         # Contenedor para mostrar los resultados de busqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#ede0cc',
+            bgcolor='#E0E7ED',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -2596,9 +2630,9 @@ class VentanaIngreso(ft.View):
                     label="Ingreso",
                 )
             ],
-            bgcolor="#ede0cc",  # Color de fondo de la barra de navegación (azul oscuro)
-            indicator_color=ft.colors.AMBER_500,  # Color del indicador del destino seleccionado (ámbar)
-            surface_tint_color="#ede0cc",  # Color de superficie para el material (#ede0cc)
+            bgcolor="#D1E2E7",  # Color de fondo de la barra de navegación (azul oscuro)
+            indicator_color="#FFD700",  # Color del indicador del destino seleccionado (ámbar)
+            surface_tint_color="#E0E7ED",  # Color de superficie para el material (gris claro)
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED  # Mostrar la etiqueta  seleccionada
         )
 
@@ -2619,8 +2653,8 @@ class VentanaIngreso(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -2697,22 +2731,20 @@ class VentanaIngreso(ft.View):
                         f"\nKilometros Ingreso: {ingreso.kilometros_ingreso}")
 
                     card = ft.Card(
+                        elevation=15,
                         content=ft.Container(
                             alignment=ft.alignment.Alignment(x=0, y=0),
-                            bgcolor="#4b8ca8",
+                            bgcolor="#9ec4cc",
                             padding=5,
                             border=ft.border.all(1, ft.colors.BLUE_800),
-                            border_radius=ft.border_radius.all(10),
+                            border_radius=ft.border_radius.all(12),
                             content=ft.Column([
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Cliente: {cliente.nombre}",
-                                                    size=11,
-                                                    weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START
+                                            ft.Text(f"{cliente.nombre}", size=12, weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START
                                                     ),
-                                            ft.Text(f"Fecha Ingreso: {ingreso.fecha_ingreso.strftime('%d/%m/%Y')}", size=11,
-                                                    weight=ft.FontWeight.W_700, text_align=ft.TextAlign.START
+                                            ft.Text(f"Fecha Ingreso: {ingreso.fecha_ingreso.strftime('%d/%m/%Y')}", size=11, weight=ft.FontWeight.W_400, text_align=ft.TextAlign.START
                                                     ),
                                         ],
                                         alignment=ft.MainAxisAlignment.CENTER,
@@ -2724,9 +2756,9 @@ class VentanaIngreso(ft.View):
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Marca y modelo:", size=10, weight=ft.FontWeight.W_700,
+                                            ft.Text(f"Marca y modelo:", size=12, weight=ft.FontWeight.W_700,
                                                     text_align=ft.TextAlign.LEFT),
-                                            ft.Text(f"{vehiculo.marca}, {vehiculo.modelo}", size=10,
+                                            ft.Text(f"{vehiculo.marca}, {vehiculo.modelo}", size=11,
                                                     text_align=ft.TextAlign.LEFT)
                                         ],
                                         alignment=ft.MainAxisAlignment.START,
@@ -2739,9 +2771,9 @@ class VentanaIngreso(ft.View):
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Matricula:", size=10, weight=ft.FontWeight.W_700,
+                                            ft.Text(f"Matricula:", size=12, weight=ft.FontWeight.W_700,
                                                     text_align=ft.TextAlign.LEFT),
-                                            ft.Text(f"{vehiculo.matricula}", size=10,
+                                            ft.Text(f"{vehiculo.matricula}", size=11,
                                                     text_align=ft.TextAlign.LEFT)
                                         ],
                                         alignment=ft.MainAxisAlignment.START,
@@ -2754,9 +2786,9 @@ class VentanaIngreso(ft.View):
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Diagnostico:", size=10, weight=ft.FontWeight.W_700,
+                                            ft.Text(f"Diagnostico:", size=12, weight=ft.FontWeight.W_700,
                                                     text_align=ft.TextAlign.LEFT),
-                                            ft.Text(f"{ingreso.diagnostico}", size=10, text_align=ft.TextAlign.LEFT),
+                                            ft.Text(f"{ingreso.diagnostico}", size=11, text_align=ft.TextAlign.LEFT),
                                         ],
                                         alignment=ft.MainAxisAlignment.START,
                                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -2769,9 +2801,9 @@ class VentanaIngreso(ft.View):
                                 ft.Container(
                                     ft.Row(
                                         [
-                                            ft.Text(f"Kilometros:", size=10, weight=ft.FontWeight.W_700,
+                                            ft.Text(f"Kilometros:", size=12, weight=ft.FontWeight.W_700,
                                                     text_align=ft.TextAlign.LEFT),
-                                            ft.Text(f"{ingreso.kilometros_ingreso}", size=10, text_align=ft.TextAlign.LEFT)
+                                            ft.Text(f"{ingreso.kilometros_ingreso}", size=11, text_align=ft.TextAlign.LEFT)
                                         ],
                                         alignment=ft.MainAxisAlignment.START,
                                         vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -2854,23 +2886,36 @@ class VentanaNuevoIngreso(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Titulo imagen ingresos
         self.imagenNuevoIngreso = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
-                width=320,
-                height=70,
-                padding=0,
-                image_repeat=ImageRepeat.NO_REPEAT,
-                shape=ft.BoxShape("rectangle"),
-                # Define imagen
-                image_src="/Imagen_de_nuevo_ingreso.png",
-                image_fit=ft.ImageFit.COVER,
-            ),
-            alignment=ft.alignment.Alignment(x=0, y=0)
-        )
+                    content=ft.Text(
+                        value=" Añadir Nuevo",
+                        size=22,
+                        color=ft.colors.WHITE,
+                        weight=ft.FontWeight.BOLD
+                    ),
+                    shadow=ft.BoxShadow(
+                        blur_radius=8,  # Difuminado de la sombra
+                        spread_radius=2,  # Expansión de la sombra
+                        offset=ft.Offset(0, 4),  # Posición: hacia abajo
+                        color=ft.colors.GREY_500,  # Color de la sombra
+                    ),
+                    bgcolor="black",
+                    width=320,
+                    height=70,
+                    padding=0,
+                    image_repeat=ImageRepeat.NO_REPEAT,
+                    shape=ft.BoxShape("rectangle"),
+                    # Define imagen
+                    image_src="/Imagen_de_nuevo_ingreso.png",
+                    image_fit=ft.ImageFit.COVER,
+                    image_opacity=0.7,
+                ),
+                alignment=ft.alignment.Alignment(x=0, y=0)
+            )
 
         # Objeto Text para mostrar la opción elegida
         self.texto_opcion_elegida = ft.Text()
@@ -2884,7 +2929,7 @@ class VentanaNuevoIngreso(ft.View):
                     ft.Dropdown(
                         label='Selecciona un Cliente',
                         alignment=Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor='#E0E7ED', weight=ft.FontWeight.W_700),
                         options_fill_horizontally=True,
                         dense=True,
                         max_menu_height=True,
@@ -2897,7 +2942,7 @@ class VentanaNuevoIngreso(ft.View):
                         on_change=lambda e: (self.pestaniaOpcion(e), self.cargar_menu_vehiculos(e)),
                         options=[ft.dropdown.Option(str(cliente.nombre))
                             for cliente in db.session.query(Cliente).all()],
-                        bgcolor="#ede0cc",
+                        bgcolor="#E0E7ED",
                         padding=0,
                     )
                 ]
@@ -2909,7 +2954,7 @@ class VentanaNuevoIngreso(ft.View):
         self.menu_vehiculosCliente= ft.Dropdown(
                         label='Selecciona un Vehiculo',
                         alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=12, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=12, bgcolor= '#E0E7ED', weight=ft.FontWeight.W_700),
                         options_fill_horizontally =True,
                         dense = True,
                         max_menu_height=True,
@@ -2921,43 +2966,43 @@ class VentanaNuevoIngreso(ft.View):
                         text_size=10,
                         #on_change=lambda e: (self.actualizar_submenu(e)),
                         options=[],
-                        bgcolor="#ede0cc",
+                        bgcolor="#E0E7ED",
                         padding=0,
                     )
 
         # Campo de entrada para la busqueda
         self.input_kilometros = ft.TextField(
-            label="Kilometros...",
+            #label="Kilometros...",
             label_style=TextStyle(color='#6a6965', size=12),
             value="",
-            border_radius=ft.border_radius.vertical(top=0, bottom=0),
+            border_radius=ft.border_radius.vertical(top=6, bottom=6),
             hint_text="Introduce los kilometros del vehiculo",
-            hint_style=TextStyle(color='#6a6965', size=10),
+            hint_style=TextStyle(color='#6a6965', size=11),
             color='black',
             height=35,
             cursor_color="#12597b",
             text_size=13,
-            border_color="#12597b",
+            border_color="#B0BEC5",
             autofocus=True,
-            bgcolor="#E1F5FE"
+            bgcolor="#D9E4EA"
         )
 
         # Campo de entrada del motivo de la averia reportada por el cliente
         self.input_motivo = ft.Container(
-            bgcolor='#FAFAF3',
-            # border=ft.border.all(ft.colors.ORANGE_100),
+            bgcolor='#D9E4EA',
+            border=ft.border.all(color="#B0BEC5"),
             #expand=True,
             height=180,
             content=
                 ft.TextField(
                     filled=False,
-                    label="Motivo...",
+                    #label="Motivo...",
                     label_style=TextStyle(color='#12597b', size=12, ),
                     expand=True,
                     value="",
                     border_radius=ft.border_radius.vertical(top=5, bottom=5),
                     hint_text="Introduce el motivo de la averia reportada por el cliente",
-                    hint_style=TextStyle(color='#6a6965', size=10),
+                    hint_style=TextStyle(color='#6a6965', size=11),
                     max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
                     # max_lines =  10, # maximo de líneas que se mostraran a la vez
                     multiline=True,  # puede contener varias lineas de texto
@@ -2967,27 +3012,27 @@ class VentanaNuevoIngreso(ft.View):
                     text_size=13,
                     border_color="transparent",
                     autofocus=False,
-                    bgcolor="transparent",
+                    bgcolor="#D9E4EA",
                     text_vertical_align=ft.VerticalAlignment.START,
                 )
             )
 
         # Campo de entrada del diagnostico del vehiculo por taller
         self.input_diagnotico = ft.Container(
-            bgcolor='#FAFAF3',
-            # border=ft.border.all(ft.colors.ORANGE_100),
+            bgcolor='#D9E4EA',
+            border=ft.border.all(color="#B0BEC5"),
             # expand=True,
             height=180,
             content=
             ft.TextField(
                 filled=False,
-                label="Diagnostico...",
+                #label="Diagnostico...",
                 label_style=TextStyle(color='#12597b', size=12, ),
                 expand=True,
                 value="",
                 border_radius=ft.border_radius.vertical(top=5, bottom=5),
                 hint_text="Introduce el diagnostico del vehiculo por taller",
-                hint_style=TextStyle(color='#6a6965', size=10),
+                hint_style=TextStyle(color='#6a6965', size=11),
                 max_length=180,  # maximo de caracteres que se pueden ingresar en TextField
                 # max_lines =  10, # maximo de líneas que se mostraran a la vez
                 multiline=True,  # puede contener varias lineas de texto
@@ -2997,7 +3042,7 @@ class VentanaNuevoIngreso(ft.View):
                 text_size=13,
                 border_color="transparent",
                 autofocus=False,
-                bgcolor="transparent",
+                bgcolor="#D9E4EA",
                 text_vertical_align=ft.VerticalAlignment.START,
             )
         )
@@ -3070,8 +3115,8 @@ class VentanaNuevoIngreso(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -3192,12 +3237,12 @@ class VentanaRegistro(ft.View):
         self.page = page
 
         # Color de fondo contenedor principal
-        self.bgcolor = "#ede0cc"
+        self.bgcolor = "#E0E7ED"
 
         # Titulo imagen registro
         self.imagenRegistro = ft.Container(
             ft.Container(
-                bgcolor="#ede0cc",
+                bgcolor="#E0E7ED",
                 width=320,
                 height=70,
                 padding=0,
@@ -3284,7 +3329,7 @@ class VentanaRegistro(ft.View):
                     ft.Dropdown(
                         label='Selecciona Categoría',
                         alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
                         options_fill_horizontally =True,
                         dense = True,
                         height=35,
@@ -3334,7 +3379,7 @@ class VentanaRegistro(ft.View):
                             ft.dropdown.Option("Tuning")
 
                         ],
-                        bgcolor="#ede0cc",
+                        bgcolor="#D9E4EA",
                         padding = 0,
                     ),
                     ft.IconButton(
@@ -3352,7 +3397,7 @@ class VentanaRegistro(ft.View):
         self.submenu_opciones = ft.Dropdown(
                         label='Selecciona Subcategoría',
                         alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#ede0cc', weight=ft.FontWeight.W_700),
+                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
                         options_fill_horizontally =True,
                         dense = True,
                         max_menu_height=True,
@@ -3363,7 +3408,7 @@ class VentanaRegistro(ft.View):
                         border_color='#12597b',
                         text_size=10,
                         options=[],
-                        bgcolor="#ede0cc",
+                        bgcolor="#D9E4EA",
                         padding=0,
                     )
 
@@ -3485,7 +3530,7 @@ class VentanaRegistro(ft.View):
 
         # Contenedor para mostrar los resultados de búsqueda
         self.vistaResultadosBusqueda = ft.Container(
-            bgcolor='#ede0cc',
+            bgcolor='#E0E7ED',
             expand=True,
             content=ft.GridView(
                 expand=1,
@@ -3543,8 +3588,8 @@ class VentanaRegistro(ft.View):
                 width=350,  # ancho
                 height=655,  # Alto
                 gradient=ft.LinearGradient([  # color del contenedor configurable en 2 tonos de color
-                    "#ede0cc",
-                    "#ede0cc",
+                    "#E0E7ED",
+                    "#E0E7ED",
                 ])
 
             )
@@ -3720,19 +3765,20 @@ class VentanaRegistro(ft.View):
                 self.cantidad[recambios.id_recambio] = input_cantidadRecambio
 
                 card = ft.Card(
+                    elevation=15,
                     content=ft.Container(
                         alignment=ft.alignment.Alignment(x=0, y=0),
-                        bgcolor="#4b8ca8",
+                        bgcolor="#9ec4cc",
                         padding=5,
                         border=ft.border.all(1, ft.colors.BLUE_800),
-                        border_radius=ft.border_radius.all(10),
+                        border_radius=ft.border_radius.all(12),
                         content=ft.Column([
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"ID:", size=10, weight=ft.FontWeight.W_700,
+                                        ft.Text(f"ID:", size=12, weight=ft.FontWeight.W_700,
                                                 text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.id_recambio}", size=10, text_align=ft.TextAlign.LEFT),
+                                        ft.Text(f"{recambios.id_recambio}", size=11, text_align=ft.TextAlign.LEFT),
                                     ],
                                     alignment=ft.MainAxisAlignment.START,
                                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -3745,9 +3791,9 @@ class VentanaRegistro(ft.View):
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Nombre:", size=10, weight=ft.FontWeight.W_700,
+                                        ft.Text(f"Recambio:", size=12, weight=ft.FontWeight.W_700,
                                                 text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.nombre_recambio}", size=10,
+                                        ft.Text(f"{recambios.nombre_recambio}", size=11,
                                                 text_align=ft.TextAlign.CENTER, no_wrap=False)
                                         # no_wrap Asegura que el texto se ajuste si es largo
                                     ],
@@ -3759,12 +3805,28 @@ class VentanaRegistro(ft.View):
                                 padding=0,
                                 alignment=ft.alignment.center_left,
                             ),
+    #                       ft.Container(
+    #                           ft.Row(
+    #                               [
+    #                                   ft.Text(f"Marca:", size=12, weight=ft.FontWeight.W_700, color="#283747",
+    #                                           text_align=ft.TextAlign.LEFT),
+    #                                   ft.Text(f"{recambios.id_recambio}", size=12, text_align=ft.TextAlign.LEFT,
+    #                                           color="#283747"),
+    #                               ],
+    #                               alignment=ft.MainAxisAlignment.START,
+    #                               vertical_alignment=ft.CrossAxisAlignment.CENTER,
+    #                           ),
+    #                           bgcolor="transparent",
+    #                           padding=0,
+    #                           alignment=ft.alignment.center_left,
+    #
+    #                       ),
                             ft.Container(
                                 ft.Row(
                                     [
-                                        ft.Text(f"Descripcion:", size=10, weight=ft.FontWeight.W_700,
+                                        ft.Text(f"Descripcion:", size=12, weight=ft.FontWeight.W_700,
                                                 text_align=ft.TextAlign.LEFT),
-                                        ft.Text(f"{recambios.descripcion}", size=10, text_align=ft.TextAlign.LEFT,
+                                        ft.Text(f"{recambios.descripcion}", size=11, text_align=ft.TextAlign.LEFT,
                                                 no_wrap=False) # no_wrap asegura que el texto se ajuste si es largo)
                                     ],
                                     wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
@@ -3782,7 +3844,7 @@ class VentanaRegistro(ft.View):
                                     bgcolor="#12597b",
                                     width=95,
                                     height=20,
-                                    content=ft.Text("Asignar", color="white", size=11, bgcolor="#12597b"),
+                                    content=ft.Text("Añadir", color="white", size=11, bgcolor="#12597b"),
                                     on_click=lambda e, producto_seleccionado_id=recambios.id_recambio:
                                     self.registro_nuevo(e, producto_seleccionado_id),
                                 ),
@@ -3833,11 +3895,10 @@ class VentanaRegistro(ft.View):
 
             recambio_seleccionado = db.session.query(Recambio).filter(
                 Recambio.id_recambio == id_recambio_seleccionado).first()
-
             # Obtener precio, cantidad, descuento y total
             precio = float(self.cantidadYprecio.controls[1].value.strip())
             cantidad = float(self.cantidadYprecio.controls[3].value.strip())
-            descuento =float(self.descuentoYtotal.controls[1].value.strip())
+            descuento = float(self.descuentoYtotal.controls[1].value.strip())
             total = float(self.descuentoYtotal.controls[3].value.strip())
 
             if recambio_seleccionado:
@@ -3867,6 +3928,7 @@ class VentanaRegistro(ft.View):
 
 
             db.session.close()
+
 
 
 def main(page: ft.page):
@@ -3918,12 +3980,12 @@ def main(page: ft.page):
     #page.go("/clientes")
     #page.go("/clienteNuevo")
     #page.go("/vehiculos")
-    page.go("/vehiculoNuevo")
+    #page.go("/vehiculoNuevo")
     #page.go("/recambios")
     #page.go("/crearRecambio")
     #page.go("/ingresos")
     #page.go("/nuevo_ingreso")
-    #page.go("/registro")
+    page.go("/registro")
 
 
 # instanciar y ejecutar la aplicación
