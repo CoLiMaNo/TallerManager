@@ -159,6 +159,48 @@ def ingreso_nuevo(self):
     db.session.close()
     print("Ingreso creado exitosamente.")
 
+    # Guardar el ID del nuevo ingreso en la sesión
+    self.page.session.set("nuevo_ingreso", nuevo_ingreso.id_ingreso)
+
+# metodo para registros nuevos
+def registro_nuevo(self):
+    print("\n > Crear registro")
+
+    ingreso_id = self.page.session.get('nuevo_ingreso')
+    if ingreso_id:
+        ingreso_actual = db.session.query(Ingreso).filter_by(id_ingreso=ingreso_id).first()
+        if ingreso_actual:
+            print(
+                f" ID : {ingreso_actual.id_ingreso}, ID Cliente: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
+        else:
+            print("Error: No se ha encontrado el ingreso en la base de datos.")
+            return
+    else:
+        print("Error: No se ha establecido el ingreso en la sesión.")
+        return
+
+    # Seleccionar el recambio para agregarlo al ingreso
+    recambios = db.session.query(Recambio).all()
+    if recambios:
+        for recambio in recambios:
+            print(f" ID: {recambio.id_recambio}, Nombre: {recambio.nombre}")
+
+        try:
+            id_recambio_seleccionado = int(input("Ingresa el ID del recambio: "))
+        except ValueError:
+            print("Por favor, introduce un número válido.")
+            return
+
+        recambio_seleccionado = next((r for r in recambios if r.id_recambio == id_recambio_seleccionado), None)
+        if recambio_seleccionado:
+            # Aquí puedes agregar lógica para vincular el recambio con el ingreso.
+            print(f"Recambio seleccionado: {recambio_seleccionado.nombre}")
+        else:
+            print("El ID ingresado es inválido.")
+    else:
+        print("No hay recambios disponibles en la base de datos.")
+
+
 if __name__ == '__main__':
 
     # Resetea la base de datos si existe
