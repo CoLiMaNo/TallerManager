@@ -65,3 +65,6 @@ If you want to contribute to Taller Manager, please follow these steps:
 5.	Open a Pull Request.
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+![01-inicio](https://github.com/user-attachments/assets/49226904-41d9-4ce6-9234-4475d17617c0)
+
