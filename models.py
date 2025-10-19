@@ -190,9 +190,11 @@ class Registro(db.Base_mobile):
 
     args
     -id_registro: es un numero integer que compone el código del registro
-    -precio: es un numero flotante que compone el precio de un determinado recambio
-    -descuento: es un numero flotante que compone el porcentaje del descuento
+    -puc: es un numero flotante que compone el precio unitario de costo de un determinado recambio
+    -puv: es un numero flotante que compone el precio unitario de venta de un determinado recambio
     -cantidad: es un numero flotante que compone la cantidad de unidades de un determinado item
+    -total_costo: es un numero flotante que compone el costo total de un grupo determinado de recambios
+    -total_venta: es un numero flotante que compone la venta total de un grupo determinado de recambios
     -id_cliente: es un numero integer que compone el codigo del cliente
     -id_vehiculo: es un numero integer que compone el codigo del vehiculo
     -id_ingreso: es un numero integer que compone el codigo del ingreso del vehiculo
@@ -203,10 +205,11 @@ class Registro(db.Base_mobile):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id_registro = Column(Integer, primary_key=True, autoincrement=True)
-    precio = Column(Float, nullable=False)
-    descuento = Column(Float, nullable=False)
+    puc = Column(Float, nullable=False)
+    puv = Column(Float, nullable=False)
     cantidad = Column(Float, nullable=False)
-    costo_real = Column(Float, nullable=False)
+    total_costo = Column(Float, nullable=False)
+    total_venta = Column(Float, nullable=False)
 
     # Relacion clave foranea
     id_recambio = Column(Integer, ForeignKey('recambios.id_recambio'))
@@ -217,15 +220,15 @@ class Registro(db.Base_mobile):
     ingresos = relationship('Ingreso', back_populates='registros')
 
     # Costructor de la clase Registro
-    def __init__(self, precio, descuento, cantidad, costo_real):
+    def __init__(self, pu_costo, pu_venta, cantidad, costo_total, venta_total):
         '''costructor de la clase Registro'''
-        self.precio = precio
-        self.descuento = descuento
+        self.puc = pu_costo
+        self.puv = pu_venta
         self.cantidad = cantidad
-        self.costo_real = costo_real
+        self.total_costo = costo_total
+        self.total_venta = venta_total
         print('registro creado con exito')
 
     # metodo STR nos muestra la informacion
     def __str__(self):
         return "Registro {} para vehiculo matricula {} registrado con exito".format(self.id_registro, self.vehiculos.matricula)
-

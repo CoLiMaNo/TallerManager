@@ -1334,7 +1334,7 @@ class VentanaVerIngresosCliente(ft.View):
                                             icon_color="E0E7ED",
                                             icon_size=25,
                                             tooltip="Ver Registro",
-                                            on_click=lambda e: self.page.go("/registrosIngresoCliente"),
+                                            on_click=lambda e: self.page.go("/registrosIngreso1"),
                                         ),
                                         ft.IconButton(
                                             icon=ft.icons.MODE_EDIT_OUTLINED,
@@ -3730,7 +3730,7 @@ class VentanaRecambios(ft.View):
                                         icon=ft.icons.CAR_REPAIR,
                                         icon_color="E0E7ED",
                                         icon_size=25,
-                                        tooltip="Añadir",
+                                        tooltip="Añadir a Ingreso",
                                         #on_click=lambda e, vehiculo_seleccionado=vehiculo: (
                                         #    self.objeto_seleccionado(e, vehiculo_seleccionado),
                                         #    self.page.go("/ingresosVehiculo"),
@@ -4765,7 +4765,7 @@ class VentanaNuevoIngreso(ft.View):
             )
         )
 
-        # Boton para activar la busqueda del ingreso y agregar nuevo nuevo ingreso
+        # Boton para activar la busqueda del ingreso y agregar nuevo ingreso
         self.BotonAgregarVehiculo = ft.Container(
             alignment=ft.alignment.Alignment(x=0, y=0),
             content=Row(
@@ -4984,7 +4984,7 @@ class VentanaRegistro(ft.View):
 
             ),
             ft.Text(
-                value= self.page.session.get("nombre_cliente"),
+                value=self.page.session.get("nombre_cliente"),
                 size=12,
                 color='green700',
                 weight=FontWeight.W_600,
@@ -4998,7 +4998,7 @@ class VentanaRegistro(ft.View):
                 color="#333333"
             ),
             ft.Text(
-                value= self.page.session.get("vehiculo"),
+                value=self.page.session.get("vehiculo"),
                 size=12,
                 color='green700',
                 weight=FontWeight.W_600,
@@ -5045,10 +5045,10 @@ class VentanaRegistro(ft.View):
                 controls=[
                     ft.Dropdown(
                         label='Selecciona Categoría',
-                        alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
-                        options_fill_horizontally =True,
-                        dense = True,
+                        alignment=Alignment(0.0, 0.0),
+                        label_style=TextStyle(color='#12597b', size=10, bgcolor='#D9E4EA', weight=ft.FontWeight.W_700),
+                        options_fill_horizontally=True,
+                        dense=True,
                         height=35,
                         width=240,
                         content_padding=6,
@@ -5097,7 +5097,7 @@ class VentanaRegistro(ft.View):
 
                         ],
                         bgcolor="#D9E4EA",
-                        padding = 0,
+                        padding=0,
                     ),
                     ft.IconButton(
                         icon=ft.icons.SEARCH,
@@ -5112,27 +5112,27 @@ class VentanaRegistro(ft.View):
 
         # Menu desplegable secundario para elegir una opcion
         self.submenu_opciones = ft.Dropdown(
-                        label='Selecciona Subcategoría',
-                        alignment = Alignment(0.0, 0.0),
-                        label_style=TextStyle(color='#12597b', size=10, bgcolor= '#D9E4EA', weight=ft.FontWeight.W_700),
-                        options_fill_horizontally =True,
-                        dense = True,
-                        max_menu_height=True,
-                        height=35,
-                        width=300,
-                        content_padding=6,
-                        color='#12597b',
-                        border_color='#12597b',
-                        text_size=10,
-                        options=[],
-                        bgcolor="#D9E4EA",
-                        padding=0,
-                    )
+            label='Selecciona Subcategoría',
+            alignment=Alignment(0.0, 0.0),
+            label_style=TextStyle(color='#12597b', size=10, bgcolor='#D9E4EA', weight=ft.FontWeight.W_700),
+            options_fill_horizontally=True,
+            dense=True,
+            max_menu_height=True,
+            height=35,
+            width=300,
+            content_padding=6,
+            color='#12597b',
+            border_color='#12597b',
+            text_size=10,
+            options=[],
+            bgcolor="#D9E4EA",
+            padding=0,
+        )
 
         # campo de entrada para la cantidad y el precio del proveedor sin descuento
-        self.cantidadYprecio = ft.Row([
+        self.precio_costoYventa = ft.Row([
             ft.Text(
-                value=f' Precio',
+                value=f'Precio Costo',
                 width=None,
                 size=10,
                 text_align=TextAlign.START,
@@ -5141,7 +5141,7 @@ class VentanaRegistro(ft.View):
 
             ),
             ft.TextField(
-                label= None,
+                label=None,
                 label_style=TextStyle(color='#6a6965', size=12),
                 value="",
                 border_radius=ft.border_radius.vertical(top=5, bottom=5),
@@ -5150,7 +5150,7 @@ class VentanaRegistro(ft.View):
                 hint_style=TextStyle(color='#6a6965', size=10),
                 color='black',
                 height=30,
-                width=80,
+                width=70,
                 cursor_color="#12597b",
                 text_size=10,
                 border_color="#12597b",
@@ -5158,7 +5158,7 @@ class VentanaRegistro(ft.View):
                 bgcolor="#E1F5FE"
             ),
             ft.Text(
-                value= f' Cantidad',
+                value=f' Precio Venta',
                 width=None,
                 size=10,
                 text_align=TextAlign.START,
@@ -5170,13 +5170,13 @@ class VentanaRegistro(ft.View):
                 label_style=TextStyle(color='#6a6965', size=10),
                 value="",
                 border_radius=ft.border_radius.vertical(top=5, bottom=5),
-                #hint_text="cantidad",
+                # hint_text="cantidad",
                 dense=True,
                 text_align=TextAlign.CENTER,
                 hint_style=TextStyle(color='#6a6965', size=10),
                 color='black',
                 height=30,
-                width=60,
+                width=70,
                 cursor_color="#12597b",
                 text_size=10,
                 border_color="#12597b",
@@ -5188,9 +5188,9 @@ class VentanaRegistro(ft.View):
         )
 
         # Campo de entrada para el descuento del proveedor y el costo con el descuento aplicado
-        self.descuentoYtotal = ft.Row([
+        self.cantidad_items = ft.Row([
             ft.Text(
-                value=f'Descuento % ',
+                value=f' Cantidad',
                 width=None,
                 size=10,
                 text_align=TextAlign.START,
@@ -5199,36 +5199,11 @@ class VentanaRegistro(ft.View):
 
             ),
             ft.TextField(
-                label= None,
-                label_style=TextStyle(color='#6a6965', size=10),
-                value="",
-                border_radius=ft.border_radius.vertical(top=5, bottom=5),
-                #hint_text="%",
-                dense=True,
-                text_align=TextAlign.CENTER,
-                hint_style=TextStyle(color='#6a6965', size=10),
-                color='black',
-                height=30,
-                width=60,
-                cursor_color="#12597b",
-                text_size=10,
-                border_color="#12597b",
-                autofocus=False,
-                bgcolor="#E1F5FE"
-            ),
-            ft.Text(
-                value= f'Total',
-                width=None,
-                size=10,
-                text_align=TextAlign.START,
-                weight=FontWeight.W_600,
-                color="#333333"
-            ),
-            ft.TextField(
                 label=None,
                 label_style=TextStyle(color='#6a6965', size=10),
                 value="",
                 border_radius=ft.border_radius.vertical(top=5, bottom=5),
+                # hint_text="%",
                 dense=True,
                 text_align=TextAlign.CENTER,
                 hint_style=TextStyle(color='#6a6965', size=10),
@@ -5240,7 +5215,7 @@ class VentanaRegistro(ft.View):
                 border_color="#12597b",
                 autofocus=False,
                 bgcolor="#E1F5FE"
-            ),
+            )
         ],
             alignment=ft.MainAxisAlignment.CENTER,
         )
@@ -5251,7 +5226,7 @@ class VentanaRegistro(ft.View):
             expand=True,
             content=ft.GridView(
                 expand=1,
-                child_aspect_ratio=1.7, # ajusta la relacion alto por ancho
+                child_aspect_ratio=1.7,  # ajusta la relacion alto por ancho
                 runs_count=1,  # ajusta el número de columnas según el diseño
                 spacing=1,  # Espacio entre las imágenes
                 run_spacing=1,  # Espacio entre las filas
@@ -5280,21 +5255,18 @@ class VentanaRegistro(ft.View):
             )
         )
 
-
-
-
         # Contenedor principal que contiene todos los elementos de la interfaz
         self.controls = [
             ft.Container(
                 ft.Column([
-                    #self.imagenRegistro,
+                    # self.imagenRegistro,
                     self.nombre_cliente,
-                    #self.vehiculo_cliente,
+                    # self.vehiculo_cliente,
                     self.input_buscar,
                     self.menu_principal,
                     self.submenu_opciones,
-                    self.cantidadYprecio,
-                    self.descuentoYtotal,
+                    self.precio_costoYventa,
+                    self.cantidad_items,
                     self.vistaResultadosBusqueda,
                     self.BotonSalir
                 ]
@@ -5437,7 +5409,7 @@ class VentanaRegistro(ft.View):
         # Limpia los controles actuales del GridView
         self.vistaResultadosBusqueda.content.controls = []
 
-        # inputs donde el usuario ingresa el nombre, categoria y subcategoria del recambio que quiere buscar
+        # inputs donde el usuario ingresa el nombre, menu categoria y subcategoria del recambio que quiere buscar
         recambio = self.input_buscar.value.strip()  # este es el Input
         categoria = self.menu_principal.content.controls[0].value.strip()
         subcategoria = (self.submenu_opciones.value.strip() if self.submenu_opciones.value else "")
@@ -5463,7 +5435,7 @@ class VentanaRegistro(ft.View):
         if recambio_localizado:
             cards = []
             for recambios in recambio_localizado:
-                self.cantidad[recambios.id_recambio] = self.cantidadYprecio
+                self.cantidad[recambios.id_recambio] = self.cantidad_items
                 # mostramos detalles del cliente encontrado
                 print(f"Nombre: {recambios.nombre_recambio}, Desde: {recambios.fecha_alta.strftime('%d/%m/%Y')}")
 
@@ -5522,29 +5494,13 @@ class VentanaRegistro(ft.View):
                                 padding=0,
                                 alignment=ft.alignment.center_left,
                             ),
-    #                       ft.Container(
-    #                           ft.Row(
-    #                               [
-    #                                   ft.Text(f"Marca:", size=12, weight=ft.FontWeight.W_700, color="#283747",
-    #                                           text_align=ft.TextAlign.LEFT),
-    #                                   ft.Text(f"{recambios.id_recambio}", size=12, text_align=ft.TextAlign.LEFT,
-    #                                           color="#283747"),
-    #                               ],
-    #                               alignment=ft.MainAxisAlignment.START,
-    #                               vertical_alignment=ft.CrossAxisAlignment.CENTER,
-    #                           ),
-    #                           bgcolor="transparent",
-    #                           padding=0,
-    #                           alignment=ft.alignment.center_left,
-    #
-    #                       ),
                             ft.Container(
                                 ft.Row(
                                     [
                                         ft.Text(f"Descripcion:", size=12, weight=ft.FontWeight.W_700,
                                                 text_align=ft.TextAlign.LEFT),
                                         ft.Text(f"{recambios.descripcion}", size=11, text_align=ft.TextAlign.LEFT,
-                                                no_wrap=False) # no_wrap asegura que el texto se ajuste si es largo)
+                                                no_wrap=False)  # no_wrap asegura que el texto se ajuste si es largo)
                                     ],
                                     wrap=True,  # asegura que el contenido se ajuste en varias filas si es necesario
                                     alignment=ft.MainAxisAlignment.START,
@@ -5581,8 +5537,8 @@ class VentanaRegistro(ft.View):
             # actualizar la interfaz
             self.vistaResultadosBusqueda.update()
 
-    # metodo para registrar recambios al registro del ingreso
-    def registro_nuevo(self, e,  producto_seleccionado_id):
+    # metodo para asignar recambios al ingreso
+    def registro_nuevo(self, e, producto_seleccionado_id):
         print("\n > Crear registro")
 
         # Obtener el ID del ingreso almacenado en la sesión
@@ -5590,7 +5546,8 @@ class VentanaRegistro(ft.View):
         if ingreso_id:
             ingreso_actual = db.session.query(Ingreso).filter_by(id_ingreso=ingreso_id).first()
             if ingreso_actual:
-                print(f" ID : {ingreso_actual.id_ingreso}, ID Cliente: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
+                print(
+                    f" ID : {ingreso_actual.id_ingreso}, ID Cliente: {ingreso_actual.id_cliente}, ID Vehiculo: {ingreso_actual.id_vehiculo}")
             else:
                 print("Error: No se ha encontrado el ingreso en la base de datos.")
                 return
@@ -5613,14 +5570,16 @@ class VentanaRegistro(ft.View):
             recambio_seleccionado = db.session.query(Recambio).filter(
                 Recambio.id_recambio == id_recambio_seleccionado).first()
             # Obtener precio, cantidad, descuento y total
-            precio = float(self.cantidadYprecio.controls[1].value.strip())
-            cantidad = float(self.cantidadYprecio.controls[3].value.strip())
-            descuento = float(self.descuentoYtotal.controls[1].value.strip())
-            total = float(self.descuentoYtotal.controls[3].value.strip())
+            precio_costo = float(self.precio_costoYventa.controls[1].value.strip())
+            precio_venta = float(self.precio_costoYventa.controls[3].value.strip())
+            cantidad = float(self.cantidad_items.controls[1].value.strip())
+            total_costo = precio_costo * cantidad
+            venta_total = precio_venta * cantidad
 
             if recambio_seleccionado:
                 print(f"Recambio seleccionado: {recambio_seleccionado.nombre_recambio}")
-                registro_recambio = Registro(precio=precio, descuento=descuento, cantidad=cantidad, costo_real=total)
+                registro_recambio = Registro(pu_costo=precio_costo, pu_venta=precio_venta, cantidad=cantidad,
+                                             costo_total=total_costo, venta_total=venta_total)
 
                 # Relación bidireccional automática
                 ingreso_actual.registros.append(registro_recambio)
@@ -5634,15 +5593,13 @@ class VentanaRegistro(ft.View):
                 print("Error: Cliente o recambio no encontrado.")
 
             # Restablecer el valor del campo de busqueda a una cadena vacia
-            self.cantidadYprecio.controls[1].value = ""
-            self.cantidadYprecio.controls[3].value = ""
-            self.descuentoYtotal.controls[1].value = ""
-            self.descuentoYtotal.controls[3].value = ""
+            self.precio_costoYventa.controls[1].value = ""
+            self.precio_costoYventa.controls[3].value = ""
+            self.cantidad_items.controls[1].value = ""
 
             # Actualizar el campo de busqueda en la interfaz de usuario
-            self.cantidadYprecio.update()
-            self.descuentoYtotal.update()
-
+            self.precio_costoYventa.update()
+            self.cantidad_items.update()
 
             db.session.close()
 
@@ -5926,7 +5883,7 @@ class VentanaVerRegistrosIngreso(ft.View):
         ]
         self.listaRegistrosGridView(self)
 
-    # metodo para mostrarlos registros del ingreso selleccionado en GridView
+    # metodo para mostrar los registros del ingreso seleccionado en GridView
     # metodo para cargar los recambios existentes en el GridView
     def listaRegistrosGridView(self,e):
         # Limpia los controles actuales del GridView
@@ -6157,7 +6114,7 @@ def main(page: ft.page):
             registro = VentanaRegistro(page)
             page.views.append(registro)
         elif page.route == "/registrosIngreso1":
-            registrosIngreso1 = VentanaVerRegistrosIngreso(page)
+            registrosIngreso1 = VentanaVerRegistrosIngresoSeleccionado(page)
             page.views.append(registrosIngreso1)
         elif page.route == "/registrosIngreso2":
             registrosIngreso2 = VentanaVerRegistrosIngreso(page)
@@ -6166,7 +6123,7 @@ def main(page: ft.page):
         page.update()
 
     page.on_route_change = router
-    page.go("/inicio")
+    #page.go("/inicio")
     #page.go("/clientes")
     #page.go("/clienteNuevo")
     #page.go("/vehiculosCliente")
@@ -6182,8 +6139,8 @@ def main(page: ft.page):
     #page.go("/ingresos")
     #page.go("/nuevoIngreso")
     #page.go("/registro")
-    #page.go("/verRegistrosIngreso1")
-    #page.go("/verRegistrosIngreso2")
+    page.go("/registrosIngreso1")
+    #page.go("/registrosIngreso2")
 
 
 
